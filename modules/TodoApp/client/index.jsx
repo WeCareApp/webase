@@ -1,7 +1,7 @@
 import { Component, PropTypes } from 'react';
 import ReactMixin from 'react-mixin';
 import Helmet from 'react-helmet';
-import F7 from './f7/js/f7';
+
 
 import LoginScreen from './components/LoginScreen';
 import LeftPanel from './components/LeftPanel';
@@ -62,23 +62,21 @@ export default class TodoApp extends Component {
     }
   }
 
-  componentDidMount() {
-    if(!Meteor.isServer) {
-      let app = new F7();
-      //this.setState({app: app});
-
-      // Add main View
-      let view = app.addView('.view-main', {
-        // Enable dynamic Navbar
-        dynamicNavbar: true,
-        // Enable Dom Cache so we can use all inline pages
-        domCache: true
+  backBtn() {
+    let index = JSON.parse(sessionStorage.getItem('historyRouteIndex'));
+    let route = JSON.parse(sessionStorage.getItem('historyRoute'));
+    let routeNew = FlowRouter.current().path;
+    // if((sessionStorage.getItem('historyRoute')==undefined || routeNew==route[index])&& index==1){
+      FlowRouter.withReplaceState(function() {
+        FlowRouter.go(route[index-1]);
       });
+    // }else{
+    //   window.history.back();
+    // }
+  }
 
-      // Pass instance to state to pass to children.
-      // We are anyhow able to always get the instance via new F7()
-      this.setState({f7: app});
-    }
+  componentDidMount() {
+
   }
 
   render() {
@@ -103,30 +101,18 @@ export default class TodoApp extends Component {
           {/* Your main view, should have "view-main" class*/}
           <div className="view view-main">
             {/* Top Navbar*/}
-            <div className="navbar">
+            {/*<div className="navbar">*/}
               {/* Navbar inner for Index page*/}
-              <div data-page="index" className="navbar-inner">
-                {/* We have home navbar without left link*/}
-                <div className="left sliding">Touch2S</div>
-                <div className="right">
-                  {/* Right link contains only icon - additional "icon-only" class*/}
-                  <a href="#" onClick={this.handleLoginDialog.bind(this)} className={"button " + (this.auth() ? "active" : "")}>{this.auth() ? "Sign Out" : "Sign In"}</a>
-                  {/* <a href="#" className="link icon-only open-panel"><i className="icon icon-bars"/></a>*/}
-                </div>
-              </div>
+
               {/* Navbar inner for About page*/}
-              <div data-page="about" className="navbar-inner cached">
-                <div className="left sliding"><a href="#" className="back link"> <i className="icon icon-back"/><span>Back</span></a>
-                </div>
-                <div className="center sliding">About Us</div>
-              </div>
+
+              {/*{this.props.navbar.map(function(nav){
+                // return {nav};
+              })}*/}
               {/* Navbar inner for Form page*/}
-              <div data-page="form" className="navbar-inner cached">
-                <div className="left sliding"><a href="#" className="back link"> <i className="icon icon-back"/><span>Back</span></a>
-                </div>
-                <div className="center sliding">Form</div>
-              </div>
-            </div>
+
+            {/*</div>*/}
+            {this.props.navbar}
             {/* Pages, because we need fixed-through navbar and toolbar, it has additional appropriate classes*/}
             <div className="pages navbar-through toolbar-through">
               {/* Index Page*/}
@@ -138,7 +124,7 @@ export default class TodoApp extends Component {
               <div data-page="about" className="page cached">
                 <div className="page-content">
                   <div className="content-block">
-                    <p>You may go <a href="#" className="back">back</a> or load <a href="#form">Form</a> page.
+                    <p>You may go <a href="#" className="back">back</a> or load <a href="/form">Form</a> page.
                     </p>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vel commodo massa, eu adipiscing
                       mi. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
