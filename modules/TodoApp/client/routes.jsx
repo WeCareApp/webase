@@ -170,30 +170,30 @@ let loadF7= function(content) {
       if( !routeOld){
         // console.log(routeOld);
         // // console.log(JSON.parse(sessionStorage.getItem('history')));
-        // let history = JSON.parse(sessionStorage.getItem('history'));
-        // // console.log(history);
-        // // app.views[0].history=history;
-        // // console.log(app.views[0].history);
-        // var k = history;
-        //
-        // for(let i=0; i<k.length; i++){
-        //   // history[i] = history[i].substr(1);
-        //   // let k = history[i];
-        //
-        //
-        //   // if(history[i]=='#index')continue;
-        //   // view = app.addView('.view-main', {
-        //   //   // Enable dynamic Navbar
-        //   //   dynamicNavbar: true,
-        //   //   // Enable Dom Cache so we can use all inline pages
-        //   //   domCache: true
-        //   // })
-        //   // console.log(k[i].slice(1, k[i].length))
-        //   app.views[0].router.loadPage({
-        //     pageName:   k[i].slice(1, k[i].length),
-        //     animatePages: false
-        //   });
-        // }
+        let history = JSON.parse(sessionStorage.getItem('history'));
+        // console.log(history);
+        // app.views[0].history=history;
+        // console.log(app.views[0].history);
+        let k = history;
+
+        for(let i=1; i<k.length-1; i++){
+          // history[i] = history[i].substr(1);
+          // let k = history[i];
+
+
+          // if(history[i]=='#index')continue;
+          // view = app.addView('.view-main', {
+          //   // Enable dynamic Navbar
+          //   dynamicNavbar: true,
+          //   // Enable Dom Cache so we can use all inline pages
+          //   domCache: true
+          // })
+          // console.log(k[i].slice(1, k[i].length))
+          app.views[0].router.loadPage({
+            pageName:   k[i].slice(1, k[i].length),
+            animatePages: false
+          });
+        }
         // // console.log(history);
         // // console.log(app.views[0].history);
         // app.views[0].history=$.unique(app.views[0].history);
@@ -214,6 +214,40 @@ let loadF7= function(content) {
         options.animatePages=false;
         // $('[data-page="about"].navbar-inner').addClass('navbar-on-left');
         app.views[0].router.back();
+        console.log($('[data-page="'+pageName+'"].navbar-inner'))
+        setTimeout(function(){
+          $('[data-page="'+pageName+'"].navbar-inner').addClass('navbar-on-center').removeClass('navbar-on-left').removeClass('cached')
+          var barWidth    = $('[data-page="'+pageName+'"].navbar-inner').width();
+          var titleWidth  = $('[data-page="'+pageName+'"].navbar-inner>.center').width();
+          let num         = ( titleWidth - barWidth )/2;
+          let center      = $('[data-page="'+pageName+'"].navbar-inner>.center');
+          center.css( 'left'      , num*2                               );
+          center.css( 'transform' , 'translate3d('+-num+'px, 0px, 0px)' );
+          center.css( 'transition', 'transform 400ms'                   );
+          let left = $('[data-page="about"].navbar-inner>.left>a>span:nth-child(3)');
+          let widthMargin = left.width()+7;
+          let widthMarginPadding = left.width()+14;
+          left.css( 'margin-left' , -widthMargin );
+          left.css('transform', 'translate3d('+widthMarginPadding+'px, 0px, 0px)');
+          left.css(
+            "transition", "transform 400ms"
+          )
+
+          // $('[data-page="'+pageName+'"]>.left').css(
+          //   "transform","translate(-"+num+"px,0px)"
+          // )
+          //
+          // $('[data-page="'+pageName+'"]>.center').css(
+          //   "transform","translate(-"+num+"px,0px)"
+          // )
+          // .animate({
+          //   transform:  'translateX(-'+num+'px)'
+          // }, 400, function() {
+            // Animation complete.
+          // });
+        }, 0)
+
+        console.log($('[data-page="'+pageName+'"].navbar-inner'))
         let index = JSON.parse(sessionStorage.getItem('historyRouteIndex'));
         let history = JSON.parse(sessionStorage.getItem('history'));
         let backPage = history[index+1].slice(1, history[index+1].length);
@@ -229,14 +263,17 @@ let loadF7= function(content) {
         app.onPageAfterBack(backPage, function(){
           // $('[data-page="about"].navbar-inner.navbar-from-center-to-right').removeClass('navbar-from-center-to-right');
           setTimeout(function(){
-            app.views[0].router.loadPage({
-              pageName:   'index',
-              animatePages: false
-            });
-            app.views[0].router.loadPage({
-              pageName:   pageName,
-              animatePages: false
-            });
+            var barWidth    = $('[data-page="'+pageName+'"].navbar-inner').width();
+            var titleWidth  = $('[data-page="'+pageName+'"].navbar-inner>.center').width();
+            let num         = ( titleWidth - barWidth )/2;
+            let center      = $('[data-page="'+pageName+'"].navbar-inner>.center');
+            center.css( 'left'      , num                          );
+            center.css( 'transform' , '' );
+            center.css( 'transition', ''                           );
+            let left = $('[data-page="about"].navbar-inner>.left>a>span:nth-child(3)');
+            left.css( 'margin-left' , '' );
+            left.css('transform', '');
+            left.css('transition', '')
 
           }, 0);
 
@@ -316,7 +353,11 @@ let loadF7= function(content) {
       //   sessionStorage.setItem('routeClass', JSON.stringify(routeClass));
       // })
       // console.log(app.views[0].history);
-      if(!!routeOld && routeOld!==routeNew)sessionStorage.setItem('history', JSON.stringify($.unique(app.views[0].history)));
+      if(!!routeOld && routeOld!==routeNew){
+        // alert('updateHistory')
+        console.log(app.views);
+        sessionStorage.setItem('history', JSON.stringify($.unique(app.views[0].history)));
+      }
       app.views=[app.views[0]];
       Session.set('routeOld', routeNew);
 
@@ -523,7 +564,7 @@ FlowRouter.route('/', {
               console.log(name)
               var Navbar = eval(name);
               if(!!routeClass && !!routeClass[tmp])return <Navbar class={routeClass[tmp]} />
-              if(tmp=='index')return <Navbar class='navbar-inner' />
+              if(tmp=='index')return <Navbar class='navbar-inner ' />
               return <Navbar class='navbar-inner cached' />;
             })}
             </div>
@@ -591,7 +632,7 @@ FlowRouter.route('/about', {
               var Navbar = eval(name);
               // if(tmp=='about') return <Navbar current='navbar-on-center'/>;
               if(!!routeClass && !!routeClass[tmp])return <Navbar class={routeClass[tmp]} />
-              if(tmp=='index')return <Navbar class='navbar-inner' />
+              // if(tmp=='index')return <Navbar class='navbar-inner' />
               return <Navbar class='navbar-inner cached' />;
             })}
             </div>
@@ -660,7 +701,7 @@ FlowRouter.route('/form', {
               console.log(name)
               var Navbar = eval(name);
               if(!!routeClass && !!routeClass[tmp])return <Navbar class={routeClass[tmp]} />
-              if(tmp=='index')return <Navbar class='navbar-inner' />
+              // if(tmp=='index')return <Navbar class='navbar-inner' />
               return <Navbar class='navbar-inner cached' />;
             })}
             </div>
