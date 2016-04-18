@@ -1,8 +1,8 @@
-**[Touich2S Live Demo](http://touch2s.meteor.com)**. A sister of the [kickstart-simple]( https://github.com/thereactivestack/kickstart-simple) & [hugeapp]( https://github.com/thereactivestack/kickstart-hugeapp) project by The Reactive Stack.
+Webase! A sister of the [Touich2S](https://github.com/D1no/touch2s), [kickstart-simple]( https://github.com/thereactivestack/kickstart-simple) & [hugeapp]( https://github.com/thereactivestack/kickstart-hugeapp) project by The Reactive Stack.
 
-### Touch2S: Mobile Apps that Server Side Render (✌️S)
+### Webase: Large Mobile Apps that Server Side Render with Routing
 
-Touch2S is a [Meteor](http://meteor.com), [React](https://facebook.github.io/react/index.html) and [Framework7](http://www.idangero.us/framework7/)-Mobile WebApp-Stack based on the [kickstart projects by thereactivestack](https://github.com/thereactivestack/kickstart). Remarkable is the use of webpack for chunking and the ability to render both on the server and the client. Hence, 2 Side-Rendering... 🤔 *Touch2S*. This approach enables very **low initial load times** while being **reactive** (Meteor) and extremely **responsive** (React's Virtual DOM meets Framework7)! 
+Webase is a [Meteor](http://meteor.com), [React](https://facebook.github.io/react/index.html) and [Framework7](http://www.idangero.us/framework7/)-Mobile WebApp-Stack based on the [kickstart projects by thereactivestack](https://github.com/thereactivestack/kickstart). Remarkable is the use of webpack for chunking and the ability to render both on the server and the client. Hence, Side-Rendering, LazyLoad as default...  *Webase*. This approach enables very **low initial load times** while being **reactive** (Meteor) and extremely **responsive** (React's Virtual DOM meets Framework7)! 
 
 ![touch2s-v 0 2 2-demo](https://cloud.githubusercontent.com/assets/2397125/12060744/6b4d7a9c-af76-11e5-8e7c-8f1370c8556e.gif)
 
@@ -11,14 +11,17 @@ The goal of this stack is to make **SEO**, **target conversion** and **market pe
 ### Getting Started
 Clone this project to start a mobile web project using Meteor, React.js, Framework7 and Webpack. [Install Meteor]( https://www.meteor.com/install), than
 
-1. `git clone https://github.com/D1no/touch2s.git`
-1. `cd touch2s`
+1. `git clone https://github.com/WeCareApp/webase.git`
+1. `cd webase`
 1. `meteor`
 
 *Note*: In some cases, your local node version needs to match meteors internal node version (LTS v.10.40). If you run into errors on first build, please use a tool such as `n` [link](https://github.com/tj/n) to conveniently switch to `node v0.10.40`. Keep in mind, that the first build can take quite a while (even appear to be frozen) because `meteor-webpack` needs to pull in npm. This will change with the upcoming [Meteor 1.3 release](https://github.com/meteor/meteor/milestones/Release%201.3).
 
 ### The stack & features (similar to kickstart-simple)
-- Framework7 (new in Touch2S)
+- Distributed Components System
+- Lazy Load as default
+- FlowRouter as routing
+- Framework7 (new in Webase)
 - Use [TrackerReact]( https://github.com/ultimatejs/tracker-react) (new in Touch2S)
 - Include the simple To-Do app example
 - ES6 modules
@@ -30,8 +33,14 @@ Clone this project to start a mobile web project using Meteor, React.js, Framewo
 - Optimize your code in production mode
 - Give access to NPM by using packages.json
 
+#Current State
 
-# Working with Touch2S, React & Framework 7
+- the todo-folder naming needs to change
+- lazy-load not completely done
+- folder structure needs organized 
+
+
+# Working with Webase, React & Framework 7
 This project started as an exploration of how to incorporate a “traditional, DOM manipulating library” with meteor and react. As a result, it turned out that React is way more resilient than expected: Making it possible to combine fast virtual DOM rendering with the app instance management and CSS3 magic of a library such as Framework7.
 
 Libraries such as Framework7 are build around Ajax and static HTML. I.e. HTML snippets should be generated and provided by a PHP server for different views and components. A reason why client side, DOM-Rendering, engines are becoming generally slow: There is never a “true finished static piece of html” to work with. So engines, such as [Meteors Blaze]( https://www.meteor.com/blaze), eventually over access the DOM and everything comes to a crawl. A frustration we often dealt with and also one, that could be avoided if we were working with static HTML again.
@@ -43,7 +52,7 @@ With react we are exactly doing that. We bring the static html server directly t
 I.e. the To-Do example features a slide-left and than delete button. The sliding is styling / a CSS3 transformation of static HTML (Ajax-Style). The delete function could also be implemented with Framework7s `swipeout-delete` class on the task item. But that would violate the “Static-Style” of the component and break reacts rendering. So instead, we delete the task from our Tasks collection to have react update the DOM for us. A beautiful symbiosis.
 
 ### Outlook
-Touch2S is just at the beginning but should implement
+Webase is just at the beginning but should implement
 
 - View and Page management of F7 through react
 - iOS and Material Design
@@ -55,7 +64,7 @@ Touch2S is just at the beginning but should implement
 
 
 # The Reactive Stack (TRS) [link]( https://github.com/thereactivestack)
-Touch2S would not be possible without the amazing work of The Reactive Stack (TRS), namely, Benoit ([@eXon]( https://github.com/eXon)). 
+Webase would not be possible without the amazing work of The Reactive Stack (TRS), namely, Benoit ([@eXon]( https://github.com/eXon)). 
 
 
 ### How does it work?
