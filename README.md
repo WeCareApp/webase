@@ -22,7 +22,7 @@ Clone this project to start a mobile web project using Meteor, React.js, Framewo
 - Lazy Load as default
 - FlowRouter as routing
 - Framework7 (new in Webase)
-- Use [TrackerReact]( https://github.com/ultimatejs/tracker-react) (new in Touch2S)
+- Use [TrackerReact]( https://github.com/ultimatejs/tracker-react) (new in Webase)
 - Include the simple To-Do app example
 - ES6 modules
 - Meteor
@@ -46,7 +46,7 @@ This project started as an exploration of how to incorporate a “traditional, D
 Libraries such as Framework7 are build around Ajax and static HTML. I.e. HTML snippets should be generated and provided by a PHP server for different views and components. A reason why client side, DOM-Rendering, engines are becoming generally slow: There is never a “true finished static piece of html” to work with. So engines, such as [Meteors Blaze]( https://www.meteor.com/blaze), eventually over access the DOM and everything comes to a crawl. A frustration we often dealt with and also one, that could be avoided if we were working with static HTML again.
 
 ### Approach
-With react we are exactly doing that. We bring the static html server directly to the client for instant (virtual) DOM dispatching while maintaining moderate DOM re-rendering and speed. Working with this stack is not difficult but you have to acknowledge that you need to balance yourself between working in ajax like **“Static-Style”** or decouple a section of the page and work in **“DOM-Rendering-Style”**. Just mixing styles can get you in trouble. Knowing that, you can use any feature of Framework7 as long you separate those into the respective working styles. Touch2S tries to be a starting point in that regard: Go into the great [F7 docs]( http://www.idangero.us/framework7/docs/#.VoSA-ZMrJhE) and try to implement features yourself.
+With react we are exactly doing that. We bring the static html server directly to the client for instant (virtual) DOM dispatching while maintaining moderate DOM re-rendering and speed. Working with this stack is not difficult but you have to acknowledge that you need to balance yourself between working in ajax like **“Static-Style”** or decouple a section of the page and work in **“DOM-Rendering-Style”**. Just mixing styles can get you in trouble. Knowing that, you can use any feature of Framework7 as long you separate those into the respective working styles. Webase tries to be a starting point in that regard: Go into the great [F7 docs]( http://www.idangero.us/framework7/docs/#.VoSA-ZMrJhE) and try to implement features yourself.
 
 ### Example
 I.e. the To-Do example features a slide-left and than delete button. The sliding is styling / a CSS3 transformation of static HTML (Ajax-Style). The delete function could also be implemented with Framework7s `swipeout-delete` class on the task item. But that would violate the “Static-Style” of the component and break reacts rendering. So instead, we delete the task from our Tasks collection to have react update the DOM for us. A beautiful symbiosis.
