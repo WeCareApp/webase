@@ -14,7 +14,9 @@ import F7 from './f7/js/f7';
 
 let loadF7= function(content) {
   if(!Meteor.isServer) {
-    let app = new F7();
+
+      let app = new F7();
+
     //this.setState({app: app});
 
     // Add main View
@@ -36,7 +38,11 @@ let loadF7= function(content) {
     Session.set('routeOld', routeOld);
     if(sessionStorage.getItem('history')==undefined){
       // var array = ['#index'];
-      sessionStorage.setItem('history', JSON.stringify(app.views[0].history));
+      console.log(app.views[0].history);
+      let history = ['#index']
+      if(!!routeName[1])history.push('#'+routeName[1]);
+      console.log(history);
+      sessionStorage.setItem('history', JSON.stringify(history));
     }
     if(sessionStorage.getItem('historyRoute')==undefined){
       window.history.back();// initial load up, because it load up two times, so back one time.
@@ -71,14 +77,19 @@ let loadF7= function(content) {
         isBack=0;
         route = route.slice(0, index+1);
         let history = JSON.parse(sessionStorage.getItem('history'));
+        console.log(history);
+        // if(!history){
+        //   history = ['']
+        // }
         history = history.slice(0, index+1);
+        console.log(history)
         for(let i=1; i<route.length; i++){
           let tmp = route[i];
           tmp = tmp.replace('/','#');
           history.push(tmp);
         }
         route.push(routeNew);
-
+        console.log(history);
         sessionStorage.setItem('history', JSON.stringify(history));
         sessionStorage.setItem('historyRoute', JSON.stringify(route));
         sessionStorage.setItem('historyRouteIndex',index+1);
@@ -93,7 +104,7 @@ let loadF7= function(content) {
       let history = JSON.parse(sessionStorage.getItem('history'));
       let k = history;
 
-      for(let i=1; i<k.length-1; i++){
+      for(let i=0; i<k.length-1; i++){
         app.views[0].router.loadPage({
           pageName:   k[i].slice(1, k[i].length),
           animatePages: false
@@ -106,7 +117,9 @@ let loadF7= function(content) {
 
     if(isBack==1 && $.inArray('#'+pageName, app.views[0].history) > -1){
       //back action
-      app.views[0].router.back();
+      setTimeout(function(){
+        app.views[0].router.back();
+      }, 0);
       //@back instance change bar style
       setTimeout(function(){
         $('[data-page="'+pageName+'"].navbar-inner').addClass('navbar-on-center').removeClass('navbar-on-left').removeClass('cached')
@@ -117,12 +130,20 @@ let loadF7= function(content) {
         center.css( 'left'      , num*2                               );
         center.css( 'transform' , 'translate3d('+-num+'px, 0px, 0px)' );
         center.css( 'transition', 'transform 400ms'                   );
-        let left = $('[data-page="about"].navbar-inner>.left>a>span:nth-child(3)');
+        let left = $('[data-page="'+pageName+'"].navbar-inner>.left>a>span:nth-child(3)');
         let widthMargin = left.width()+7;
         let widthMarginPadding = left.width()+14;
         left.css( 'margin-left' , -widthMargin );
         left.css('transform', 'translate3d('+widthMarginPadding+'px, 0px, 0px)');
         left.css("transition", "transform 400ms");
+
+
+        //new
+        $('[data-page="'+backPage+'"].page').removeClass('cached').addClass('page-from-center-to-right')
+        // $('[data-page="'+backPage+'"].navbar-inner').removeClass('cached').addClass('navbar-on-left')
+        // $('[data-page="'+pageName+'"].page').css('z-index', '1');
+        $('[data-page="'+pageName+'"].page').addClass('page-on-center').removeClass('cached')
+        // $('[data-page="'+pageName+'"].navbar-inner').addClass('navbar-from-right-to-center').removeClass('cached')
       }, 0);
 
       let index     = JSON.parse( sessionStorage.getItem('historyRouteIndex') );
@@ -139,7 +160,7 @@ let loadF7= function(content) {
           center.css( 'left'      , num                          );
           center.css( 'transform' , '' );
           center.css( 'transition', ''                           );
-          let left = $('[data-page="about"].navbar-inner>.left>a>span:nth-child(3)');
+          let left = $('[data-page="'+pageName+'"].navbar-inner>.left>a>span:nth-child(3)');
           left.css( 'margin-left' , '' );
           left.css('transform', '');
           left.css('transition', '')
@@ -148,9 +169,58 @@ let loadF7= function(content) {
 
       })
       isBack = 0;
-    }else app.views[0].router.loadPage(options);
+    }else {
+      // setTimeout(function(){
+        app.views[0].router.loadPage(options);
+      // },0);
+      let index     = JSON.parse( sessionStorage.getItem('historyRouteIndex') );
+      let history   = JSON.parse( sessionStorage.getItem('history')           ) ;
+      let backPage  = history[index-1].slice(1, history[index-1].length);
+      if(!options.animatePages || options.animatePages!==false){
+        $('[data-page="'+backPage+'"].page').removeClass('cached').addClass('page-on-left')
+        $('[data-page="'+backPage+'"].navbar-inner').removeClass('cached').addClass('navbar-on-left')
+        $('[data-page="'+pageName+'"].page').addClass('page-from-right-to-center').removeClass('cached')
+        $('[data-page="'+pageName+'"].navbar-inner').addClass('navbar-from-right-to-center').removeClass('cached')
+
+        //nav animation
+        var barWidth    = $('[data-page="'+pageName+'"].navbar-inner').width();
+        var titleWidth  = $('[data-page="'+pageName+'"].navbar-inner>.center').width();
+        let num         = ( titleWidth - barWidth )/2;
+        let center      = $('[data-page="'+pageName+'"].navbar-inner>.center');
+        center.css( 'left'      , 0                               );
+        center.css( 'transform' , 'translate3d('+num+'px, 0px, 0px)' );
+        center.css( 'transition', 'transform 400ms'                   );
+        let left = $('[data-page="'+pageName+'"].navbar-inner>.left>a>span:nth-child(3)');
+        let widthMargin = left.width()-7;
+        let widthMarginPadding = left.width()-14;
+        left.css( 'margin-left' , +widthMargin );
+        left.css('transform', 'translate3d('+-widthMarginPadding+'px, 0px, 0px)');
+        left.css("transition", "transform 400ms");
+
+        // $('[data-page="'+backPage+'"].page')
+        // $('[data-page="'+backPage+'"].navbar-inner')
+      }
+    }
     if(!!routeOld && routeOld!==routeNew){
-      sessionStorage.setItem('history', JSON.stringify($.unique(app.views[0].history)));
+      // console.log(app.views[0].history)
+      // let history = app.views[0].history;
+      // if(history.indexOf('#undefined')!==-1)history.splice(history.indexOf('#undefined'),1);
+      // console.log(history);
+      let history = JSON.parse(sessionStorage.getItem('history'));
+      console.log(history);
+      // if(!history){
+      //   history = ['']
+      // }
+      let index = JSON.parse(sessionStorage.getItem('historyRouteIndex'));
+      let route = JSON.parse(sessionStorage.getItem('historyRoute'));
+      history = history.slice(0, index+1);
+      console.log(history)
+      for(let i=1; i<route.length; i++){
+        let tmp = route[i];
+        tmp = tmp.replace('/','#');
+        history.push(tmp);
+      }
+      sessionStorage.setItem('history', JSON.stringify($.unique(history)));
     }
     app.views=[app.views[0]];
     Session.set('routeOld', routeNew);
@@ -171,6 +241,7 @@ WeactLayout.render = function(fieldIn){
     let PageAbout   = require('./components/page/about').default;
     let PageForm    = require('./components/page/form').default;
     let PageIndex   = require('./components/page/index').default;
+    let PageRoot   = require('./components/page/root').default;
     // let Dashboard = require('./Dashboard');
     // console.log(sessionStorage.getItem('history'))
     let route = JSON.parse(sessionStorage.getItem('historyRoute'));
@@ -181,7 +252,7 @@ WeactLayout.render = function(fieldIn){
     let currentName = FlowRouter.current().route.path.split('/')[1];
     if( currentName == "")currentName= 'index';
     var navbar = ['index'];
-    let page   = ['index'];
+    let page   = ['root','index'];
     if(currentName!=='index'){
       navbar.push(currentName);
       page.push(currentName);
@@ -189,7 +260,7 @@ WeactLayout.render = function(fieldIn){
     if(!!history){
       // navbar="<div>"
       navbar  = ['index'];
-      page    = ['index'];
+      page    = ['root','index'];
       for(let i=1; i<history.length; i++){
         let tmp = history[i];
         tmp = tmp.replace('#','');
@@ -210,7 +281,7 @@ WeactLayout.render = function(fieldIn){
             let name = 'Navbar'+tmp.charAt(0).toUpperCase() + tmp.slice(1);
             let Navbar = eval(name);
             if(tmp=='index' && currentName =='index')
-              return  <Navbar class='navbar-inner'         key={i}/>;
+              return  <Navbar class='navbar-inner cached'         key={i}/>;
             return    <Navbar class='navbar-inner cached'  key={i}/>;
           })}
           </div>
@@ -249,6 +320,7 @@ WeactLayout.render = function(fieldIn){
       children: <TodoMain />                    ,
       navbar  : <WeactNavbar navbar={navbar}/>  ,
       page    : <WeactPage     page={page}  />  ,
+
 
       // page    : <WeactPage                       ,
     }
