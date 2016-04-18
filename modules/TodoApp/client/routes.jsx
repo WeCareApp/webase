@@ -161,220 +161,135 @@ let loadF7= function(content) {
     // this.setState({f7: app});
   }
 }
+let WeactLayout = {};
+WeactLayout.render = function(fieldIn){
+  require.ensure([], () => {
+    let field = fieldIn || {};
+    let NavbarIndex = require('./components/navbar/index').default;
+    let NavbarAbout = require('./components/navbar/about').default;
+    let NavbarForm  = require('./components/navbar/form').default;
+    let PageAbout   = require('./components/page/about').default;
+    let PageForm    = require('./components/page/form').default;
+    let PageIndex   = require('./components/page/index').default;
+    // let Dashboard = require('./Dashboard');
+    // console.log(sessionStorage.getItem('history'))
+    let route = JSON.parse(sessionStorage.getItem('historyRoute'));
+    let history = JSON.parse(sessionStorage.getItem('history'));
+    let index = JSON.parse(sessionStorage.getItem('historyRouteIndex'));
+    // history = history.slice(0, index+1);
+    let item=[];
+    let currentName = FlowRouter.current().route.path.split('/')[1];
+    if( currentName == "")currentName= 'index';
+    var navbar = ['index'];
+    let page   = ['index'];
+    if(currentName!=='index'){
+      navbar.push(currentName);
+      page.push(currentName);
+    }
+    if(!!history){
+      // navbar="<div>"
+      navbar  = ['index'];
+      page    = ['index'];
+      for(let i=1; i<history.length; i++){
+        let tmp = history[i];
+        tmp = tmp.replace('#','');
+        navbar.push(tmp);
+        page.push(tmp);
+      }
+      if(currentName!=='index' && navbar.indexOf(currentName)<0)navbar.push(currentName);
+      if(currentName!=='index' &&   page.indexOf(currentName)<0)  page.push(currentName);
+    }
+
+    let WeactNavbar = React.createClass({
+      render: function() {
+        var navbarP = this.props.navbar;
+        // let routeClass = JSON.parse(sessionStorage.getItem('routeClass'));
+        return (
+          <div className="navbar">
+          {navbarP.map(function(tmp, i){
+            let name = 'Navbar'+tmp.charAt(0).toUpperCase() + tmp.slice(1);
+            let Navbar = eval(name);
+            if(tmp=='index' && currentName =='index')
+              return  <Navbar class='navbar-inner'         key={i}/>;
+            return    <Navbar class='navbar-inner cached'  key={i}/>;
+          })}
+          </div>
+        )
+      }
+    });
+    // let WeactPage = page.map(function(tmp, i){
+    //   let name = 'Page'+tmp.charAt(0).toUpperCase() + tmp.slice(1);
+    //   let Page = eval(name);
+    //   // if(tmp=='index' && currentName =='index')
+    //   //   return  <Page class='navbar-inner'         key={i}/>;
+    //   return    <Page key={i}/>;
+    // })
+    let WeactPage = React.createClass({
+      render: function() {
+        let pageP = this.props.page;
+        // let routeClass = JSON.parse(sessionStorage.getItem('routeClass'));
+        return (
+          <div className="pages navbar-through toolbar-through">
+          {pageP.map(function(tmp, i){
+            let name = 'Page'+tmp.charAt(0).toUpperCase() + tmp.slice(1);
+            let Page = eval(name);
+            // if(tmp=='index' && currentName =='index')
+            //   return  <Page class='navbar-inner'         key={i}/>;
+            if(tmp=='index' ) return <Page children={<TodoMain/>} key={i}/>;
+            return    <Page key={i}/>;
+          })}
+          </div>
+        )
+      }
+    });
+    let app         ;
+    let layout  = {};
+    let defaultLayout = {
+      app     : TodoApp                         ,
+      children: <TodoMain />                    ,
+      navbar  : <WeactNavbar navbar={navbar}/>  ,
+      page    : <WeactPage     page={page}  />  ,
+
+      // page    : <WeactPage                       ,
+    }
+
+    //load defaultLayout
+    for(let i in defaultLayout) {
+      if (defaultLayout.hasOwnProperty(i)) {
+        let value = field[i] || defaultLayout[i];
+        if(i=='app') app = value;
+        else{
+          layout[i] = value
+        }
+        if(field[i])delete field[i];
+        delete defaultLayout[i];
+      }
+    }
+    for(let i in field) {
+      if (field.hasOwnProperty(i)) {
+        layout[i] = field[i];
+      }
+    }
+
+    ReactLayout.render(app, layout);
+    loadF7();
+  });
+}
 
 
 FlowRouter.route('/', {
   action() {
-    require.ensure([], () => {
-      // let NavbarAbout = require('./components/navbar/about').default;
-      // let TodoApp     = require('./index');
-      // let TodoMain    = require('./TodoMain');
-      let NavbarIndex = require('./components/navbar/index').default;
-      let NavbarAbout = require('./components/navbar/about').default;
-      let NavbarForm  = require('./components/navbar/form').default;
-      // let Dashboard = require('./Dashboard');
-      // console.log(sessionStorage.getItem('history'))
-      let route = JSON.parse(sessionStorage.getItem('historyRoute'));
-      let history = JSON.parse(sessionStorage.getItem('history'));
-      let index = JSON.parse(sessionStorage.getItem('historyRouteIndex'));
-      // history = history.slice(0, index+1);
-      let item=[];
-      var navbar = [];
-      navbar.push('index');
-      if(!!history){
-        // navbar="<div>"
-        navbar =['index'];
-        for(let i=1; i<history.length; i++){
-          let tmp = history[i];
-          tmp = tmp.replace('#','');
-          // Navbar = window['Navbar'+tmp.charAt(0).toUpperCase() + tmp.slice(1)];
-          // Navbar = eval('NavbarAbout');
-          navbar.push(tmp);
-            // console.log(navbar);
-        }
-        if(navbar.indexOf('index')<0)navbar.push('index');
-        // console.log(navbar);
-        // navbar +='</div>'babel.run(code);
-        // let jsCode = babel.transform(navbar);
-        // navbar = eval(jsCode.code);
-      }
-
-
-      // console.log(navbar);
-      var Component;
-
-      let ReactNavbar = React.createClass({
-        render: function() {
-          // let Navbar = window['Navbar'+tmp.charAt(0).toUpperCase() + tmp.slice(1)];
-          var navbarP = this.props.navbar;
-          let routeClass = JSON.parse(sessionStorage.getItem('routeClass'));
-          Component = eval('NavbarAbout')
-          return (
-            <div className="navbar">
-            {navbarP.map(function(tmp){
-              var name = 'Navbar'+tmp.charAt(0).toUpperCase() + tmp.slice(1);
-              console.log(name)
-              var Navbar = eval(name);
-              if(!!routeClass && !!routeClass[tmp])return <Navbar class={routeClass[tmp]} />
-              if(tmp=='index')return <Navbar class='navbar-inner ' />
-              return <Navbar class='navbar-inner cached' />;
-            })}
-            </div>
-          )
-        }
-      });
-      // console.log(Component);
-      ReactLayout.render(TodoApp, {
-        children: <TodoMain />,
-        navbar  : <ReactNavbar navbar={navbar}/>
-      });
-      loadF7();
-    });
-
+    WeactLayout.render();
   }
 });
 FlowRouter.route('/about', {
   action() {
-    require.ensure([], () => {
-      let NavbarIndex = require('./components/navbar/index').default;
-      let NavbarAbout = require('./components/navbar/about').default;
-      let NavbarForm  = require('./components/navbar/form').default;
-      // let Dashboard = require('./Dashboard');
-      // console.log(sessionStorage.getItem('history'))
-      let route = JSON.parse(sessionStorage.getItem('historyRoute'));
-      let history = JSON.parse(sessionStorage.getItem('history'));
-      let index = JSON.parse(sessionStorage.getItem('historyRouteIndex'));
-      // history = history.slice(0, index+1);
-      let item=[];
-      var navbar = ['index'];
-      navbar.push('about');
-      if(!!history){
-        // navbar="<div>"
-        navbar =['index'];
-        for(let i=1; i<history.length; i++){
-          let tmp = history[i];
-          tmp = tmp.replace('#','');
-          // Navbar = window['Navbar'+tmp.charAt(0).toUpperCase() + tmp.slice(1)];
-          // Navbar = eval('NavbarAbout');
-          navbar.push(tmp);
-            // console.log(navbar);
-        }
-        if(navbar.indexOf('about')<0)navbar.push('about');
-        // console.log(navbar);
-        // navbar +='</div>'babel.run(code);
-        // let jsCode = babel.transform(navbar);
-        // navbar = eval(jsCode.code);
-      }
-
-
-      // console.log(navbar);
-      var Component;
-
-      let ReactNavbar = React.createClass({
-        render: function() {
-          // let Navbar = window['Navbar'+tmp.charAt(0).toUpperCase() + tmp.slice(1)];
-          var navbarP = this.props.navbar;
-          let routeClass = JSON.parse(sessionStorage.getItem('routeClass'));
-          Component = eval('NavbarAbout')
-          return (
-            <div className="navbar">
-            {navbarP.map(function(tmp){
-              var name = 'Navbar'+tmp.charAt(0).toUpperCase() + tmp.slice(1);
-              // console.log(name)
-              var Navbar = eval(name);
-              // if(tmp=='about') return <Navbar current='navbar-on-center'/>;
-              if(!!routeClass && !!routeClass[tmp])return <Navbar class={routeClass[tmp]} />
-              // if(tmp=='index')return <Navbar class='navbar-inner' />
-              return <Navbar class='navbar-inner cached' />;
-            })}
-            </div>
-          )
-        }
-      });
-      // console.log(Component);
-      ReactLayout.render(TodoApp, {
-        children: <TodoMain />,
-        // navbar  : <div><NavbarAbout /><NavbarForm /></div>
-        navbar  : <ReactNavbar navbar={navbar}/>
-      });
-      loadF7();
-    });
-
+    WeactLayout.render();
   }
 });
 FlowRouter.route('/form', {
   action() {
-    require.ensure([], () => {
-      let NavbarIndex = require('./components/navbar/index').default;
-      let NavbarAbout = require('./components/navbar/about').default;
-      let NavbarForm  = require('./components/navbar/form').default;
-      // let Dashboard = require('./Dashboard');
-      // console.log(sessionStorage.getItem('history'))
-      let route = JSON.parse(sessionStorage.getItem('historyRoute'));
-      let history = JSON.parse(sessionStorage.getItem('history'));
-      let index = JSON.parse(sessionStorage.getItem('historyRouteIndex'));
-      // history = history.slice(0, index+1);
-      let item=[];
-      var navbar = ['index'];
-      navbar.push('form');
-      if(!!history){
-        // navbar="<div>"
-        navbar =['index'];
-        // console.log(history);
-        for(let i=1; i<history.length; i++){
-          let tmp = history[i];
-          tmp = tmp.replace('#','');
-          // Navbar = window['Navbar'+tmp.charAt(0).toUpperCase() + tmp.slice(1)];
-          // Navbar = eval('NavbarAbout');
-          navbar.push(tmp);
-            // console.log(navbar);
-        }
-        if(navbar.indexOf('form')<0)navbar.push('form');
-        // console.log(navbar);
-        // navbar +='</div>'babel.run(code);
-        // let jsCode = babel.transform(navbar);
-        // navbar = eval(jsCode.code);
-      }
-
-
-      // console.log(navbar);
-      var Component;
-
-      let ReactNavbar = React.createClass({
-        render: function() {
-          // let Navbar = window['Navbar'+tmp.charAt(0).toUpperCase() + tmp.slice(1)];
-          var navbarP = this.props.navbar;
-          let routeClass = JSON.parse(sessionStorage.getItem('routeClass'));
-          Component = eval('NavbarAbout')
-          return (
-            <div className="navbar">
-            {navbarP.map(function(tmp){
-              var name = 'Navbar'+tmp.charAt(0).toUpperCase() + tmp.slice(1);
-              // console.log(name)
-              var Navbar = eval(name);
-              if(!!routeClass && !!routeClass[tmp])return <Navbar class={routeClass[tmp]} />
-              // if(tmp=='index')return <Navbar class='navbar-inner' />
-              return <Navbar class='navbar-inner cached' />;
-            })}
-            </div>
-          )
-        }
-      });
-      ReactLayout.render(TodoApp, {
-        children: <TodoMain />,
-        // navbar  : <div><NavbarAbout /><NavbarForm /></div>
-        navbar  : <ReactNavbar navbar={navbar}/>
-      });
-      loadF7();
-    });
-  }
-});
-
-FlowRouter.route('/form/about', {
-  action() {
-    ReactLayout.render(TodoApp, {
-      children: <TodoMain />
-    });
+    WeactLayout.render();
   }
 });
 

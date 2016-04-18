@@ -91,7 +91,7 @@ export default class TodoMain extends Component {
                 </div>
               </div>
             </a></li>
-            <li><a href="/form/about" className="item-link ajax">
+            <li><a href="/form" className="item-link ajax">
               <div className="item-content">
                 <div className="item-inner">
                   <div className="item-title">Form Elements</div>
