@@ -64,20 +64,23 @@ let loadF7= function(content) {
         sessionStorage.setItem('historyRouteIndex',index-1);
       }else if((index+1)<route.length && routeNew==route[index+1]){
         //go forward but still in history
-        // console.log('forward')
-        isBack=0;
+        console.log('forward')
+        // console.log(index);
+        // console.log((index+1)<route.length );
+        // console.log(routeNew==route[index+1]);
+        isBack= 0;
         sessionStorage.setItem('historyRouteIndex',index+1);
       }else if(routeNew==route[index]){
         //refresh paged
         if(routeOld!=undefined)window.history.back();// initial load up, because it load up two times, so back one time.
-        // console.log('refresh');
+        console.log('refresh');
       }else if(routeNew!=='/'){
         //discover to new page
-        // console.log('new')
+        console.log('new')
         isBack=0;
         route = route.slice(0, index+1);
         let history = JSON.parse(sessionStorage.getItem('history'));
-        console.log(history);
+        // console.log(history);
         // if(!history){
         //   history = ['']
         // }
@@ -89,7 +92,7 @@ let loadF7= function(content) {
           history.push(tmp);
         }
         route.push(routeNew);
-        console.log(history);
+        // console.log(history);
         sessionStorage.setItem('history', JSON.stringify(history));
         sessionStorage.setItem('historyRoute', JSON.stringify(route));
         sessionStorage.setItem('historyRouteIndex',index+1);
@@ -170,36 +173,42 @@ let loadF7= function(content) {
       })
       isBack = 0;
     }else {
-      // setTimeout(function(){
+      if(!routeOld){
         app.views[0].router.loadPage(options);
-      // },0);
-      let index     = JSON.parse( sessionStorage.getItem('historyRouteIndex') );
-      let history   = JSON.parse( sessionStorage.getItem('history')           ) ;
-      let backPage  = history[index-1].slice(1, history[index-1].length);
-      if(!options.animatePages || options.animatePages!==false){
-        $('[data-page="'+backPage+'"].page').removeClass('cached').addClass('page-on-left')
-        $('[data-page="'+backPage+'"].navbar-inner').removeClass('cached').addClass('navbar-on-left')
-        $('[data-page="'+pageName+'"].page').addClass('page-from-right-to-center').removeClass('cached')
-        $('[data-page="'+pageName+'"].navbar-inner').addClass('navbar-from-right-to-center').removeClass('cached')
+      }else{
+        setTimeout(function(){
+          app.views[0].router.loadPage(options);
+        },0);
+        let index     = JSON.parse( sessionStorage.getItem('historyRouteIndex') );
+        let history   = JSON.parse( sessionStorage.getItem('history')           ) ;
+        let backPage;
+        if(!!history[index-1]) backPage = history[index-1].slice(1, history[index-1].length);
+        if(!options.animatePages || options.animatePages!==false){
+          if(!!backPage)$('[data-page="'+backPage+'"].page').removeClass('cached').addClass('page-on-left')
+          if(!!backPage)$('[data-page="'+backPage+'"].navbar-inner').removeClass('cached').addClass('navbar-on-left')
+          $('[data-page="'+pageName+'"].page').addClass('page-from-right-to-center').removeClass('cached')
+          $('[data-page="'+pageName+'"].navbar-inner').addClass('navbar-from-right-to-center').removeClass('cached')
 
-        //nav animation
-        var barWidth    = $('[data-page="'+pageName+'"].navbar-inner').width();
-        var titleWidth  = $('[data-page="'+pageName+'"].navbar-inner>.center').width();
-        let num         = ( titleWidth - barWidth )/2;
-        let center      = $('[data-page="'+pageName+'"].navbar-inner>.center');
-        center.css( 'left'      , 0                               );
-        center.css( 'transform' , 'translate3d('+num+'px, 0px, 0px)' );
-        center.css( 'transition', 'transform 400ms'                   );
-        let left = $('[data-page="'+pageName+'"].navbar-inner>.left>a>span:nth-child(3)');
-        let widthMargin = left.width()-7;
-        let widthMarginPadding = left.width()-14;
-        left.css( 'margin-left' , +widthMargin );
-        left.css('transform', 'translate3d('+-widthMarginPadding+'px, 0px, 0px)');
-        left.css("transition", "transform 400ms");
+          //nav animation
+          var barWidth    = $('[data-page="'+pageName+'"].navbar-inner').width();
+          var titleWidth  = $('[data-page="'+pageName+'"].navbar-inner>.center').width();
+          let num         = ( titleWidth - barWidth )/2;
+          let center      = $('[data-page="'+pageName+'"].navbar-inner>.center');
+          center.css( 'left'      , 0                               );
+          center.css( 'transform' , 'translate3d('+num+'px, 0px, 0px)' );
+          center.css( 'transition', 'transform 400ms'                   );
+          let left = $('[data-page="'+pageName+'"].navbar-inner>.left>a>span:nth-child(3)');
+          let widthMargin = left.width()-7;
+          let widthMarginPadding = left.width()-14;
+          left.css( 'margin-left' , +widthMargin );
+          left.css('transform', 'translate3d('+-widthMarginPadding+'px, 0px, 0px)');
+          left.css("transition", "transform 400ms");
 
-        // $('[data-page="'+backPage+'"].page')
-        // $('[data-page="'+backPage+'"].navbar-inner')
+          // $('[data-page="'+backPage+'"].page')
+          // $('[data-page="'+backPage+'"].navbar-inner')
+        }
       }
+
     }
     if(!!routeOld && routeOld!==routeNew){
       // console.log(app.views[0].history)
@@ -207,14 +216,14 @@ let loadF7= function(content) {
       // if(history.indexOf('#undefined')!==-1)history.splice(history.indexOf('#undefined'),1);
       // console.log(history);
       let history = JSON.parse(sessionStorage.getItem('history'));
-      console.log(history);
+      // console.log(history);
       // if(!history){
       //   history = ['']
       // }
       let index = JSON.parse(sessionStorage.getItem('historyRouteIndex'));
       let route = JSON.parse(sessionStorage.getItem('historyRoute'));
       history = history.slice(0, index+1);
-      console.log(history)
+      // console.log(history)
       for(let i=1; i<route.length; i++){
         let tmp = route[i];
         tmp = tmp.replace('/','#');
@@ -223,6 +232,7 @@ let loadF7= function(content) {
       sessionStorage.setItem('history', JSON.stringify($.unique(history)));
     }
     app.views=[app.views[0]];
+    Session.set('isBack', undefined);
     Session.set('routeOld', routeNew);
     routeOld = routeNew;
 
@@ -261,8 +271,10 @@ WeactLayout.render = function(fieldIn){
       // navbar="<div>"
       navbar  = ['index'];
       page    = ['root','index'];
+      // console.log(history.length);
       for(let i=1; i<history.length; i++){
         let tmp = history[i];
+        console.log(tmp);
         tmp = tmp.replace('#','');
         navbar.push(tmp);
         page.push(tmp);
@@ -270,6 +282,8 @@ WeactLayout.render = function(fieldIn){
       if(currentName!=='index' && navbar.indexOf(currentName)<0)navbar.push(currentName);
       if(currentName!=='index' &&   page.indexOf(currentName)<0)  page.push(currentName);
     }
+    console.log(navbar);
+    console.log(page);
 
     let WeactNavbar = React.createClass({
       render: function() {
@@ -344,7 +358,9 @@ WeactLayout.render = function(fieldIn){
     }
 
     ReactLayout.render(app, layout);
-    loadF7();
+    setTimeout(function() {
+      loadF7();
+    }, 0);
   });
 }
 
