@@ -42,10 +42,10 @@ let loadF7= function(content) {
     Session.set('routeOld', routeOld);
     if(sessionStorage.getItem('history')==undefined){
       // var array = ['#index'];
-      console.log(app.views[0].history);
+      // console.log(app.views[0].history);
       let history = ['#index']
       if(!!routeName[1])history.push('#'+routeName[1]);
-      console.log(history);
+      // console.log(history);
       sessionStorage.setItem('history', JSON.stringify(history));
     }
     if(sessionStorage.getItem('historyRoute')==undefined){
@@ -64,12 +64,12 @@ let loadF7= function(content) {
       let index = JSON.parse(sessionStorage.getItem('historyRouteIndex'));
       if(routeNew==route[index-1]){
         //go back
-        console.log('back');
+        // console.log('back');
         isBack=1;
         sessionStorage.setItem('historyRouteIndex',index-1);
       }else if((index+1)<route.length && routeNew==route[index+1]){
         //go forward but still in history
-        console.log('forward')
+        // console.log('forward')
         // console.log(index);
         // console.log((index+1)<route.length );
         // console.log(routeNew==route[index+1]);
@@ -78,10 +78,10 @@ let loadF7= function(content) {
       }else if(routeNew==route[index]){
         //refresh paged
         if(routeOld!=undefined)window.history.back();// initial load up, because it load up two times, so back one time.
-        console.log('refresh');
+        // console.log('refresh');
       }else if(routeNew!=='/'){
         //discover to new page
-        console.log('new')
+        // console.log('new')
         isBack=0;
         route = route.slice(0, index+1);
         let history = JSON.parse(sessionStorage.getItem('history'));
@@ -90,7 +90,7 @@ let loadF7= function(content) {
         //   history = ['']
         // }
         history = history.slice(0, index+1);
-        console.log(history)
+        // console.log(history)
         for(let i=1; i<route.length; i++){
           let tmp = route[i];
           tmp = tmp.replace('/','#');
@@ -123,8 +123,6 @@ let loadF7= function(content) {
 
     }
 
-
-    console.log(Session.get('onSwipe'));
     if(isBack==1 && $.inArray('#'+pageName, app.views[0].history) > -1){
       if(Session.get('onSwipe')==0){
         setTimeout(function(){
@@ -135,17 +133,21 @@ let loadF7= function(content) {
         let backPage;
         if(!!history[index-1]) backPage = history[index-1].slice(1, history[index-1].length);
         if(!options.animatePages || options.animatePages!==false){
-          var barWidth    = $('[data-page="'+pageName+'"].navbar-inner').width();
-          var titleWidth  = $('[data-page="'+pageName+'"].navbar-inner>.center').width();
-          let num         = ( titleWidth - barWidth )/2;
-          let center      = $('[data-page="'+pageName+'"].navbar-inner>.center');
-          center.css( 'left'      , 0                               );
-          center.css( 'transform' , 'translate3d('+num+'px, 0px, 0px)' );
-          center.css( 'transition', 'transform 0ms');
+
           if(!!backPage)$('[data-page="'+backPage+'"].page').removeClass('cached').addClass('page-on-left')
           if(!!backPage)$('[data-page="'+backPage+'"].navbar-inner').removeClass('cached').addClass('navbar-on-left')
           $('[data-page="'+pageName+'"].page').addClass('page-on-center').removeClass('cached')
           $('[data-page="'+pageName+'"].navbar-inner').addClass('navbar-on-center').removeClass('cached')
+          var barWidth    = $('[data-page="'+pageName+'"].navbar-inner').width();
+          // console.log(pageName);
+          var titleWidth  = $('[data-page="'+pageName+'"].navbar-inner>.center').width();
+          // console.log(titleWidth);
+          let num         = ( titleWidth - barWidth )/2;
+          let center      = $('[data-page="'+pageName+'"].navbar-inner>.center');
+          // console.log($('[data-page="'+pageName+'"].navbar-inner>.center'));
+          center.css( 'left'      , 0                               );
+          center.css( 'transform' , 'translate3d('+num+'px, 0px, 0px)' );
+          center.css( 'transition', 'transform 0ms');
           // setTimeout(function(){
           //   $('[data-page="'+pageName+'"].page').removeClass('page-from-right-to-center').addClass('page-on-center')
           //   $('[data-page="'+pageName+'"].navbar-inner').removeClass('navbar-from-right-to-center').addClass('navbar-on-center')
@@ -225,7 +227,7 @@ let loadF7= function(content) {
       //   routeOld = undefined;
       // }
       if(!routeOld){
-        console.log("old");
+        // console.log("old");
         app.views[0].router.loadPage(options);
         // if(!!routeOldTmp)routeOld = routeOldTmp;
       }else{
@@ -267,14 +269,36 @@ let loadF7= function(content) {
       }
 
     }
+    let index     = JSON.parse( sessionStorage.getItem('historyRouteIndex') );
+    let history   = JSON.parse( sessionStorage.getItem('history')           ) ;
+    let backPage;
+    if(!!history[index-1]) backPage = history[index-1].slice(1, history[index-1].length);
+
+    var barWidth    = $('[data-page="'+pageName+'"].navbar-inner').width();
+    var titleWidth  = $('.navbar-on-left.navbar-inner>.center').width();
+    let num         = ( titleWidth - barWidth )/2;
+    let onLeft      = $('.navbar-on-left.navbar-inner>.center');
+    onLeft.css( 'left'      , 0                               );
+    onLeft.css( 'transform' , 'translate3d('+num+'px, 0px, 0px)' );
+    onLeft.css( 'transition', 'transform 0ms'                   );
     Session.set('onSwipe', 1);
     // console.log(app);
     onSwipe = app.onPageBack(pageName, function(page){
-      console.log(page.swipeBack);
+      // console.log(page.swipeBack);
       // console.log(Session.get('onSwipe'));
       if(Session.get('onSwipe')==1 && page.swipeBack){
-        console.log('yo');
-        let index = JSON.parse(sessionStorage.getItem('historyRouteIndex'));
+        // console.log('yo');
+        let index     = JSON.parse( sessionStorage.getItem('historyRouteIndex') );
+        // let history   = JSON.parse( sessionStorage.getItem('history')           ) ;
+        // let backPage;
+        // if(!!history[index-1]) backPage = history[index-1].slice(1, history[index-1].length);
+        // console.log(backPage);
+        // if(!!backPage){
+        //   let center      = $('[data-page="'+backPage+'"].navbar-inner>.center');
+        //   center.css( 'display'      , 'none'                               );
+        // }
+
+        // let index = JSON.parse(sessionStorage.getItem('historyRouteIndex'));
         let route = JSON.parse(sessionStorage.getItem('historyRoute'));
         //   let routeNew = FlowRouter.current().path;
         // sessionStorage.setItem('historyRouteIndex',index-1);
@@ -380,7 +404,7 @@ WeactLayout.render = function(fieldIn){
       // console.log(history.length);
       for(let i=1; i<history.length; i++){
         let tmp = history[i];
-        console.log(tmp);
+        // console.log(tmp);
         tmp = tmp.replace('#','');
         navbar.push(tmp);
         page.push(tmp);
@@ -388,8 +412,8 @@ WeactLayout.render = function(fieldIn){
       if(currentName!=='index' && navbar.indexOf(currentName)<0)navbar.push(currentName);
       if(currentName!=='index' &&   page.indexOf(currentName)<0)  page.push(currentName);
     }
-    console.log(navbar);
-    console.log(page);
+    // console.log(navbar);
+    // console.log(page);
 
     let WeactNavbar = React.createClass({
       render: function() {
