@@ -26,8 +26,12 @@ let loadF7= function(content) {
       // Enable Dom Cache so we can use all inline pages
       domCache: true
     });
+
     let routeOld;
+    let onSwipe;
     var isBack=0;
+    // onSwipe = Session.get('onSwipe');
+    // if(!!onSwipe)onSwipe.remove();
      routeOld= Session.get('routeOld')
     var routeName = FlowRouter.current().route.path.split('/');
     if(routeName[1]=="")routeName.splice(1, 1);
@@ -54,12 +58,13 @@ let loadF7= function(content) {
         sessionStorage.setItem('historyRouteIndex',0)
       }
       sessionStorage.setItem('historyRoute', JSON.stringify(route));
+      // console.log("what!");
     }else{
       let route = JSON.parse(sessionStorage.getItem('historyRoute'));
       let index = JSON.parse(sessionStorage.getItem('historyRouteIndex'));
       if(routeNew==route[index-1]){
         //go back
-        // console.log('back');
+        console.log('back');
         isBack=1;
         sessionStorage.setItem('historyRouteIndex',index-1);
       }else if((index+1)<route.length && routeNew==route[index+1]){
@@ -114,67 +119,115 @@ let loadF7= function(content) {
         });
       }
       options.animatePages=false;
+
+
     }
 
 
-
+    console.log(Session.get('onSwipe'));
     if(isBack==1 && $.inArray('#'+pageName, app.views[0].history) > -1){
-      //back action
-      setTimeout(function(){
-        app.views[0].router.back();
-      }, 0);
-      //@back instance change bar style
-      setTimeout(function(){
-        $('[data-page="'+pageName+'"].navbar-inner').addClass('navbar-on-center').removeClass('navbar-on-left').removeClass('cached')
-        var barWidth    = $('[data-page="'+pageName+'"].navbar-inner').width();
-        var titleWidth  = $('[data-page="'+pageName+'"].navbar-inner>.center').width();
-        let num         = ( titleWidth - barWidth )/2;
-        let center      = $('[data-page="'+pageName+'"].navbar-inner>.center');
-        center.css( 'left'      , num*2                               );
-        center.css( 'transform' , 'translate3d('+-num+'px, 0px, 0px)' );
-        center.css( 'transition', 'transform 400ms'                   );
-        let left = $('[data-page="'+pageName+'"].navbar-inner>.left>a>span:nth-child(3)');
-        let widthMargin = left.width()+7;
-        let widthMarginPadding = left.width()+14;
-        left.css( 'margin-left' , -widthMargin );
-        left.css('transform', 'translate3d('+widthMarginPadding+'px, 0px, 0px)');
-        left.css("transition", "transform 400ms");
-
-
-        //new
-        $('[data-page="'+backPage+'"].page').removeClass('cached').addClass('page-from-center-to-right')
-        // $('[data-page="'+backPage+'"].navbar-inner').removeClass('cached').addClass('navbar-on-left')
-        // $('[data-page="'+pageName+'"].page').css('z-index', '1');
-        $('[data-page="'+pageName+'"].page').addClass('page-on-center').removeClass('cached')
-        // $('[data-page="'+pageName+'"].navbar-inner').addClass('navbar-from-right-to-center').removeClass('cached')
-      }, 0);
-
-      let index     = JSON.parse( sessionStorage.getItem('historyRouteIndex') );
-      let history   = JSON.parse( sessionStorage.getItem('history')           );
-      let backPage  = history[index+1].slice(1, history[index+1].length);
-
-      //make static after back change
-      app.onPageAfterBack(backPage, function(){
+      if(Session.get('onSwipe')==0){
         setTimeout(function(){
+          app.views[0].router.loadPage(options);
+        },0);
+        let index     = JSON.parse( sessionStorage.getItem('historyRouteIndex') );
+        let history   = JSON.parse( sessionStorage.getItem('history')           ) ;
+        let backPage;
+        if(!!history[index-1]) backPage = history[index-1].slice(1, history[index-1].length);
+        if(!options.animatePages || options.animatePages!==false){
           var barWidth    = $('[data-page="'+pageName+'"].navbar-inner').width();
           var titleWidth  = $('[data-page="'+pageName+'"].navbar-inner>.center').width();
           let num         = ( titleWidth - barWidth )/2;
           let center      = $('[data-page="'+pageName+'"].navbar-inner>.center');
-          center.css( 'left'      , num                          );
-          center.css( 'transform' , '' );
-          center.css( 'transition', ''                           );
-          let left = $('[data-page="'+pageName+'"].navbar-inner>.left>a>span:nth-child(3)');
-          left.css( 'margin-left' , '' );
-          left.css('transform', '');
-          left.css('transition', '')
+          center.css( 'left'      , 0                               );
+          center.css( 'transform' , 'translate3d('+num+'px, 0px, 0px)' );
+          center.css( 'transition', 'transform 0ms');
+          if(!!backPage)$('[data-page="'+backPage+'"].page').removeClass('cached').addClass('page-on-left')
+          if(!!backPage)$('[data-page="'+backPage+'"].navbar-inner').removeClass('cached').addClass('navbar-on-left')
+          $('[data-page="'+pageName+'"].page').addClass('page-on-center').removeClass('cached')
+          $('[data-page="'+pageName+'"].navbar-inner').addClass('navbar-on-center').removeClass('cached')
+          // setTimeout(function(){
+          //   $('[data-page="'+pageName+'"].page').removeClass('page-from-right-to-center').addClass('page-on-center')
+          //   $('[data-page="'+pageName+'"].navbar-inner').removeClass('navbar-from-right-to-center').addClass('navbar-on-center')
+          // },400)
 
+          //nav animation
+
+          // let left = $('[data-page="'+pageName+'"].navbar-inner>.left>a>span:nth-child(3)');
+          // let widthMargin = left.width()-7;
+          // let widthMarginPadding = left.width()-14;
+          // left.css( 'margin-left' , +widthMargin );
+          // left.css('transform', 'translate3d('+-widthMarginPadding+'px, 0px, 0px)');
+          // left.css("transition", "transform 400ms");
+        }
+
+      }else{
+        //back action
+        setTimeout(function(){
+          app.views[0].router.back();
+        }, 0);
+        //@back instance change bar style
+        setTimeout(function(){
+          $('[data-page="'+pageName+'"].navbar-inner').addClass('navbar-on-center').removeClass('navbar-on-left').removeClass('cached')
+          var barWidth    = $('[data-page="'+pageName+'"].navbar-inner').width();
+          var titleWidth  = $('[data-page="'+pageName+'"].navbar-inner>.center').width();
+          let num         = ( titleWidth - barWidth )/2;
+          let center      = $('[data-page="'+pageName+'"].navbar-inner>.center');
+          center.css( 'left'      , num*2                               );
+          center.css( 'transform' , 'translate3d('+-num+'px, 0px, 0px)' );
+          center.css( 'transition', 'transform 400ms'                   );
+          let left = $('[data-page="'+pageName+'"].navbar-inner>.left>a>span:nth-child(3)');
+          let widthMargin = left.width()+7;
+          let widthMarginPadding = left.width()+14;
+          left.css( 'margin-left' , -widthMargin );
+          left.css('transform', 'translate3d('+widthMarginPadding+'px, 0px, 0px)');
+          left.css("transition", "transform 400ms");
+
+
+          //new
+          $('[data-page="'+backPage+'"].page').removeClass('cached').addClass('page-from-center-to-right')
+          // $('[data-page="'+backPage+'"].navbar-inner').removeClass('cached').addClass('navbar-on-left')
+          // $('[data-page="'+pageName+'"].page').css('z-index', '1');
+          $('[data-page="'+pageName+'"].page').addClass('page-on-center').removeClass('cached')
+          // $('[data-page="'+pageName+'"].navbar-inner').addClass('navbar-from-right-to-center').removeClass('cached')
         }, 0);
 
-      })
+        let index     = JSON.parse( sessionStorage.getItem('historyRouteIndex') );
+        let history   = JSON.parse( sessionStorage.getItem('history')           );
+        let backPage  = history[index+1].slice(1, history[index+1].length);
+
+        //make static after back change
+        app.onPageAfterBack(backPage, function(){
+          setTimeout(function(){
+            var barWidth    = $('[data-page="'+pageName+'"].navbar-inner').width();
+            var titleWidth  = $('[data-page="'+pageName+'"].navbar-inner>.center').width();
+            let num         = ( titleWidth - barWidth )/2;
+            let center      = $('[data-page="'+pageName+'"].navbar-inner>.center');
+            center.css( 'left'      , num                          );
+            center.css( 'transform' , '' );
+            center.css( 'transition', ''                           );
+            let left = $('[data-page="'+pageName+'"].navbar-inner>.left>a>span:nth-child(3)');
+            left.css( 'margin-left' , '' );
+            left.css('transform', '');
+            left.css('transition', '')
+
+          }, 0);
+
+        })
+      }
       isBack = 0;
     }else {
+      // console.log($('[data-page="'+pageName+'"].page').hasClass('page-on-center'))
+      // if($('[data-page="'+pageName+'"].page').hasClass('page-on-center')){
+      //   console.log($('[data-page="'+pageName+'"].page').hasClass('page-on-center'))
+      //   console.log(routeOld);
+      //   var routeOldTmp = routeOld;
+      //   routeOld = undefined;
+      // }
       if(!routeOld){
+        console.log("old");
         app.views[0].router.loadPage(options);
+        // if(!!routeOldTmp)routeOld = routeOldTmp;
       }else{
         setTimeout(function(){
           app.views[0].router.loadPage(options);
@@ -188,6 +241,10 @@ let loadF7= function(content) {
           if(!!backPage)$('[data-page="'+backPage+'"].navbar-inner').removeClass('cached').addClass('navbar-on-left')
           $('[data-page="'+pageName+'"].page').addClass('page-from-right-to-center').removeClass('cached')
           $('[data-page="'+pageName+'"].navbar-inner').addClass('navbar-from-right-to-center').removeClass('cached')
+          setTimeout(function(){
+            $('[data-page="'+pageName+'"].page').removeClass('page-from-right-to-center').addClass('page-on-center')
+            $('[data-page="'+pageName+'"].navbar-inner').removeClass('navbar-from-right-to-center').addClass('navbar-on-center')
+          },400)
 
           //nav animation
           var barWidth    = $('[data-page="'+pageName+'"].navbar-inner').width();
@@ -210,6 +267,54 @@ let loadF7= function(content) {
       }
 
     }
+    Session.set('onSwipe', 1);
+    // console.log(app);
+    onSwipe = app.onPageBack(pageName, function(page){
+      console.log(page.swipeBack);
+      // console.log(Session.get('onSwipe'));
+      if(Session.get('onSwipe')==1 && page.swipeBack){
+        console.log('yo');
+        let index = JSON.parse(sessionStorage.getItem('historyRouteIndex'));
+        let route = JSON.parse(sessionStorage.getItem('historyRoute'));
+        //   let routeNew = FlowRouter.current().path;
+        // sessionStorage.setItem('historyRouteIndex',index-1);
+        FlowRouter.go(route[index-1]);
+      }
+      Session.set('onSwipe', 0);
+      onSwipe.remove();
+      // if(page.swipeBack){
+      //   let index = JSON.parse(sessionStorage.getItem('historyRouteIndex'));
+      //   let route = JSON.parse(sessionStorage.getItem('historyRoute'));
+      //   let routeNew = FlowRouter.current().path;
+      //   // if((sessionStorage.getItem('historyRoute')==undefined || routeNew==route[index])&& index==1){
+      //     // FlowRouter.withReplaceState(function() {
+      //       // Session.set('isBack', 1);
+      //       sessionStorage.setItem('historyRouteIndex',index-1);
+      //       FlowRouter.go(route[index-1]);
+      //
+      //   // setTimeout(function(){
+      //   //   console.log("yo");
+      //   // },0)
+      // }
+      // console.log(pageName);
+    });
+    let appCycle = app.onPageAfterAnimation(pageName, function(){
+      onSwipe.remove();
+      appCycle.remove();
+    })
+    // let appInit = app.onPageInit(pageName, function(){
+    //   onSwipe.remove();
+    //   appInit.remove();
+    // })
+    // let appReinit= app.onPageReinit(pageName, function(){
+    //   onSwipe.remove();
+    //   appReinit.remove();
+    // })
+
+    // app.onSwipeBackMove(pageName, function(page) {
+    //   console.log("swipeBack");
+    // })
+    // console.log(app.views[0].activePage.swipeBack);
     if(!!routeOld && routeOld!==routeNew){
       // console.log(app.views[0].history)
       // let history = app.views[0].history;
@@ -234,6 +339,7 @@ let loadF7= function(content) {
     app.views=[app.views[0]];
     Session.set('isBack', undefined);
     Session.set('routeOld', routeNew);
+    // Session.set('onSwipe', onSwipe);
     routeOld = routeNew;
 
     // Pass instance to state to pass to children.
