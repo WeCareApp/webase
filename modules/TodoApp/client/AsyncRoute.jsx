@@ -165,11 +165,11 @@ function getRoute(fieldIn, component) {
           layout[i] = field[i];
         }
       }
-      console.log(layout.page());
+      // console.log(layout.page());
       // ReactLayout.render(app, layout);
-      // if(fieldIn =='navbar')component.Page = layout.navbar;
-      // if(fieldIn =='page')  component.Page = layout.page;
-      component.Page = layout.page;
+      if(fieldIn =='navbar')component.Page = layout.navbar;
+      if(fieldIn =='page')  component.Page = layout.page;
+      // component.Page = layout.page;
       // component.layout = layout;
       // console.log(component.props.location);
       // if(component.state.loading==true){
@@ -180,7 +180,7 @@ function getRoute(fieldIn, component) {
       // setTimeout(function() {
       //   loadF7();
       // }, 0);
-      console.log("async");
+      // console.log("async");
       // console.log(component.state.init);
       // if(component.state.init==true && fieldIn =='page'){
       //

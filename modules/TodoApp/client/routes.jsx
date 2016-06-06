@@ -631,7 +631,7 @@ import AsyncRoute from './AsyncRoute.jsx';
 
 var components = function(){
   return{
-    // navbar: AsyncRoute('navbar' ),
+    navbar: AsyncRoute('navbar' ),
     page  : AsyncRoute('page'   )
   }
 }
@@ -741,7 +741,7 @@ export default (
      />*/}
      <Route path="/about"  components={components()} />
      <Route path="/form"   components={components()} />
-     <Route path="/form1"  components={components()} />
+     {/*<Route path="/form1"  components={components()} />*/}
      {/*</Route>*/}
 
    </Route>
