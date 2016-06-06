@@ -182,10 +182,10 @@ function getRoute(fieldIn, component) {
       // }, 0);
       // console.log("async");
       // console.log(component.state.init);
-      // if(component.state.init==true && fieldIn =='page'){
-      //
-      //     // loadF7(component, component.props.f7);
-      // }
+      if(component.state.init==true && fieldIn =='page'){
+
+          loadF7(component, component.props.f7);
+      }
 
     });
   // return component.layout;
@@ -207,10 +207,10 @@ var AsyncRoute = function(route) {
       // console.log(this.props.location);
 
     },
-    // componentDidMount: function(){
-    //   //control async first f7 render
-    //   this.setState({init: true});
-    // },
+    componentDidMount: function(){
+      //control async first f7 render
+      this.setState({init: true});
+    },
     // componentDidUpdate:function(){
     //   // console.log('update');
     //   // let hasRoute = route || {};
