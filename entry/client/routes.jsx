@@ -1,20 +1,20 @@
-//import { Route } from 'react-router';
+import { Route } from 'react-router';
 
 import todoRoutes from 'TodoApp/client/routes'
 
-todoRoutes
+// todoRoutes
 
 
 
-Meteor.startup(function() {
-  FlowRouter.initialize();
-});
+// Meteor.startup(function() {
+//   FlowRouter.initialize();
+// });
 
-//ReactRouterSSR.Run(
-//	<Route>
-//		{todoRoutes}
-//	</Route>
-//	, {
-//		rootElement: "react-app",
-//		rootElementType: "span"
-//	});
+ReactRouterSSR.Run(
+	<Route>
+		{todoRoutes}
+	</Route>
+	, {
+		rootElement: "react-app",
+		rootElementType: "span"
+	});

@@ -1,16 +1,16 @@
 import { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 
-export default class pageForm extends Component {
+export default class pageForm1 extends Component {
   static propTypes = {}
   componentWillMount() {
   }
 
   render() {
       return (
-        <div data-page="form" className="page cached">
+        <div data-page="form1" className="page cached">
           <div className="page-content">
-            <div className="content-block-title"> <Link to="/form1">Form1 </Link> page. Form Example</div>
+            <div className="content-block-title"> <Link to="/about">About</Link> page. Form Example</div>
             <div className="list-block">
               <ul>
                 <li>

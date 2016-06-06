@@ -1,4 +1,5 @@
 import { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
 import ReactMixin from 'react-mixin';
 
 import TodoHeader from './components/TodoHeader';
@@ -84,13 +85,13 @@ export default class TodoMain extends Component {
         <div className="content-block-title">Example Pages</div>
         <div className="list-block">
           <ul>
-            <li><a href="/about" className="item-link ajax">
+            <li><Link to="/about" className="item-link ajax">
               <div className="item-content">
                 <div className="item-inner">
                   <div className="item-title">Example About Page</div>
                 </div>
               </div>
-            </a></li>
+            </Link></li>
             <li><a href="/form" className="item-link ajax">
               <div className="item-content">
                 <div className="item-inner">

@@ -7,7 +7,7 @@ export default class pageIndex extends Component {
 
   render() {
       return (
-        <div data-page="index" className="page cached">
+        <div data-page="index" className={this.props.class}>
           {/* Scrollable page content*/}
           {/*{React.cloneElement(this.props.children, {user: this.props.user(), auth: this.props.auth()})}*/}
           {/*{this.props.children}*/}
