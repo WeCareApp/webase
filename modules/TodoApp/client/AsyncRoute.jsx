@@ -69,7 +69,7 @@ function getRoute(fieldIn, component) {
               let name = 'Navbar'+tmp.charAt(0).toUpperCase() + tmp.slice(1);
               let Navbar = eval(name);
               if(tmp=='index' && currentName =='index')
-                return  <Navbar class='navbar-inner cached'         key={i}/>;
+                return  <Navbar class='navbar-inner '         key={i}/>;
               return    <Navbar class='navbar-inner cached'  key={i}/>;
             })}
             </div>
