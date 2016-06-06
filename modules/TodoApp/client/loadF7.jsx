@@ -189,7 +189,9 @@ function loadF7(component, f7){
                     //   let routeNew = FlowRouter.current().path;
                     // sessionStorage.setItem('historyRouteIndex',index-1);
                     Session.set('onSwipe', 0);
-                    component.props.history.push(route[index-1]);
+                    // component.props.history.push(route[index-1]);
+
+                    component.props.history.goBack();
                     // FlowRouter.go(route[index-1]);
                   }
                   Session.set('onSwipe', 0);
