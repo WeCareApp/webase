@@ -60,17 +60,21 @@ function getRoute(fieldIn, component) {
       // console.log(page);
       console.log(page);
       var WeactNavbar = React.createClass({
+        componentDidMount(){
+          console.log(this.props.history);
+        },
         render: function() {
           var navbarP = this.props.navbar;
           // let routeClass = JSON.parse(sessionStorage.getItem('routeClass'));
+          var history = this.props.history;
           return (
             <div className="navbar">
             {navbarP.map(function(tmp, i){
               let name = 'Navbar'+tmp.charAt(0).toUpperCase() + tmp.slice(1);
               let Navbar = eval(name);
               if(tmp=='index' && currentName =='index')
-                return  <Navbar class='navbar-inner '         key={i}/>;
-              return    <Navbar class='navbar-inner cached'  key={i}/>;
+                return  <Navbar class='navbar-inner '       history={history}  key={i}/>;
+              return    <Navbar class='navbar-inner cached' history={history}  key={i}/>;
             })}
             </div>
           )
@@ -133,9 +137,17 @@ function getRoute(fieldIn, component) {
     //    }
     //  });
       let wrapComponent = function(Component, props) {
+        // return obj3;
         return React.createClass({
+          componentWillMount(){
+
+            // console.log(propsMerge);
+          },
           render: function() {
-            return React.createElement(Component, props);
+            var propsMerge = {};
+            for (var attrname in this.props) { propsMerge[attrname] = this.props[attrname]; }
+            for (var attrname in props) { propsMerge[attrname] = props[attrname]; }
+            return React.createElement(Component, propsMerge);
           }
         });
       };
@@ -209,6 +221,7 @@ var AsyncRoute = function(route) {
     },
     componentDidMount: function(){
       //control async first f7 render
+      // console.log(this.props.history);
       this.setState({init: true});
     },
     // componentDidUpdate:function(){
@@ -229,7 +242,7 @@ var AsyncRoute = function(route) {
       } else {
         // console.log(<this.Page />);
         return (
-          <this.Page />
+          <this.Page {...this.props}/>
         );
       }
     }

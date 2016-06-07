@@ -164,54 +164,63 @@ function loadF7(component, f7){
                     animatePages: false
                   });
                 }
-                // Session.set('onSwipe', 1)
-                // let component = this;
-                onSwipe = app.onPageBack(pageName, function(page){
-                  // console.log(page.swipeBack);
-                  // console.log(Session.get('onSwipe'));
-                  // if (page.swipeBack) {
-                  //   console.log('yo1');
-                  // }
-                  if(page.swipeBack){
-                    console.log('yo');
-                    let index     = JSON.parse( sessionStorage.getItem('historyRouteIndex') );
-                    // let history   = JSON.parse( sessionStorage.getItem('history')           ) ;
-                    // let backPage;
-                    // if(!!history[index-1]) backPage = history[index-1].slice(1, history[index-1].length);
-                    // console.log(backPage);
-                    // if(!!backPage){
-                    //   let center      = $('[data-page="'+backPage+'"].navbar-inner>.center');
-                    //   center.css( 'display'      , 'none'                               );
-                    // }
 
-                    // let index = JSON.parse(sessionStorage.getItem('historyRouteIndex'));
-                    let route = JSON.parse(sessionStorage.getItem('historyRoute'));
-                    //   let routeNew = FlowRouter.current().path;
-                    // sessionStorage.setItem('historyRouteIndex',index-1);
-                    Session.set('onSwipe', 0);
-                    // component.props.history.push(route[index-1]);
-
-                    component.props.history.goBack();
-                    // FlowRouter.go(route[index-1]);
-                  }
-                  Session.set('onSwipe', 0);
-                  // onSwipe.remove();
-                  // if(page.swipeBack){
-                  //   let index = JSON.parse(sessionStorage.getItem('historyRouteIndex'));
-                  //   let route = JSON.parse(sessionStorage.getItem('historyRoute'));
-                  //   let routeNew = FlowRouter.current().path;
-                  //   // if((sessionStorage.getItem('historyRoute')==undefined || routeNew==route[index])&& index==1){
-                  //     // FlowRouter.withReplaceState(function() {
-                  //       // Session.set('isBack', 1);
-                  //       sessionStorage.setItem('historyRouteIndex',index-1);
-                  //       FlowRouter.go(route[index-1]);
-                  //
-                  //   // setTimeout(function(){
-                  //   //   console.log("yo");
-                  //   // },0)
-                  // }
-                  // console.log(pageName);
-                });
+                // 
+                //
+                // // Session.set('onSwipe', 1)
+                // // let component = this;
+                // onSwipe = app.onPageBack(pageName, function(page){
+                //   // console.log(page.swipeBack);
+                //   // console.log(Session.get('onSwipe'));
+                //   // if (page.swipeBack) {
+                //   //   console.log('yo1');
+                //   // }
+                //   if(page.swipeBack){
+                //     console.log('yo');
+                //     let index     = JSON.parse( sessionStorage.getItem('historyRouteIndex') );
+                //     // let history   = JSON.parse( sessionStorage.getItem('history')           ) ;
+                //     // let backPage;
+                //     // if(!!history[index-1]) backPage = history[index-1].slice(1, history[index-1].length);
+                //     // console.log(backPage);
+                //     // if(!!backPage){
+                //     //   let center      = $('[data-page="'+backPage+'"].navbar-inner>.center');
+                //     //   center.css( 'display'      , 'none'                               );
+                //     // }
+                //
+                //     // let index = JSON.parse(sessionStorage.getItem('historyRouteIndex'));
+                //     let route = JSON.parse(sessionStorage.getItem('historyRoute'));
+                //     //   let routeNew = FlowRouter.current().path;
+                //     // sessionStorage.setItem('historyRouteIndex',index-1);
+                //     Session.set('onSwipe', 0);
+                //     // component.props.history.push(route[index-1]);
+                //
+                //     // component.props.history.
+                //
+                //     // component.props.history.push(route[index-1]);
+                //     // component.props.history.goBack();
+                //
+                //     // FlowRouter.go(route[index-1]);
+                //   }
+                //   Session.set('onSwipe', 0);
+                //
+                //
+                //   // onSwipe.remove();
+                //   // if(page.swipeBack){
+                //   //   let index = JSON.parse(sessionStorage.getItem('historyRouteIndex'));
+                //   //   let route = JSON.parse(sessionStorage.getItem('historyRoute'));
+                //   //   let routeNew = FlowRouter.current().path;
+                //   //   // if((sessionStorage.getItem('historyRoute')==undefined || routeNew==route[index])&& index==1){
+                //   //     // FlowRouter.withReplaceState(function() {
+                //   //       // Session.set('isBack', 1);
+                //   //       sessionStorage.setItem('historyRouteIndex',index-1);
+                //   //       FlowRouter.go(route[index-1]);
+                //   //
+                //   //   // setTimeout(function(){
+                //   //   //   console.log("yo");
+                //   //   // },0)
+                //   // }
+                //   // console.log(pageName);
+                // });
 
                 // setTimeout(function(){
                 //   app.views[1].router.loadPage(options);
@@ -419,7 +428,8 @@ function loadF7(component, f7){
                 //   let routeNew = FlowRouter.current().path;
                 // sessionStorage.setItem('historyRouteIndex',index-1);
                 Session.set('onSwipe', 0);
-                component.props.history.push(route[index-1]);
+                // component.props.history.push(route[index-1]);
+                component.props.history.goBack();
                 // FlowRouter.go(route[index-1]);
               }
               Session.set('onSwipe', 0);

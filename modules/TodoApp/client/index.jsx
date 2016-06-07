@@ -79,7 +79,15 @@ export default class TodoApp extends Component {
   }
 
   componentDidMount() {
+
+      // this.setState({history: this.props.history});
       if(!Meteor.isServer) {
+
+          if(!!this.props.location.pathname.split('/')[1]){
+            let origin = this.props.location.pathname
+            sessionStorage.setItem('origin', JSON.stringify(origin));
+            this.props.history.replace('/');
+          }
 
           let app = new F7();
 
@@ -108,13 +116,19 @@ export default class TodoApp extends Component {
       // console.log(!!Session.get('routeOld'));
       // console.log(this.state.init);
       // if(!!Session.get('routeOld')){
+      if(JSON.parse( sessionStorage.getItem('origin') )!=='/'){
+        let go = JSON.parse( sessionStorage.getItem('origin') );
+        sessionStorage.setItem('origin', JSON.stringify('/'));
+        this.props.history.push(go)
+      }
+      console.log(this.props.history);
         loadF7(this, this.state.f7);
       // }
 
     // }
     // }
 
-    
+
   }
 
   render() {
@@ -150,7 +164,12 @@ export default class TodoApp extends Component {
               {/* Navbar inner for Form page*/}
 
             {/*</div>*/}
-            {this.props.navbar}
+            {/*{this.props.navbar}*/}
+            {React.cloneElement(this.props.navbar, {
+              // user: this.user(),
+              // auth: this.auth(),
+              history  : this.props.history
+            })}
             {/* Pages, because we need fixed-through navbar and toolbar, it has additional appropriate classes*/}
             {/*{console.log(this.props.children)}*/}
             {/*{React.cloneElement(this.props.page, {user: this.user(), auth: this.auth()})}*/}
