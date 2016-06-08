@@ -121,7 +121,7 @@ export default class TodoApp extends Component {
         sessionStorage.setItem('origin', JSON.stringify('/'));
         this.props.history.push(go)
       }
-      console.log(this.props.history);
+      // console.log(this.props.history);
         loadF7(this, this.state.f7);
       // }
 
@@ -134,12 +134,13 @@ export default class TodoApp extends Component {
   render() {
     return (
       <span className="f7-main">
-				<Helmet
+				{/*<Helmet
           title="Touch2S To-Do"
           meta={[
             { name: 'description', content: 'Touch2S Meteor F7 Boilerplate' }
           ]}
-        />
+        />*/}
+        {this.props.helmet}
         {/* Status bar overlay for fullscreen mode*/}
         <div className="statusbar-overlay"/>
         {/* Panels overlay*/}

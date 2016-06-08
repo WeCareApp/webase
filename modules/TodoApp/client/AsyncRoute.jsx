@@ -13,6 +13,34 @@ function getRoute(fieldIn, component) {
     //     component.setState({loading: false});
     //   });
     // break;
+    if(fieldIn =='helmet'){
+      let currentName = "";
+      if(component.props.location.pathname.split('/')[1]){
+        currentName = component.props.location.pathname.split('/')[1];
+      }else if(component.props.location.pathname=='/'){
+        currentName = 'index';
+      }
+      let wrapComponent = function(Component, props) {
+        // return obj3;
+        return React.createClass({
+          componentWillMount(){
+
+            // console.log(propsMerge);
+          },
+          render: function() {
+            var propsMerge = {};
+            for (var attrname in this.props) { propsMerge[attrname] = this.props[attrname]; }
+            for (var attrname in props) { propsMerge[attrname] = props[attrname]; }
+            return React.createElement(Component, propsMerge);
+          }
+        });
+      };
+      let helmet = require('./components/helmet/'+currentName).default;
+
+      component.Page = wrapComponent(helmet);
+      component.setState({loading: false});
+      return;
+    }
     require.ensure([], (require) => {
       let field = fieldIn || {};
       let NavbarIndex = require('./components/navbar/index').default;
@@ -58,11 +86,11 @@ function getRoute(fieldIn, component) {
       }
       // console.log(navbar);
       // console.log(page);
-      console.log(page);
+      // console.log(page);
       var WeactNavbar = React.createClass({
-        componentDidMount(){
-          console.log(this.props.history);
-        },
+        // componentDidMount(){
+        //   console.log(this.props.history);
+        // },
         render: function() {
           var navbarP = this.props.navbar;
           // let routeClass = JSON.parse(sessionStorage.getItem('routeClass'));

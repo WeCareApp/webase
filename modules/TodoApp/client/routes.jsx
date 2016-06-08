@@ -632,7 +632,8 @@ import AsyncRoute from './AsyncRoute.jsx';
 var components = function(){
   return{
     navbar: AsyncRoute('navbar' ),
-    page  : AsyncRoute('page'   )
+    page  : AsyncRoute('page'   ),
+    helmet: AsyncRoute('helmet' )
   }
 }
 

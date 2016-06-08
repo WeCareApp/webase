@@ -65,18 +65,18 @@ function loadF7(component, f7){
                 sessionStorage.setItem('historyRouteIndex',0)
               }
               sessionStorage.setItem('historyRoute', JSON.stringify(route));
-              console.log("what!");
+              // console.log("what!");
             }else{
               let route = JSON.parse(sessionStorage.getItem('historyRoute'));
               let index = JSON.parse(sessionStorage.getItem('historyRouteIndex'));
               if(routeNew==route[index-1]){
                 //go back
-                console.log('back');
+                // console.log('back');
                 isBack=1;
                 sessionStorage.setItem('historyRouteIndex',index-1);
               }else if((index+1)<route.length && routeNew==route[index+1]){
                 //go forward but still in history
-                console.log('forward')
+                // console.log('forward')
                 // console.log(index);
                 // console.log((index+1)<route.length );
                 // console.log(routeNew==route[index+1]);
@@ -85,10 +85,10 @@ function loadF7(component, f7){
               }else if(routeNew==route[index]){
                 //refresh paged
                 // if(routeOld!=undefined)window.history.back();// initial load up, because it load up two times, so back one time.
-                console.log('refresh');
+                // console.log('refresh');
               }else if(routeNew!=='/'){
                 //discover to new page
-                console.log('new')
+                // console.log('new')
                 isBack=0;
                 route = route.slice(0, index+1);
                 let history = JSON.parse(sessionStorage.getItem('history'));
@@ -148,13 +148,13 @@ function loadF7(component, f7){
             // app= new F7()
             // console.log(app.views[0].history.pop('#'+this.props.location.pathname.split('/')));
             // console.log(app.views[0].history);
-            console.log($.inArray('#'+pageName, app.views[1].history) > -1);
+            // console.log($.inArray('#'+pageName, app.views[1].history) > -1);
             // if(isBack==1 && $.inArray('#'+pageName, app.views[1].history) > -1){
 
             if(isBack==1 ){
-              console.log(Session.get('onSwipe'));
+              // console.log(Session.get('onSwipe'));
               if(Session.get('onSwipe')==0){
-                console.log('onSwipe');
+                // console.log('onSwipe');
                 let history = JSON.parse(sessionStorage.getItem('history'));
                 let k = history;
                 let i     = JSON.parse( sessionStorage.getItem('historyRouteIndex') );
@@ -165,7 +165,7 @@ function loadF7(component, f7){
                   });
                 }
 
-                // 
+                //
                 //
                 // // Session.set('onSwipe', 1)
                 // // let component = this;
@@ -252,7 +252,7 @@ function loadF7(component, f7){
 
               }else{
                 //back action
-                console.log('back');
+                // console.log('back');
                 let history = JSON.parse(sessionStorage.getItem('history'));
                 let k = history;
                 let i     = JSON.parse( sessionStorage.getItem('historyRouteIndex') );
@@ -350,12 +350,12 @@ function loadF7(component, f7){
                     animatePages: false
                   });
                 }
-                  console.log(app.views[1].router);
+                  // console.log(app.views[1].router);
                   // setTimeout(function(){
                   //if not index page load
                   if(!!routeName[1])app.views[1].router.loadPage(options);
                   // },0)
-                  console.log(app.views);
+                  // console.log(app.views);
                 // },0);
                 // let index     = JSON.parse( sessionStorage.getItem('historyRouteIndex') );
                 // let history   = JSON.parse( sessionStorage.getItem('history')           ) ;
@@ -412,7 +412,7 @@ function loadF7(component, f7){
               //   console.log('yo1');
               // }
               if(Session.get('onSwipe')==1 && page.swipeBack){
-                console.log('yo');
+                // console.log('yo');
                 let index     = JSON.parse( sessionStorage.getItem('historyRouteIndex') );
                 // let history   = JSON.parse( sessionStorage.getItem('history')           ) ;
                 // let backPage;
