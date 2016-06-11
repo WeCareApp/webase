@@ -1,10 +1,300 @@
 import React from 'react';
 // import TodoApp from './index';
 import TodoMain from  './TodoMain';
-import loadF7   from  './loadF7'
+import loadF7   from  './loadF7';
+import root from 'window-or-global'
+// if(Meteor.isServer){
+//   import NavbarIndex from './components/navbar/index';
+//   import NavbarAbout from './components/navbar/about';
+//   import NavbarForm  from './components/navbar/form';
+//   import PageAbout   from './components/page/about';
+//   import PageForm    from './components/page/form';
+//   import PageForm1   from './components/page/form1';
+//   import PageIndex   from './components/page/index';
+//   import PageRoot    from './components/page/root';
+// }
+
 
 
 function getRoute(fieldIn, component) {
+  if( typeof require.ensure !== "function") {
+      require.ensure = function(deps, callback) {
+          callback(require);
+      }
+  }
+  // switch(route) {
+    // add each route in here
+    // case "about":
+    //   require.ensure([], (require) => {
+    //     component.Page = require("./about/About.jsx");
+    //     component.setState({loading: false});
+    //   });
+    // break;
+    if(fieldIn =='helmet'){
+      let currentName = "";
+      if(component.props.location.pathname.split('/')[1]){
+        currentName = component.props.location.pathname.split('/')[1];
+      }else if(component.props.location.pathname=='/'){
+        currentName = 'index';
+      }
+      let wrapComponent = function(Component, props) {
+        // return obj3;
+        return React.createClass({
+          componentWillMount(){
+
+            // console.log(propsMerge);
+          },
+          render: function() {
+            var propsMerge = {};
+            for (var attrname in this.props) { propsMerge[attrname] = this.props[attrname]; }
+            for (var attrname in props) { propsMerge[attrname] = props[attrname]; }
+            return React.createElement(Component, propsMerge);
+          }
+        });
+      };
+      let helmet = require('./components/helmet/'+currentName).default;
+
+      component.Page = wrapComponent(helmet);
+      component.setState({loading: false});
+      return;
+    }
+    // require.ensure([], (require) => {
+      // let field = fieldIn || {};
+      // let NavbarIndex ;
+      // let NavbarAbout ;
+      // let NavbarForm  ;
+      // let PageAbout   ;
+      // let PageForm    ;
+      // let PageForm1   ;
+      // let PageIndex   ;
+      // let PageRoot    ;
+      // if(!Meteor.isServer){
+      //    NavbarIndex = require('./components/navbar/index').default;
+      //    NavbarAbout = require('./components/navbar/about').default;
+      //    NavbarForm  = require('./components/navbar/form').default;
+      //    PageAbout   = require('./components/pageCreate/about').default;
+      //    PageForm    = require('./components/pageCreate/form').default;
+      //    PageForm1    = require('./components/pageCreate/form1').default;
+      //    PageIndex   = require('./components/pageCreate/index').default;
+      //    PageRoot   = require('./components/pageCreate/root').default;
+      // }else{
+      //   // const isBrowser = typeof window !== 'undefined';
+      //   // const MyWindowDependentLibrary = isBrowser ? require( 'path/to/library') : undefined;
+      //   // let NavbarIndex = isBrowser ? require('./components/navbar/index').default: undefined;
+      //   // let NavbarIndex = require('./components/navbar/index').default;
+      // }
+      //
+      // // let Dashboard = require('./Dashboard');
+      // // console.log(sessionStorage.getItem('history'))
+      // let route   ;
+      // let history ;
+      // let index   ;
+      // if(!Meteor.isServer){
+      //   route = JSON.parse(sessionStorage.getItem('historyRoute'));
+      //   history = JSON.parse(sessionStorage.getItem('history'));
+      //   index = JSON.parse(sessionStorage.getItem('historyRouteIndex'));
+      // }else{
+      //   route = ['/']
+      //   history = ['#index'];
+      //   index   = 0;
+      //   if(!!component.props.location.pathname.split('/')[1]){
+      //     route.push(component.props.location.pathname)
+      //     history.push('#'+component.props.location.pathname.split('/')[1]);
+      //     index++;
+      //   }
+      //   component.setState({loading: false});
+      // }
+      // // history = history.slice(0, index+1);
+      // if(!Meteor.isServer){
+      //   let item=[];
+      //   let currentName = "";
+      //   currentName = component.props.location.pathname.split('/')[1];
+      //   // FlowRouter.current().route.path.split('/')[1];
+      //
+      //   if( currentName == "")currentName= 'index';
+      //   var navbar = ['index'];
+      //   let page   = ['root','index'];
+      //   if(currentName!=='index'){
+      //     navbar.push(currentName);
+      //     page.push(currentName);
+      //   }
+      //   if(!!history){
+      //     // navbar="<div>"
+      //     navbar  = ['index'];
+      //     page    = ['root','index'];
+      //     // console.log(history.length);
+      //     for(let i=1; i<history.length; i++){
+      //       let tmp = history[i];
+      //       // console.log(tmp);
+      //       tmp = tmp.replace('#','');
+      //       navbar.push(tmp);
+      //       page.push(tmp);
+      //     }
+      //     if(currentName!=='index' && navbar.indexOf(currentName)<0)navbar.push(currentName);
+      //     if(currentName!=='index' &&   page.indexOf(currentName)<0)  page.push(currentName);
+      //   }
+      //   // console.log(navbar);
+      //   // console.log(page);
+      //   // console.log(page);
+      //   var WeactNavbar = React.createClass({
+      //     // componentDidMount(){
+      //     //   console.log(this.props.history);
+      //     // },
+      //     render: function() {
+      //       var navbarP = this.props.navbar;
+      //       // let routeClass = JSON.parse(sessionStorage.getItem('routeClass'));
+      //       var history = this.props.history;
+      //       return (
+      //         <div className="navbar">
+      //         {navbarP.map(function(tmp, i){
+      //           let name = 'Navbar'+tmp.charAt(0).toUpperCase() + tmp.slice(1);
+      //           let Navbar = eval(name);
+      //           if(!history){
+      //             if(tmp=='index' && currentName =='index')
+      //               return  <Navbar class='navbar-inner '         key={i}/>;
+      //             return    <Navbar class='navbar-inner cached'   key={i}/>;
+      //           }else{
+      //             if(tmp=='index' && currentName =='index')
+      //               return  <Navbar class='navbar-inner '       history={history}  key={i}/>;
+      //             return    <Navbar class='navbar-inner cached' history={history}  key={i}/>;
+      //           }
+      //
+      //         })}
+      //         </div>
+      //       )
+      //     }
+      //   });
+      //   // let WeactPage = page.map(function(tmp, i){
+      //   //   let name = 'Page'+tmp.charAt(0).toUpperCase() + tmp.slice(1);
+      //   //   let Page = eval(name);
+      //   //   // if(tmp=='index' && currentName =='index')
+      //   //   //   return  <Page class='navbar-inner'         key={i}/>;
+      //   //   return    <Page key={i}/>;
+      //   // })
+      //   var WeactPage = React.createClass({
+      //     render: function() {
+      //       let pageP = this.props.page;
+      //       // let routeClass = JSON.parse(sessionStorage.getItem('routeClass'));
+      //       return (
+      //         <div className="pages navbar-through toolbar-through">
+      //           {pageP.map(function(tmp, i){
+      //             let name = 'Page'+tmp.charAt(0).toUpperCase() + tmp.slice(1);
+      //             let Page = eval(name);
+      //             // if(tmp=='index' && currentName =='index')
+      //             //   return  <Page class='navbar-inner'         key={i}/>;
+      //             if(tmp=='index' ) return <Page children={<TodoMain/>} class='page '  key={i} />;
+      //             return    <Page key={i} />;
+      //           })}
+      //         </div>
+      //       )
+      //     }
+      //   });
+      //   let app         ;
+      //   let layout  = {};
+      //   // let defaultLayout = {
+      //   //   app     : TodoApp                         ,
+      //   //   children: <TodoMain />                    ,
+      //   //   navbar  : <WeactNavbar navbar={navbar}/>  ,
+      //   //   page    : <WeactPage     page={page}  />  ,
+      //   //
+      //   //
+      //   //   // page    : <WeactPage                       ,
+      //   // }
+      // //   var Navbar = React.createClass({
+      // //    render: function() {
+      // //      var navbarP = this.props.navbar;
+      // //      // let routeClass = JSON.parse(sessionStorage.getItem('routeClass'));
+      // //      return (
+      // //        <div className="navbar">
+      // //          <NavbarIndex class='navbar-inner cached'/>
+      // //          <NavbarAbout class='navbar-inner cached'/>
+      // //          <NavbarForm class='navbar-inner cached'/>
+      // //        {/*{navbarP.map(function(tmp, i){
+      // //          let name = 'Navbar'+tmp.charAt(0).toUpperCase() + tmp.slice(1);
+      // //          let Navbar = eval(name);
+      // //          if(tmp=='index' && currentName =='index')
+      // //            return  <Navbar class='navbar-inner cached'         key={i}/>;
+      // //          return    <Navbar class='navbar-inner cached'  key={i}/>;
+      // //        })}*/}
+      // //        </div>
+      // //      )
+      // //    }
+      // //  });
+      //   let wrapComponent = function(Component, props) {
+      //     // return obj3;
+      //     return React.createClass({
+      //       componentWillMount(){
+      //
+      //         // console.log(propsMerge);
+      //       },
+      //       render: function() {
+      //         var propsMerge = {};
+      //         for (var attrname in this.props) { propsMerge[attrname] = this.props[attrname]; }
+      //         for (var attrname in props) { propsMerge[attrname] = props[attrname]; }
+      //         return React.createElement(Component, propsMerge);
+      //       }
+      //     });
+      //   };
+      //   let defaultLayout = {
+      //     app     : ""                         ,
+      //     // children: <TodoMain />                    ,
+      //     navbar  : wrapComponent(WeactNavbar,{navbar : navbar})  ,
+      //     page    : wrapComponent(WeactPage  ,{page   : page  })  ,
+      //
+      //
+      //     // page    : <WeactPage                       ,
+      //   }
+      //   //load defaultLayout
+      //   for(let i in defaultLayout) {
+      //     if (defaultLayout.hasOwnProperty(i)) {
+      //       let value = field[i] || defaultLayout[i];
+      //       if(i=='app') app = value;
+      //       else{
+      //         layout[i] = value
+      //       }
+      //       if(field[i])delete field[i];
+      //       delete defaultLayout[i];
+      //     }
+      //   }
+      //   for(let i in field) {
+      //     if (field.hasOwnProperty(i)) {
+      //       layout[i] = field[i];
+      //     }
+      //   }
+      //   // console.log(layout.page());
+      //   // ReactLayout.render(app, layout);
+      //   if(fieldIn =='navbar')component.Page = layout.navbar;
+      //   if(fieldIn =='page')  component.Page = layout.page;
+      //   // component.Page = layout.page;
+      //   // component.layout = layout;
+      //   // console.log(component.props.location);
+      //   // if(component.state.loading==true){
+      //     component.setState({loading: false});
+      //   // }
+      //
+      //   // return layout
+      //   // setTimeout(function() {
+      //   //   loadF7();
+      //   // }, 0);
+      //   console.log("async");
+      //   // console.log(component.state.init);
+      //   // if(component.state.init==true && fieldIn =='page'){
+      //   //     console.log('asyncLoadF7');
+      //   //     loadF7(component, component.props.f7);
+      //   // }
+      // }
+
+    // });
+  // return component.layout;
+  // }
+}
+
+function getClientRoute(fieldIn, component) {
+  if( typeof require.ensure !== "function") {
+      require.ensure = function(deps, callback) {
+          callback(require);
+      }
+  }
   // switch(route) {
     // add each route in here
     // case "about":
@@ -43,188 +333,228 @@ function getRoute(fieldIn, component) {
     }
     require.ensure([], (require) => {
       let field = fieldIn || {};
-      let NavbarIndex = require('./components/navbar/index').default;
-      let NavbarAbout = require('./components/navbar/about').default;
-      let NavbarForm  = require('./components/navbar/form').default;
-      let PageAbout   = require('./components/page/about').default;
-      let PageForm    = require('./components/page/form').default;
-      let PageForm1    = require('./components/page/form1').default;
-      let PageIndex   = require('./components/page/index').default;
-      let PageRoot   = require('./components/page/root').default;
+      let NavbarIndex ;
+      let NavbarAbout ;
+      let NavbarForm  ;
+      let PageAbout   ;
+      let PageForm    ;
+      let PageForm1   ;
+      let PageIndex   ;
+      let PageRoot    ;
+      if(!Meteor.isServer){
+         NavbarIndex = require('./components/navbar/index').default;
+         NavbarAbout = require('./components/navbar/about').default;
+         NavbarForm  = require('./components/navbar/form').default;
+         PageAbout   = require('./components/page/about').default;
+         PageForm    = require('./components/page/form').default;
+         PageForm1    = require('./components/page/form1').default;
+         PageIndex   = require('./components/page/index').default;
+         PageRoot   = require('./components/page/root').default;
+      }else{
+        // const isBrowser = typeof window !== 'undefined';
+        // const MyWindowDependentLibrary = isBrowser ? require( 'path/to/library') : undefined;
+        // let NavbarIndex = isBrowser ? require('./components/navbar/index').default: undefined;
+        // let NavbarIndex = require('./components/navbar/index').default;
+      }
+
       // let Dashboard = require('./Dashboard');
       // console.log(sessionStorage.getItem('history'))
-      let route = JSON.parse(sessionStorage.getItem('historyRoute'));
-      let history = JSON.parse(sessionStorage.getItem('history'));
-      let index = JSON.parse(sessionStorage.getItem('historyRouteIndex'));
+      let route   ;
+      let history ;
+      let index   ;
+      if(!Meteor.isServer){
+        route = JSON.parse(sessionStorage.getItem('historyRoute'));
+        history = JSON.parse(sessionStorage.getItem('history'));
+        index = JSON.parse(sessionStorage.getItem('historyRouteIndex'));
+      }else{
+        route = ['/']
+        history = ['#index'];
+        index   = 0;
+        if(!!component.props.location.pathname.split('/')[1]){
+          route.push(component.props.location.pathname)
+          history.push('#'+component.props.location.pathname.split('/')[1]);
+          index++;
+        }
+        component.setState({loading: false});
+      }
       // history = history.slice(0, index+1);
-      let item=[];
-      let currentName = "";
-      currentName = component.props.location.pathname.split('/')[1];
-      // FlowRouter.current().route.path.split('/')[1];
+      if(!Meteor.isServer){
+        let item=[];
+        let currentName = "";
+        currentName = component.props.location.pathname.split('/')[1];
+        // FlowRouter.current().route.path.split('/')[1];
 
-      if( currentName == "")currentName= 'index';
-      var navbar = ['index'];
-      let page   = ['root','index'];
-      if(currentName!=='index'){
-        navbar.push(currentName);
-        page.push(currentName);
-      }
-      if(!!history){
-        // navbar="<div>"
-        navbar  = ['index'];
-        page    = ['root','index'];
-        // console.log(history.length);
-        for(let i=1; i<history.length; i++){
-          let tmp = history[i];
-          // console.log(tmp);
-          tmp = tmp.replace('#','');
-          navbar.push(tmp);
-          page.push(tmp);
+        if( currentName == "")currentName= 'index';
+        var navbar = ['index'];
+        let page   = ['root','index'];
+        if(currentName!=='index'){
+          navbar.push(currentName);
+          page.push(currentName);
         }
-        if(currentName!=='index' && navbar.indexOf(currentName)<0)navbar.push(currentName);
-        if(currentName!=='index' &&   page.indexOf(currentName)<0)  page.push(currentName);
-      }
-      // console.log(navbar);
-      // console.log(page);
-      // console.log(page);
-      var WeactNavbar = React.createClass({
-        // componentDidMount(){
-        //   console.log(this.props.history);
-        // },
-        render: function() {
-          var navbarP = this.props.navbar;
-          // let routeClass = JSON.parse(sessionStorage.getItem('routeClass'));
-          var history = this.props.history;
-          return (
-            <div className="navbar">
-            {navbarP.map(function(tmp, i){
-              let name = 'Navbar'+tmp.charAt(0).toUpperCase() + tmp.slice(1);
-              let Navbar = eval(name);
-              if(tmp=='index' && currentName =='index')
-                return  <Navbar class='navbar-inner '       history={history}  key={i}/>;
-              return    <Navbar class='navbar-inner cached' history={history}  key={i}/>;
-            })}
-            </div>
-          )
+        if(!!history){
+          // navbar="<div>"
+          navbar  = ['index'];
+          page    = ['root','index'];
+          // console.log(history.length);
+          for(let i=1; i<history.length; i++){
+            let tmp = history[i];
+            // console.log(tmp);
+            tmp = tmp.replace('#','');
+            navbar.push(tmp);
+            page.push(tmp);
+          }
+          if(currentName!=='index' && navbar.indexOf(currentName)<0)navbar.push(currentName);
+          if(currentName!=='index' &&   page.indexOf(currentName)<0)  page.push(currentName);
         }
-      });
-      // let WeactPage = page.map(function(tmp, i){
-      //   let name = 'Page'+tmp.charAt(0).toUpperCase() + tmp.slice(1);
-      //   let Page = eval(name);
-      //   // if(tmp=='index' && currentName =='index')
-      //   //   return  <Page class='navbar-inner'         key={i}/>;
-      //   return    <Page key={i}/>;
-      // })
-      var WeactPage = React.createClass({
-        render: function() {
-          let pageP = this.props.page;
-          // let routeClass = JSON.parse(sessionStorage.getItem('routeClass'));
-          return (
-            <div className="pages navbar-through toolbar-through">
-              {pageP.map(function(tmp, i){
-                let name = 'Page'+tmp.charAt(0).toUpperCase() + tmp.slice(1);
-                let Page = eval(name);
-                // if(tmp=='index' && currentName =='index')
-                //   return  <Page class='navbar-inner'         key={i}/>;
-                if(tmp=='index' ) return <Page children={<TodoMain/>} class='page '  key={i} />;
-                return    <Page key={i} />;
-              })}
-            </div>
-          )
-        }
-      });
-      let app         ;
-      let layout  = {};
-      // let defaultLayout = {
-      //   app     : TodoApp                         ,
-      //   children: <TodoMain />                    ,
-      //   navbar  : <WeactNavbar navbar={navbar}/>  ,
-      //   page    : <WeactPage     page={page}  />  ,
-      //
-      //
-      //   // page    : <WeactPage                       ,
-      // }
-    //   var Navbar = React.createClass({
-    //    render: function() {
-    //      var navbarP = this.props.navbar;
-    //      // let routeClass = JSON.parse(sessionStorage.getItem('routeClass'));
-    //      return (
-    //        <div className="navbar">
-    //          <NavbarIndex class='navbar-inner cached'/>
-    //          <NavbarAbout class='navbar-inner cached'/>
-    //          <NavbarForm class='navbar-inner cached'/>
-    //        {/*{navbarP.map(function(tmp, i){
-    //          let name = 'Navbar'+tmp.charAt(0).toUpperCase() + tmp.slice(1);
-    //          let Navbar = eval(name);
-    //          if(tmp=='index' && currentName =='index')
-    //            return  <Navbar class='navbar-inner cached'         key={i}/>;
-    //          return    <Navbar class='navbar-inner cached'  key={i}/>;
-    //        })}*/}
-    //        </div>
-    //      )
-    //    }
-    //  });
-      let wrapComponent = function(Component, props) {
-        // return obj3;
-        return React.createClass({
-          componentWillMount(){
-
-            // console.log(propsMerge);
-          },
+        // console.log(navbar);
+        // console.log(page);
+        // console.log(page);
+        var WeactNavbar = React.createClass({
+          // componentDidMount(){
+          //   console.log(this.props.history);
+          // },
           render: function() {
-            var propsMerge = {};
-            for (var attrname in this.props) { propsMerge[attrname] = this.props[attrname]; }
-            for (var attrname in props) { propsMerge[attrname] = props[attrname]; }
-            return React.createElement(Component, propsMerge);
+            var navbarP = this.props.navbar;
+            // let routeClass = JSON.parse(sessionStorage.getItem('routeClass'));
+            var history = this.props.history;
+            return (
+              <div className="navbar">
+              {navbarP.map(function(tmp, i){
+                let name = 'Navbar'+tmp.charAt(0).toUpperCase() + tmp.slice(1);
+                let Navbar = eval(name);
+                if(!history){
+                  if(tmp=='index' && currentName =='index')
+                    return  <Navbar class='navbar-inner '         key={i}/>;
+                  return    <Navbar class='navbar-inner cached'   key={i}/>;
+                }else{
+                  if(tmp=='index' && currentName =='index')
+                    return  <Navbar class='navbar-inner '       history={history}  key={i}/>;
+                  return    <Navbar class='navbar-inner cached' history={history}  key={i}/>;
+                }
+
+              })}
+              </div>
+            )
           }
         });
-      };
-      let defaultLayout = {
-        app     : ""                         ,
-        // children: <TodoMain />                    ,
-        navbar  : wrapComponent(WeactNavbar,{navbar : navbar})  ,
-        page    : wrapComponent(WeactPage  ,{page   : page  })  ,
-
-
-        // page    : <WeactPage                       ,
-      }
-      //load defaultLayout
-      for(let i in defaultLayout) {
-        if (defaultLayout.hasOwnProperty(i)) {
-          let value = field[i] || defaultLayout[i];
-          if(i=='app') app = value;
-          else{
-            layout[i] = value
+        // let WeactPage = page.map(function(tmp, i){
+        //   let name = 'Page'+tmp.charAt(0).toUpperCase() + tmp.slice(1);
+        //   let Page = eval(name);
+        //   // if(tmp=='index' && currentName =='index')
+        //   //   return  <Page class='navbar-inner'         key={i}/>;
+        //   return    <Page key={i}/>;
+        // })
+        var WeactPage = React.createClass({
+          render: function() {
+            let pageP = this.props.page;
+            // let routeClass = JSON.parse(sessionStorage.getItem('routeClass'));
+            return (
+              <div className="pages navbar-through toolbar-through">
+                {pageP.map(function(tmp, i){
+                  let name = 'Page'+tmp.charAt(0).toUpperCase() + tmp.slice(1);
+                  let Page = eval(name);
+                  // if(tmp=='index' && currentName =='index')
+                  //   return  <Page class='navbar-inner'         key={i}/>;
+                  if(tmp=='index' ) return <Page children={<TodoMain/>} class='page '  key={i} />;
+                  return    <Page key={i} />;
+                })}
+              </div>
+            )
           }
-          if(field[i])delete field[i];
-          delete defaultLayout[i];
-        }
-      }
-      for(let i in field) {
-        if (field.hasOwnProperty(i)) {
-          layout[i] = field[i];
-        }
-      }
-      // console.log(layout.page());
-      // ReactLayout.render(app, layout);
-      if(fieldIn =='navbar')component.Page = layout.navbar;
-      if(fieldIn =='page')  component.Page = layout.page;
-      // component.Page = layout.page;
-      // component.layout = layout;
-      // console.log(component.props.location);
-      // if(component.state.loading==true){
-        component.setState({loading: false});
-      // }
+        });
+        let app         ;
+        let layout  = {};
+        // let defaultLayout = {
+        //   app     : TodoApp                         ,
+        //   children: <TodoMain />                    ,
+        //   navbar  : <WeactNavbar navbar={navbar}/>  ,
+        //   page    : <WeactPage     page={page}  />  ,
+        //
+        //
+        //   // page    : <WeactPage                       ,
+        // }
+      //   var Navbar = React.createClass({
+      //    render: function() {
+      //      var navbarP = this.props.navbar;
+      //      // let routeClass = JSON.parse(sessionStorage.getItem('routeClass'));
+      //      return (
+      //        <div className="navbar">
+      //          <NavbarIndex class='navbar-inner cached'/>
+      //          <NavbarAbout class='navbar-inner cached'/>
+      //          <NavbarForm class='navbar-inner cached'/>
+      //        {/*{navbarP.map(function(tmp, i){
+      //          let name = 'Navbar'+tmp.charAt(0).toUpperCase() + tmp.slice(1);
+      //          let Navbar = eval(name);
+      //          if(tmp=='index' && currentName =='index')
+      //            return  <Navbar class='navbar-inner cached'         key={i}/>;
+      //          return    <Navbar class='navbar-inner cached'  key={i}/>;
+      //        })}*/}
+      //        </div>
+      //      )
+      //    }
+      //  });
+        let wrapComponent = function(Component, props) {
+          // return obj3;
+          return React.createClass({
+            componentWillMount(){
 
-      // return layout
-      // setTimeout(function() {
-      //   loadF7();
-      // }, 0);
-      // console.log("async");
-      // console.log(component.state.init);
-      if(component.state.init==true && fieldIn =='page'){
+              // console.log(propsMerge);
+            },
+            render: function() {
+              var propsMerge = {};
+              for (var attrname in this.props) { propsMerge[attrname] = this.props[attrname]; }
+              for (var attrname in props) { propsMerge[attrname] = props[attrname]; }
+              return React.createElement(Component, propsMerge);
+            }
+          });
+        };
+        let defaultLayout = {
+          app     : ""                         ,
+          // children: <TodoMain />                    ,
+          navbar  : wrapComponent(WeactNavbar,{navbar : navbar})  ,
+          page    : wrapComponent(WeactPage  ,{page   : page  })  ,
 
-          loadF7(component, component.props.f7);
+
+          // page    : <WeactPage                       ,
+        }
+        //load defaultLayout
+        for(let i in defaultLayout) {
+          if (defaultLayout.hasOwnProperty(i)) {
+            let value = field[i] || defaultLayout[i];
+            if(i=='app') app = value;
+            else{
+              layout[i] = value
+            }
+            if(field[i])delete field[i];
+            delete defaultLayout[i];
+          }
+        }
+        for(let i in field) {
+          if (field.hasOwnProperty(i)) {
+            layout[i] = field[i];
+          }
+        }
+        // console.log(layout.page());
+        // ReactLayout.render(app, layout);
+        if(fieldIn =='navbar')component.Page = layout.navbar;
+        if(fieldIn =='page')  component.Page = layout.page;
+        // component.Page = layout.page;
+        // component.layout = layout;
+        // console.log(component.props.location);
+        // if(component.state.loading==true){
+          component.setState({loading: false});
+        // }
+
+        // return layout
+        // setTimeout(function() {
+        //   loadF7();
+        // }, 0);
+        // console.log("async");
+        // console.log(component.state.init);
+        if(component.state.init==true && fieldIn =='page'){
+            // console.log('asyncLoadF7');
+            loadF7(component, component.props.f7);
+        }
       }
 
     });
@@ -241,7 +571,14 @@ var AsyncRoute = function(route) {
     },
     componentWillMount: function() {
       let hasRoute = route || {};
-      getRoute(hasRoute, this);
+      // getRoute(hasRoute, this);
+      if(!Meteor.isServer){
+        getClientRoute(hasRoute, this);
+        // console.log('client load');
+      }else{
+        getRoute(hasRoute, this);
+        // console.log('server load');
+      }
 
       // this.setState({loading: false});
       // console.log(this.props.location);

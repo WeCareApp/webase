@@ -65,29 +65,28 @@ export default class TodoApp extends Component {
     }
   }
 
-  backBtn() {
-    let index = JSON.parse(sessionStorage.getItem('historyRouteIndex'));
-    let route = JSON.parse(sessionStorage.getItem('historyRoute'));
-    let routeNew = FlowRouter.current().path;
-    // if((sessionStorage.getItem('historyRoute')==undefined || routeNew==route[index])&& index==1){
-      // FlowRouter.withReplaceState(function() {
-      //   FlowRouter.go(route[index-1]);
-      // });
-    // }else{
-    //   window.history.back();
-    // }
-  }
+  // backBtn() {
+  //   let index = JSON.parse(sessionStorage.getItem('historyRouteIndex'));
+  //   let route = JSON.parse(sessionStorage.getItem('historyRoute'));
+  //   let routeNew = FlowRouter.current().path;
+  //   // if((sessionStorage.getItem('historyRoute')==undefined || routeNew==route[index])&& index==1){
+  //     // FlowRouter.withReplaceState(function() {
+  //     //   FlowRouter.go(route[index-1]);
+  //     // });
+  //   // }else{
+  //   // }
+  // }
 
   componentDidMount() {
 
       // this.setState({history: this.props.history});
       if(!Meteor.isServer) {
 
-          if(!!this.props.location.pathname.split('/')[1]){
-            let origin = this.props.location.pathname
-            sessionStorage.setItem('origin', JSON.stringify(origin));
-            this.props.history.replace('/');
-          }
+          // if(!!this.props.location.pathname.split('/')[1]){
+          //   let origin = this.props.location.pathname
+          //   sessionStorage.setItem('origin', JSON.stringify(origin));
+          //   this.props.history.replace('/');
+          // }
 
           let app = new F7();
 
@@ -116,18 +115,17 @@ export default class TodoApp extends Component {
       // console.log(!!Session.get('routeOld'));
       // console.log(this.state.init);
       // if(!!Session.get('routeOld')){
-      if(JSON.parse( sessionStorage.getItem('origin') )!=='/'){
-        let go = JSON.parse( sessionStorage.getItem('origin') );
-        sessionStorage.setItem('origin', JSON.stringify('/'));
-        this.props.history.push(go)
-      }
-      // console.log(this.props.history);
-        loadF7(this, this.state.f7);
+
+
+      // if(!Meteor.isServer) {
+      //   if(JSON.parse( sessionStorage.getItem('origin') )!=='/'){
+      //     let go = JSON.parse( sessionStorage.getItem('origin') );
+      //     sessionStorage.setItem('origin', JSON.stringify('/'));
+      //     this.props.history.push(go)
+      //   }
       // }
 
-    // }
-    // }
-
+        loadF7(this, this.state.f7);
 
   }
 

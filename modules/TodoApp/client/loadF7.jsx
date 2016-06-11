@@ -56,7 +56,6 @@ function loadF7(component, f7){
               sessionStorage.setItem('history', JSON.stringify(history));
             }
             if(sessionStorage.getItem('historyRoute')==undefined){
-              // window.history.back();// initial load up, because it load up two times, so back one time.
               let route = ['/'];
               if(routeNew!=='/'){
                 route.push(routeNew);
@@ -84,7 +83,6 @@ function loadF7(component, f7){
                 sessionStorage.setItem('historyRouteIndex',index+1);
               }else if(routeNew==route[index]){
                 //refresh paged
-                // if(routeOld!=undefined)window.history.back();// initial load up, because it load up two times, so back one time.
                 // console.log('refresh');
               }else if(routeNew!=='/'){
                 //discover to new page
@@ -278,53 +276,55 @@ function loadF7(component, f7){
                   app.views[1].router.back();
                 // }, 0);
                 //@back instance change bar style
-                // setTimeout(function(){
-                //   $('[data-page="'+pageName+'"].navbar-inner').addClass('navbar-on-center').removeClass('navbar-on-left').removeClass('cached')
-                //   var barWidth    = $('[data-page="'+pageName+'"].navbar-inner').width();
-                //   var titleWidth  = $('[data-page="'+pageName+'"].navbar-inner>.center').width();
-                //   let num         = ( titleWidth - barWidth )/2;
-                //   let center      = $('[data-page="'+pageName+'"].navbar-inner>.center');
-                //   center.css( 'left'      , num*2                               );
-                //   center.css( 'transform' , 'translate3d('+-num+'px, 0px, 0px)' );
-                //   center.css( 'transition', 'transform 400ms'                   );
-                //   let left = $('[data-page="'+pageName+'"].navbar-inner>.left>a>span:nth-child(3)');
-                //   let widthMargin = left.width()+7;
-                //   let widthMarginPadding = left.width()+14;
-                //   left.css( 'margin-left' , -widthMargin );
-                //   left.css('transform', 'translate3d('+widthMarginPadding+'px, 0px, 0px)');
-                //   left.css("transition", "transform 400ms");
-                //
-                //
-                //   //new
-                //   $('[data-page="'+backPage+'"].page').removeClass('cached').addClass('page-from-center-to-right')
-                //   // $('[data-page="'+backPage+'"].navbar-inner').removeClass('cached').addClass('navbar-on-left')
-                //   // $('[data-page="'+pageName+'"].page').css('z-index', '1');
-                //   $('[data-page="'+pageName+'"].page').addClass('page-on-center').removeClass('cached')
-                //   // $('[data-page="'+pageName+'"].navbar-inner').addClass('navbar-from-right-to-center').removeClass('cached')
-                // }, 0);
-                //
+                setTimeout(function(){
+                // //   $('[data-page="'+pageName+'"].navbar-inner').addClass('navbar-on-center').removeClass('navbar-on-left').removeClass('cached')
+                  var barWidth    = $('[data-page="'+pageName+'"].navbar-inner').width();
+                  var titleWidth  = $('[data-page="'+pageName+'"].navbar-inner>.center').width();
+                  let num         = ( titleWidth - barWidth )/2;
+                  let center      = $('[data-page="'+pageName+'"].navbar-inner>.center');
+                  center.css( 'left'      , num*2                               );
+                  center.css( 'transform' , 'translate3d('+-num+'px, 0px, 0px)' );
+                  center.css( 'transition', 'transform 400ms'                   );
+                // //   let left = $('[data-page="'+pageName+'"].navbar-inner>.left>a>span:nth-child(3)');
+                // //   let widthMargin = left.width()+7;
+                // //   let widthMarginPadding = left.width()+14;
+                // //   left.css( 'margin-left' , -widthMargin );
+                // //   left.css('transform', 'translate3d('+widthMarginPadding+'px, 0px, 0px)');
+                // //   left.css("transition", "transform 400ms");
+                // //
+                // //
+                // //   //new
+                // //   $('[data-page="'+backPage+'"].page').removeClass('cached').addClass('page-from-center-to-right')
+                // //   // $('[data-page="'+backPage+'"].navbar-inner').removeClass('cached').addClass('navbar-on-left')
+                // //   // $('[data-page="'+pageName+'"].page').css('z-index', '1');
+                // //   $('[data-page="'+pageName+'"].page').addClass('page-on-center').removeClass('cached')
+                // //   // $('[data-page="'+pageName+'"].navbar-inner').addClass('navbar-from-right-to-center').removeClass('cached')
+                }, 0);
+                // //
+                let index = i-1;
                 // let index     = JSON.parse( sessionStorage.getItem('historyRouteIndex') );
                 // let history   = JSON.parse( sessionStorage.getItem('history')           );
-                // let backPage  = history[index+1].slice(1, history[index+1].length);
+                let backPage  = history[index+1].slice(1, history[index+1].length);
+                // //
+                // // //make static after back change
+                app.onPageAfterBack(backPage, function(){
+                  console.log('done render');
+                  setTimeout(function(){
+                    var barWidth    = $('[data-page="'+pageName+'"].navbar-inner').width();
+                    var titleWidth  = $('[data-page="'+pageName+'"].navbar-inner>.center').width();
+                    let num         = ( titleWidth - barWidth )/2;
+                    let center      = $('[data-page="'+pageName+'"].navbar-inner>.center');
+                    center.css( 'left'      , num                          );
+                    center.css( 'transform' , '' );
+                    center.css( 'transition', ''                           );
+                // //     let left = $('[data-page="'+pageName+'"].navbar-inner>.left>a>span:nth-child(3)');
+                // //     left.css( 'margin-left' , '' );
+                // //     left.css('transform', '');
+                // //     left.css('transition', '')
+                // //
+                  }, 0);
                 //
-                // //make static after back change
-                // app.onPageAfterBack(backPage, function(){
-                //   setTimeout(function(){
-                //     var barWidth    = $('[data-page="'+pageName+'"].navbar-inner').width();
-                //     var titleWidth  = $('[data-page="'+pageName+'"].navbar-inner>.center').width();
-                //     let num         = ( titleWidth - barWidth )/2;
-                //     let center      = $('[data-page="'+pageName+'"].navbar-inner>.center');
-                //     center.css( 'left'      , num                          );
-                //     center.css( 'transform' , '' );
-                //     center.css( 'transition', ''                           );
-                //     let left = $('[data-page="'+pageName+'"].navbar-inner>.left>a>span:nth-child(3)');
-                //     left.css( 'margin-left' , '' );
-                //     left.css('transform', '');
-                //     left.css('transition', '')
-                //
-                //   }, 0);
-                //
-                // })
+                })
               }
               isBack = 0;
             }else {
