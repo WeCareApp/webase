@@ -51,7 +51,7 @@ function requireContent(fieldIn, component) {
                 let tmp = history[i]
                 tmp = tmp.replace('#','');
                 page.push(tmp);
-              }dddd
+              }
             }
             if(currentName!=='index' &&   page.indexOf(currentName)<0)  page.push(currentName);
           }else{                //server code
