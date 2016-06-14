@@ -12,7 +12,7 @@ export default class pageAbout extends Component {
 
   render() {
       return (
-        <div data-page="about" className="page cached">
+        <div data-page="about" className={this.props.class}>
           <div className="page-content">
             <div className="content-block">
               <p>You may go <a href="#" className="back">back</a> or load <Link to="/form">Form</Link> page.

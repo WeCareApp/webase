@@ -80,7 +80,7 @@ export default class TodoApp extends Component {
   componentDidMount() {
 
       // this.setState({history: this.props.history});
-      if(!Meteor.isServer) {
+      if(!Meteor.isServer && !!$("[data-page='index']")) {
 
           // if(!!this.props.location.pathname.split('/')[1]){
           //   let origin = this.props.location.pathname
@@ -124,8 +124,11 @@ export default class TodoApp extends Component {
       //     this.props.history.push(go)
       //   }
       // }
-
+      // if(!!$("[data-page='index']")){
+        // console.log('loadf7 in index');
         loadF7(this, this.state.f7);
+      // }
+
 
   }
 

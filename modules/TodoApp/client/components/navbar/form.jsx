@@ -9,7 +9,7 @@ export default class navbarForm extends Component {
   render() {
       return (
         <div data-page="form" className={this.props.class}>
-          <div className="left sliding"><a href="" onClick={()=> backBtn(this)} className=" link"> <i className="icon icon-back"/><span>Back</span></a>
+          <div className="left sliding"><a href={this.props.back} onClick={()=> backBtn(this)} className=" link"> <i className="icon icon-back"/><span>Back</span></a>
           </div>
           <div className="center sliding">Form</div>
         </div>

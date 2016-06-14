@@ -8,7 +8,7 @@ export default class pageForm1 extends Component {
 
   render() {
       return (
-        <div data-page="form1" className="page cached">
+        <div data-page="form1" className={this.props.class}>
           <div className="page-content">
             <div className="content-block-title"> <Link to="/about">About</Link> page. Form Example</div>
             <div className="list-block">

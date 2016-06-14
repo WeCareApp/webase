@@ -1,3 +1,14 @@
 #react-root{
   height: 100%;
 }
+
+.ssr>.center{
+  display : block ;
+  position: fixed ;
+  left    : 0%    ;
+  right   : 0%    ;
+}
+
+.ssr>.left{
+  z-index: 1;
+}

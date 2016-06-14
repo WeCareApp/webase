@@ -10,10 +10,19 @@ import AsyncRoute from './AsyncRoute.jsx';
 
 
 var components = function(){
-  return{
-    navbar: AsyncRoute('navbar' ),
-    page  : AsyncRoute('page'   ),
-    helmet: AsyncRoute('helmet' )
+  if(Meteor.isServer){
+    return{
+      navbar: AsyncRoute('navbar' ),
+      page  : AsyncRoute('page'   ),
+      helmet: AsyncRoute('helmet' )
+    }
+  }
+  else {
+    return{
+      navbar: AsyncRoute('navbar' ),
+      page  : AsyncRoute('page'   ),
+      helmet: AsyncRoute('helmet' )
+    }
   }
 }
 

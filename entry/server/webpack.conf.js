@@ -1,6 +1,8 @@
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
+// if(typeof require.ensure !== "function") require.ensure = function(d, c) { c(require) };
+
 var localIdentName = process.env.NODE_ENV === 'production' ? '[hash:base64:5]' : '[name]__[local]__[hash:base64:5]';
 var babelSettings = { presets: ['react', 'es2015', 'stage-0'] };
 babelSettings.plugins = ['transform-decorators-legacy'];
