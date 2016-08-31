@@ -3,18 +3,39 @@ import React from 'react';
 import TodoMain from  './TodoMain';
 import loadF7   from  './loadF7';
 import root from 'window-or-global'
-// if(Meteor.isServer){
-//   import NavbarIndex from './components/navbar/index';
-//   import NavbarAbout from './components/navbar/about';
-//   import NavbarForm  from './components/navbar/form';
-//   import PageAbout   from './components/page/about';
-//   import PageForm    from './components/page/form';
-//   import PageForm1   from './components/page/form1';
-//   import PageIndex   from './components/page/index';
-//   import PageRoot    from './components/page/root';
-// }
 
-function requireContent(fieldIn, component) {
+function requireContent(fieldIn, component, newpage) {
+
+  // let NavbarIndex ;
+  // let NavbarAbout ;
+  // let NavbarForm  ;
+  // let PageAbout   ;
+  // let PageForm    ;
+  // let PageForm1   ;
+  // let PageIndex   ;
+  // let PageRoot    ;
+  if(!Meteor.isServer){
+    // require.ensure([],(require)=>{
+    //   let about = 'about'
+    //   let aboutComponent = require('./components/pageCreate/'+about).default();
+    // })
+    // require.ensure([],(require)=>{
+    //   let about = 'about'
+    //   let aboutComponent = require('./components/pageCreate/index').default();
+    // })
+    // require.ensure([],(require)=>{
+    //   let about = 'about'
+    //   let aboutComponent = require('./components/pageCreate/root').default();
+    // })
+  //    NavbarIndex = require('./components/navbar/index').default;
+  //    NavbarAbout = require('./components/navbar/about').default;
+  //    NavbarForm  = require('./components/navbar/form').default;
+  //    PageAbout   = require('./components/pageCreate/about').default;
+  //    PageForm    = require('./components/pageCreate/form').default;
+  //    PageForm1    = require('./components/pageCreate/form1').default;
+  //    PageIndex   = require('./components/pageCreate/index').default;
+  //    PageRoot   = require('./components/pageCreate/root').default;
+  }
           let currentName = "";
           if(component.props.location.pathname.split('/')[1]){
             currentName = component.props.location.pathname.split('/')[1];
@@ -58,33 +79,148 @@ function requireContent(fieldIn, component) {
             page.push(currentName);
           }
 
+          // Push components to page
+          // if( fieldIn == 'page'){
+          //   let pagePP = page;
+          //   let newpage= [];
+          //   // let index = 'about'
+          //   let num = 0;
+          //   for (let i = 0; i < pagePP.length; i++) {
+          //
+          //     // require.ensure([], (require)=>{
+          //     //   // if(pagePP[i]=='about')newpage[i] = require('bundle!./components/pageCreate/about').default();
+          //     //   // if(pagePP[i]=='index')newpage[i] = require('./components/pageCreate/index').default();
+          //     //   // if(pagePP[i]=='form')newpage[i] = require('./components/pageCreate/form').default();
+          //     //   // if(pagePP[i]=='root')newpage[i] = require('./components/pageCreate/root').default();
+          //     //
+          //     // })
+          //     var handler = require('bundle!./components/pageCreate/'+pagePP[i]);
+          //     component.Page = handler(bundle =>{
+          //       newpage[i] = bundle.default;
+          //       num++;
+          //       if(num==pagePP.length){
+          //         console.log(newpage);
+          //         // console.log(page);
+          //         var WeactPage = React.createClass({
+          //           render: function() {
+          //             let name = this.props.name;
+          //
+          //             // let pageP = pagePP;
+          //             let pageP = this.props.page;
+          //             return (
+          //               <div className="pages navbar-through toolbar-through">
+          //                 {pageP.map(function(tmp, i){
+          //                   // require.ensure([],(require)=>{
+          //                   // console.log(tmp);
+          //                     // let Page = require('./components/page/'+tmp).default;
+          //                     console.log(name[i]);
+          //                     let Page = tmp;
+          //                     let props = {};
+          //                       props.class     = " page"       ;
+          //                     if(name[i]=='index'){
+          //                       props.children  = <TodoMain/>   ;
+          //                     }else{
+          //                       if(!Meteor.isServer){
+          //                         props.class  += " cached"     ;
+          //                       }
+          //                     }
+          //
+          //                   // })
+          //                   return    <Page {...props} key={i} />;
+          //                 })}
+          //               </div>
+          //             )
+          //           }
+          //         });
+          //         component.Page = wrapComponent(WeactPage, {
+          //           name: page,
+          //           page: newpage
+          //         });
+          //         // return component.Page;
+          //         // console.log(component.Page);
+          //         // component.loading = true;
+          //         // component.setState((loading)=>{
+          //         //   return false;
+          //         // });
+          //         // component.setState({loading: false});
+          //         component.forceUpdate();
+          //       }
+          //     })
+          //   }
+          //   component.Page = React.createClass({
+          //       render: function() {
+          //         return(
+          //           <div>Loading...</div>
+          //         )
+          //       }
+          //   })
+          //   // console.log(component.Page);
+          //   // console.log(newpage);
+          //   // page = newpage;
+          // }
+
           if( fieldIn == 'page'){
             var WeactPage = React.createClass({
+              getInitialState: function() {
+                return {
+                  loading: true
+                }
+              },
               render: function() {
+                let pagePP = this.props.newpage;
+                // console.log(pagePP);
+                // let pageP = pagePP;
                 let pageP = this.props.page;
+                let loading = this.state.loading;
                 return (
                   <div className="pages navbar-through toolbar-through">
                     {pageP.map(function(tmp, i){
-                      let Page = require('./components/page/'+tmp).default;
-                      let props = {};
-                        props.class     = " page"       ;
-                      if(tmp=='index'){
-                        props.children  = <TodoMain/>   ;
+                      // require.ensure([],(require)=>{
+                      let Page;
+                      if(!Meteor.isServer){
+                        Page = pagePP[i];
                       }else{
-                        if(!Meteor.isServer){
-                          props.class  += " cached"     ;
-                        }
+                        Page = require('./components/page/'+tmp).default;
                       }
-                      return    <Page {...props} key={i} />;
+
+                        let props = {};
+                          props.class     = " page"       ;
+                        if(tmp=='index'){
+                          props.children  = <TodoMain/>   ;
+                          if(!Meteor.isServer){
+                            // props.class  += " cached"     ;
+                          }
+                        }else{
+                          if(!Meteor.isServer){
+                            props.class  += " cached"     ;
+                          }
+                        }
+                        loading=false;
+                        return    <Page {...props} key={i} />;
+                      // })
+                      // if (loading) {
+                      //   return (
+                      //     <div>Loading-Page...</div>
+                      //   );
+                      // } else {
+                      //   // console.log(<this.Page />);
+                      //   return (
+                      //     <this.Page {...this.props}/>
+                      //   );
+                      // }
                     })}
                   </div>
                 )
               }
             });
-            component.Page = wrapComponent(WeactPage, {page: page});
-          }else if( fieldIn == 'navbar'){
+            component.Page = wrapComponent(WeactPage, {page: page, newpage: newpage});
+          }else
+          if( fieldIn == 'navbar'){
             var WeactNavbar = React.createClass({
               render: function() {
+
+                let pagePP = this.props.newpage;
+                // console.log(pagePP);
                 var navbarP = this.props.page;
                 // let routeClass = JSON.parse(sessionStorage.getItem('routeClass'));
                 var history = this.props.history;
@@ -100,15 +236,31 @@ function requireContent(fieldIn, component) {
                 return (
                   <div className="navbar">
                     {navbarP.map(function(tmp, i){
-                      let Page = require('./components/navbar/'+tmp).default;
+                      let Page;
+                      if(!Meteor.isServer){
+                        Page = pagePP[i];
+                      }
+                      else{
+                        Page = require('./components/navbar/'+tmp).default;
+                      }
+                      // let Page = tmp;
+
+                      // if(i==0) return;
                       let props = {};
-                      props['class']= ' navbar-inner'
                       if( Meteor.isServer){
-                        props.class+= ' ssr'
+                        props.class= ' ssr'
+
                         props.back  = back
                       }
+                      if( tmp=='index'){
+                        props['class']= ' navbar-inner'
+                        props.dataPage = 'index';
+                      }
                       if( tmp!=='index' && !Meteor.isServer){
+                        props['class']= ' navbar-inner'
                         props.class+= ' cached'
+                        props.dataPage = tmp;
+                        // props.back  = back
                       }
                       if(history){
                         props.history=history;
@@ -119,12 +271,18 @@ function requireContent(fieldIn, component) {
                 )
               }
             });
-            component.Page = wrapComponent(WeactNavbar, {page: page});
+            component.Page = wrapComponent(WeactNavbar, {page: page, newpage: newpage});
           }
           component.setState({loading: false});
-
-          if(component.state.init==true && fieldIn =='page' && !Meteor.isServer){
+          // $('.navbar-inner.ssr').remove()
+          // console.log(component.state.init);
+          // console.log(component.state.loading);
+          // console.log(fieldIn);
+          if(
+              component.state.init==true &&
+              component.state.loading==false && fieldIn =='page' && !Meteor.isServer){
               loadF7(component, component.props.f7);
+              console.log('async');
           }
 
 }
@@ -199,7 +357,7 @@ function loadContent(fieldIn, component) {
               // let name = 'Page'+tmp.charAt(0).toUpperCase() + tmp.slice(1);
               // let Page = eval(name);
 
-              let thisPage = require('./components/page/'+tmp).default;
+              // let thisPage = require('./components/page/'+tmp).default;
               let Page;
               if(tmp=='index'){
                 Page = wrapComponent(thisPage, {children:<TodoMain/>, class:'page '});
@@ -255,6 +413,7 @@ function loadContent(fieldIn, component) {
               }
               if( tmp!=='index' && !Meteor.isServer){
                 props.class+= ' cached'       ;
+                props.back  = back;
               }
               // if(tmp=='index'){
               //   Page = wrapComponent(thisPage, {class:'navbar-inner'});
@@ -322,14 +481,14 @@ function loadContent(fieldIn, component) {
   }
   component.setState({loading: false});
   if(component.state.init==true && fieldIn =='page'){
-      console.log('asyncLoadF7');
+      // console.log('asyncLoadF7');
       if(!Meteor.isServer){
           loadF7(component, component.props.f7);
       }
   }
 }
 
-function getRoute(fieldIn, component) {
+function getRoute(fieldIn, component, newpage) {
   // switch(route) {
     // add each route in here
     // case "about":
@@ -360,21 +519,34 @@ function getRoute(fieldIn, component) {
           }
         });
       };
-      let helmet = require('./components/helmet/'+currentName).default;
+      if(!Meteor.isServer){
+        // let helmet = require('./components/helmet/'+currentName);
+        let helmetbundle = require('bundle!./components/helmet/'+currentName);
+        helmetbundle(helmet =>{
+          component.Page = wrapComponent(helmet.default);
+          component.setState({loading: false});
+          return;
+        })
+      }else{
+        let helmet = require('./components/helmet/'+currentName);
+        // let helmetbundle = require('bundle!./components/helmet/'+currentName);
+        // helmetbundle(helmet =>{
+          component.Page = wrapComponent(helmet.default);
+          component.setState({loading: false});
+          return;
+        // })
+      }
 
-      component.Page = wrapComponent(helmet);
-      component.setState({loading: false});
-      return;
     }
     if(fieldIn == 'page'
     || fieldIn == 'navbar'
     ){
       if(!Meteor.isServer){
         require.ensure([], (require) => {
-          requireContent(fieldIn, component)
+          requireContent(fieldIn, component, newpage)
         });
       }else{
-        requireContent(fieldIn, component)
+        requireContent(fieldIn, component, newpage)
       }
     }
     // if(fieldIn =='navbar'){
@@ -667,12 +839,30 @@ function getClientRoute(fieldIn, component) {
           }
         });
       };
-      let helmet = require('./components/helmet/'+currentName).default;
+      // let helmet = require('./components/helmet/'+currentName).default;
 
       component.Page = wrapComponent(helmet);
       component.setState({loading: false});
       return;
     }
+    let NavbarIndex ;
+    // let NavbarAbout ;
+    // let NavbarForm  ;
+    // let PageAbout   ;
+    // let PageForm    ;
+    // let PageForm1   ;
+    // let PageIndex   ;
+    // let PageRoot    ;
+    // if(!Meteor.isServer){
+    //    NavbarIndex = require('./components/navbar/index').default;
+    //    NavbarAbout = require('./components/navbar/about').default;
+    //    NavbarForm  = require('./components/navbar/form').default;
+    //    PageAbout   = require('./components/pageCreate/about').default;
+    //    PageForm    = require('./components/pageCreate/form').default;
+    //    PageForm1    = require('./components/pageCreate/form1').default;
+    //    PageIndex   = require('./components/pageCreate/index').default;
+    //    PageRoot   = require('./components/pageCreate/root').default;
+    // }
     require.ensure([], (require) => {
       let currentName = "";
       if(component.props.location.pathname.split('/')[1]){
@@ -710,7 +900,7 @@ function getClientRoute(fieldIn, component) {
             let tmp = history[i]
             tmp = tmp.replace('#','');
             page.push(tmp);
-          }dddd
+          }
         }
         if(currentName!=='index' &&   page.indexOf(currentName)<0)  page.push(currentName);
       }else{                //server code
@@ -724,7 +914,7 @@ function getClientRoute(fieldIn, component) {
             return (
               <div className="pages navbar-through toolbar-through">
                 {pageP.map(function(tmp, i){
-                  let Page = require('./components/page/'+tmp).default;
+                  // let Page = require('./components/page/'+tmp).default;
                   let props = {};
                     props.class     = " page"       ;
                   if(tmp=='index'){
@@ -788,7 +978,7 @@ function getClientRoute(fieldIn, component) {
     });
 }
 
-var AsyncRoute = function(route) {
+var AsyncRoute = function(route, newpage) {
   return React.createClass({
     getInitialState: function() {
       return {
@@ -796,13 +986,19 @@ var AsyncRoute = function(route) {
       }
     },
     componentWillMount: function() {
-      let hasRoute = route || {};
+      let hasRoute = route || 'page';
+      let hasNewpage = newpage || null;
+      // if(hasRoute =='page'){
+      // console.log(newpage);
+        getRoute(hasRoute, this, newpage);
+      // }
+
       // getRoute(hasRoute, this);
       // if(!Meteor.isServer){
       //   getClientRoute(hasRoute, this);
       //   // console.log('client load');
       // }else{
-        getRoute(hasRoute, this);
+
         // console.log('server load');
       // }
 
@@ -823,15 +1019,19 @@ var AsyncRoute = function(route) {
     },
     // componentDidUpdate:function(){
     //   // console.log('update');
-    //   // let hasRoute = route || {};
+    //   let hasRoute = route || {};
     //   // getRoute(hasRoute, this);
     //   // let component = this;
     //   // loadF7(component, component.props.f7);
     //   console.log('async1');
+    //   if(this.state.loading==true){
+    //   }
+    //
     //   // let component = this;
     //   // loadF7(component, component.props.f7);
     // },
     render: function() {
+      // console.log(this.state.loading);
       if (this.state.loading) {
         return (
           <div>Loading...</div>

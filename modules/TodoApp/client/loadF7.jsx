@@ -1,9 +1,11 @@
 function loadF7(component, f7){
   // console.log(this.state.f7);
   if(!Meteor.isServer) {
-
+    // $('.navbar-inner.ssr').remove()
     // console.log(component.props.f7);
     // // console.log("yeah!");
+    // console.log('beforeF7');
+    // console.log($('.navbar-inner.ssr'));
     let app = f7;
       // console.log(component.props.f7);
     // console.log(app.views[0].history);
@@ -18,7 +20,8 @@ function loadF7(component, f7){
     // if(rindex >0){
     //   $('[data-page="'+history[rindex-1].slice(1, history[rindex-1].length)+'"].page').removeClass('cached');
     // }
-
+    // console.log('beforeAddview');
+    // console.log($('.navbar-inner.ssr'));
     let view = app.addView('.view-main', {
       // Enable dynamic Navbar
       dynamicNavbar: true,
@@ -55,6 +58,8 @@ function loadF7(component, f7){
               // console.log(history);
               sessionStorage.setItem('history', JSON.stringify(history));
             }
+            //Define Action
+            let theIndex;
             if(sessionStorage.getItem('historyRoute')==undefined){
               let route = ['/'];
               if(routeNew!=='/'){
@@ -68,6 +73,9 @@ function loadF7(component, f7){
             }else{
               let route = JSON.parse(sessionStorage.getItem('historyRoute'));
               let index = JSON.parse(sessionStorage.getItem('historyRouteIndex'));
+              // console.log(route);
+              theIndex = index;
+              // console.log(index);
               if(routeNew==route[index-1]){
                 //go back
                 // console.log('back');
@@ -90,11 +98,15 @@ function loadF7(component, f7){
                 isBack=0;
                 route = route.slice(0, index+1);
                 let history = JSON.parse(sessionStorage.getItem('history'));
+                let historyPosition = JSON.parse(sessionStorage.getItem('historyPosition'));
                 // console.log(history);
                 // if(!history){
                 //   history = ['']
                 // }
                 history = history.slice(0, index+1);
+                historyPosition = historyPosition.slice(0, index+1);
+                // console.log(historyPosition);
+                historyPosition.push(0);
                 // console.log(history)
                 for(let i=1; i<route.length; i++){
                   let tmp = route[i];
@@ -106,6 +118,7 @@ function loadF7(component, f7){
                 sessionStorage.setItem('history', JSON.stringify(history));
                 sessionStorage.setItem('historyRoute', JSON.stringify(route));
                 sessionStorage.setItem('historyRouteIndex',index+1);
+                sessionStorage.setItem('historyPosition', JSON.stringify(historyPosition))
               }
             }
             var options = {};
@@ -129,7 +142,7 @@ function loadF7(component, f7){
             //
             //
             // }
-
+            // console.log(routeOld);
             if( !routeOld){
               options.animatePages=false;
             }
@@ -148,7 +161,10 @@ function loadF7(component, f7){
             // console.log(app.views[0].history);
             // console.log($.inArray('#'+pageName, app.views[1].history) > -1);
             // if(isBack==1 && $.inArray('#'+pageName, app.views[1].history) > -1){
-
+            // $('.navbar-inner.ssr').remove()
+            // $('.navbar-inner.ssr').remove()
+            // $('.navbar-inner.ssr').remove()
+            // $('.navbar-inner.ssr').remove()
             if(isBack==1 ){
               // console.log(Session.get('onSwipe'));
               if(Session.get('onSwipe')==0){
@@ -255,6 +271,7 @@ function loadF7(component, f7){
                 let k = history;
                 let i     = JSON.parse( sessionStorage.getItem('historyRouteIndex') );
                 if(k[i].slice(1, k[i].length)!=='index'){
+                // $('[data-page="'+k[i].slice(1, k[i].length)+'"].page').css('opacity', 0);
                   app.views[1].router.loadPage({
                     pageName:   k[i].slice(1, k[i].length),
                     animatePages: false
@@ -262,10 +279,17 @@ function loadF7(component, f7){
                 }
                 i+=1;
                 if(!!k[i]){
+                  // $('[data-page="'+k[i].slice(1, k[i].length)+'"].page').css('opacity', 0);
                   app.views[1].router.loadPage({
                     pageName:   k[i].slice(1, k[i].length),
                     animatePages: false
                   });
+                  let historyPosition = JSON.parse(sessionStorage.getItem('historyPosition'));
+                  if(historyPosition[i]>0){
+                    $('[data-page="'+k[i].slice(1, k[i].length)+'"]>.page-content').scrollTop(historyPosition[i]);
+                  }
+                  // $('[data-page="'+k[i-1].slice(1, k[i-1].length)+'"].page').css('opacity', 1);
+
                 }
 
                 // let cb = app.onPageReinit(k[i].slice(1, k[i].length), function(){
@@ -308,7 +332,7 @@ function loadF7(component, f7){
                 // //
                 // // //make static after back change
                 app.onPageAfterBack(backPage, function(){
-                  console.log('done render');
+                  // console.log('done render');
                   setTimeout(function(){
                     var barWidth    = $('[data-page="'+pageName+'"].navbar-inner').width();
                     var titleWidth  = $('[data-page="'+pageName+'"].navbar-inner>.center').width();
@@ -339,7 +363,89 @@ function loadF7(component, f7){
               //
                 // setTimeout(function(){
                 // console.log(app.views);
-
+                // console.log('loadPage');
+                // console.log(console.log($('.navbar-inner.ssr')));
+                // $('.navbar-inner.ssr').ready(function(){
+                //     if($('.navbar-inner.ssr').length){
+                //       // $('.navbar-inner.ssr').on('click', function(){
+                //       //   window.history.back();
+                //       // })
+                //       // location.reload();
+                //       $('.navbar-inner.ssr').remove();
+                //       // let index           = JSON.parse(sessionStorage.getItem('historyRouteIndex'));
+                //       // let history         = JSON.parse(sessionStorage.getItem('history'));
+                //       // let pageName     = history[index].replace('#','');
+                //       // console.log(pageName);
+                //       // setTimeout(function(){
+                //       //   $('.navbar-inner.ssr').ready(function(){
+                //       //     if($('.navbar-inner.ssr').length){
+                //       // $('[data-page="'+pageName+'"].navbar-inner').removeClass('navbar-from-center-to-left')
+                //       // var barWidth    = $('[data-page="'+pageName+'"].navbar-inner').width();
+                //       // var titleWidth  = $('[data-page="'+pageName+'"].navbar-inner>.center').width();
+                //       // let num         = ( titleWidth - barWidth )/2;
+                //       // let center      = $('[data-page="'+pageName+'"].navbar-inner>.center');
+                //       // center.css( 'left'      , num*2                               );
+                //       // // center.css( 'transform' , 'translate3d('+-num+'px, 0px, 0px)' );
+                //       //
+                //       // center.css( 'transform' , 'translate3d(0px, 0px, 0px)' );
+                //       // center.css( 'transition', 'transform 400ms'                   );
+                //       console.log('remove the back');
+                //     }
+                // //     // loadF7(self, stateF7);
+                //   })
+                // app.onPageAfterAnimation(pageName, function(){
+                //   setTimeout(function(){
+                //     // console.log();
+                //     // $('.navbar-inner.ssr').ready(function(){
+                //     // console.log();
+                //     if($('[data-page="'+pageName+'"].navbar-inner').hasClass('navbar-from-center-to-left')){
+                //       var barWidth    = $('[data-page="'+pageName+'"].navbar-inner').width();
+                //       var titleWidth  = $('[data-page="'+pageName+'"].navbar-inner>.center').width();
+                //       let num         = ( titleWidth - barWidth )/2;
+                //       let center      = $('[data-page="'+pageName+'"].navbar-inner>.center');
+                //       let left = $('[data-page="'+pageName+'"].navbar-inner>.left');
+                //       // console.log(num);
+                //       // center.css( 'left'      , num*2                               );
+                //       // // center.css( 'transform' , 'translate3d('+-num+'px, 0px, 0px)' );
+                //       //
+                //       left.css( 'transform'   , '' );
+                //       left.css( 'opacity'     , '1');
+                //       center.css( 'transform' , 'translate3d(0px, 0px, 0px)' );
+                //       center.css( 'opacity'     , '1');
+                //       document.querySelectorAll("[data-page='"+pageName+"'].navbar-inner")[0].className
+                //       = document.querySelectorAll("[data-page='"+pageName+"'].navbar-inner")[0].className.replace(/\bnavbar-from-center-to-left\b/,'');
+                //       window.location.reload();
+                //     }
+                //     //
+                //
+                //         if($('.navbar-inner.ssr').length){
+                //
+                //
+                //
+                //           $('.navbar-inner.ssr').remove();
+                //           // center.css( 'transform' , '' );
+                //           // center.css( 'opacity'   , '1');
+                //           // center.css( 'transition', '400ms'                   );
+                //           // center.css( 'transform' , '' );
+                //           // document.querySelectorAll("[data-page='about'].navbar-inner")[0].className
+                //           // =
+                //           // document.querySelectorAll("[data-page='about'].navbar-inner")[0].className.replace(/\bnavbar-from-center-to-left\b/,'');
+                //           // $('[data-page="'+pageName+'"].navbar-inner').first().removeClass('navbar-from-center-to-left')
+                //           // let index           = JSON.parse(sessionStorage.getItem('historyRouteIndex'));
+                //           // let history         = JSON.parse(sessionStorage.getItem('history'));
+                //           // let pageName     = history[index].replace('#','');
+                //           // console.log(pageName);
+                //           // setTimeout(function(){
+                //           //   $('.navbar-inner.ssr').ready(function(){
+                //           //     if($('.navbar-inner.ssr').length){
+                //           // $('[data-page="'+pageName+'"].navbar-inner').removeClass('navbar-from-center-to-left')
+                //
+                //           console.log('remove the back');
+                //         }
+                //       // })
+                //
+                //   },0)
+                // })
                 let i     = JSON.parse( sessionStorage.getItem('historyRouteIndex') );
                 if (i>0) {
                   let history = JSON.parse(sessionStorage.getItem('history'));
@@ -349,11 +455,59 @@ function loadF7(component, f7){
                     pageName:   k[i].slice(1, k[i].length),
                     animatePages: false
                   });
+                  let historyPosition = JSON.parse(sessionStorage.getItem('historyPosition'));
+                  if(historyPosition[i]>0){
+                    $('[data-page="'+k[i].slice(1, k[i].length)+'"]>.page-content').scrollTop(historyPosition[i]);
+                  }
                 }
+                // else{
+                //   app.views[1].router.loadPage({
+                //     pageName:   'index',
+                //     animatePages: false
+                //   });
+                // }
+                // console.log('afterbeforePage');
+                // console.log($('.navbar-inner.ssr'));
                   // console.log(app.views[1].router);
                   // setTimeout(function(){
                   //if not index page load
                   if(!!routeName[1])app.views[1].router.loadPage(options);
+
+                  // console.log('AfterLog');
+                  // console.log($('.navbar-inner.ssr'));
+
+                  // setTimeout(function(){
+                  //   $('.navbar-inner.ssr').ready(function(){
+                  //     if($('.navbar-inner.ssr').length){
+                  //       // $('.navbar-inner.ssr').on('click', function(){
+                  //       //   window.history.back();
+                  //       // })
+                  //       // location.reload();
+                  //       $('.navbar-inner.ssr').remove();
+                  //       // let index           = JSON.parse(sessionStorage.getItem('historyRouteIndex'));
+                  //       // let history         = JSON.parse(sessionStorage.getItem('history'));
+                  //       // let pageName     = history[index].replace('#','');
+                  //       // console.log(pageName);
+                  //       // setTimeout(function(){
+                  //       //   $('.navbar-inner.ssr').ready(function(){
+                  //       //     if($('.navbar-inner.ssr').length){
+                  //       // $('[data-page="'+pageName+'"].navbar-inner').removeClass('navbar-from-center-to-left')
+                  //       // var barWidth    = $('[data-page="'+pageName+'"].navbar-inner').width();
+                  //       // var titleWidth  = $('[data-page="'+pageName+'"].navbar-inner>.center').width();
+                  //       // let num         = ( titleWidth - barWidth )/2;
+                  //       // let center      = $('[data-page="'+pageName+'"].navbar-inner>.center');
+                  //       // center.css( 'left'      , num*2                               );
+                  //       // // center.css( 'transform' , 'translate3d('+-num+'px, 0px, 0px)' );
+                  //       //
+                  //       // center.css( 'transform' , 'translate3d(0px, 0px, 0px)' );
+                  //       // center.css( 'transition', 'transform 400ms'                   );
+                  //       console.log('remove the back');
+                  //     }
+                  //     // loadF7(self, stateF7);
+                  //   })
+                  // },0)
+
+
                   // },0)
                   // console.log(app.views);
                 // },0);
@@ -469,7 +623,44 @@ function loadF7(component, f7){
             //   console.log("swipeBack");
             // })
             // console.log(app.views[0].activePage.swipeBack);
-            if(!!routeOld && routeOld!==routeNew){
+
+            if(sessionStorage.getItem('historyRoute')==undefined){
+              // console.log("what!");
+            }else{
+              let route = JSON.parse(sessionStorage.getItem('historyRoute'));
+              let index = theIndex;
+              let historyPosition = JSON.parse(sessionStorage.getItem('historyPosition'));
+
+              let currentName     =
+                ( routeName[routeName.length-1]!==''  ) ? routeName[routeName.length-1] : 'index';
+              let currentIndex    = JSON.parse(sessionStorage.getItem('historyRouteIndex'));
+              // console.log('check index');
+              // console.log();
+              // console.log(index);
+              //
+              if(routeNew==route[index-1]){
+                //go back
+                // console.log('back');
+                // $('[data-page="'+currentName+'"]>.page-content').ready(function(){
+                  $('[data-page="'+currentName+'"]>.page-content').scrollTop(historyPosition[currentIndex]);
+                // })
+                // console.log('yo'+currentName+currentIndex);
+                // $('[data-page="index"]>.page-content').scrollTop(52);
+              }else if((index+1)<route.length && routeNew==route[index+1]){
+                //go forward but still in history
+                // console.log('forward')
+                $('[data-page="'+currentName+'"]>.page-content').scrollTop(historyPosition[currentIndex]);
+              }else if(routeNew==route[index]){
+                //refresh paged
+                // console.log('refresh');
+              }else if(routeNew!=='/'){
+                //discover to new page
+                // console.log('new')
+              }
+            }
+
+
+            if(!!routeOld && routeOld!==routeNew){  //Is not initial or reload
               // console.log(app.views[0].history)
               // let history = app.views[0].history;
               // if(history.indexOf('#undefined')!==-1)history.splice(history.indexOf('#undefined'),1);
@@ -489,16 +680,37 @@ function loadF7(component, f7){
                 history.push(tmp);
               }
               sessionStorage.setItem('history', JSON.stringify($.unique(history)));
+            }else{// Initial or reload
+              let index           = JSON.parse(sessionStorage.getItem('historyRouteIndex'));
+              let historyPosition = JSON.parse(sessionStorage.getItem('historyPosition'));
+
+
+              let currentName     =
+                ( routeName[routeName.length-1]!==''  ) ? routeName[routeName.length-1] : 'index';
+
+              $('[data-page="'+currentName+'"]>.page-content').scrollTop(historyPosition[index]);
+              // console.log('scrolled');
+              // console.log(historyPosition[index]);
+              // console.log(currentName);
             }
+
+
             // console.log(app.views[0].history);
             // console.log(app.views[0].history.push('#'+this.props.location.pathname.split('/')));
             // console.log(app.views[0].history);
-
+            // console.log('beforeMergeView');
+            // console.log($('.navbar-inner.ssr'));
             app.views=[app.views[0]];
+            // console.log('afterMergeView');
+            // console.log($('.navbar-inner.ssr'));
             Session.set('isBack', undefined);
             Session.set('routeOld', routeNew);
             // Session.set('onSwipe', onSwipe);
             routeOld = routeNew;
+            // $('.navbar-inner.ssr').ready(function() {
+            //   $('.navbar-inner.ssr').remove();
+            //   console.log('kill ssr bar');
+            // })
     // this.setState({f7: app});
   }
 }

@@ -76,34 +76,47 @@ export default class TodoApp extends Component {
   //   // }else{
   //   // }
   // }
-
+  // componentWillMount(){
+  //   if(!Meteor.isServer){
+  //     console.log($('.f7-main'));
+  //   }
+  // }
   componentDidMount() {
-
+    // if(!Meteor.isServer){
+    //   console.log($('.f7-main'));
+    // }
       // this.setState({history: this.props.history});
       if(!Meteor.isServer && !!$("[data-page='index']")) {
 
-          // if(!!this.props.location.pathname.split('/')[1]){
-          //   let origin = this.props.location.pathname
-          //   sessionStorage.setItem('origin', JSON.stringify(origin));
-          //   this.props.history.replace('/');
-          // }
-
-          let app = new F7();
+          if(!!this.props.location.pathname.split('/')[1] && JSON.parse( sessionStorage.getItem('origin') )!=='/'){
+            let origin = this.props.location.pathname
+            sessionStorage.setItem('origin', JSON.stringify(origin));
+            this.props.history.replace('/');
+          }else{
+            sessionStorage.setItem('origin', JSON.stringify('/'));
+          }
+        // var self = this;
+        // setTimeout(function(){
+          let app = new F7({
+            swipePanel: 'right',
+          });
 
         //this.setState({app: app});
 
         // Add main View
-        let view = app.addView('.view-main', {
-          // Enable dynamic Navbar
-          dynamicNavbar: true,
-          // Enable Dom Cache so we can use all inline pages
-          domCache: true
-        });
+          let view = app.addView('.view-main', {
+            // Enable dynamic Navbar
+            dynamicNavbar: true,
+            // Enable Dom Cache so we can use all inline pages
+            domCache: true
+          });
 
 
-        // Pass instance to state to pass to children.
-        // We are anyhow able to always get the instance via new F7()
-        this.setState({f7: app});
+          // Pass instance to state to pass to children.
+          // We are anyhow able to always get the instance via new F7()
+          this.setState({f7: app});
+          // },0)
+
         // console.log('layout did mount');
       }
 
@@ -117,16 +130,71 @@ export default class TodoApp extends Component {
       // if(!!Session.get('routeOld')){
 
 
-      // if(!Meteor.isServer) {
-      //   if(JSON.parse( sessionStorage.getItem('origin') )!=='/'){
-      //     let go = JSON.parse( sessionStorage.getItem('origin') );
-      //     sessionStorage.setItem('origin', JSON.stringify('/'));
-      //     this.props.history.push(go)
-      //   }
-      // }
+      if(!Meteor.isServer) {
+        if(JSON.parse( sessionStorage.getItem('origin') )!=='/'){
+          Session.set('routeOld', undefined); // make it load without animation
+          let go = JSON.parse( sessionStorage.getItem('origin') );
+          sessionStorage.setItem('origin', JSON.stringify('/'));
+          this.props.history.push(go)
+        }else{
+            // console.log($('.navbar-inner.ssr'));
+            // var self    = this;
+            // var stateF7 = this.state.f7;
+            // setTimeout(function(){
+            //   $('.navbar-inner.ssr').ready(function(){
+            //     if($('.navbar-inner.ssr').length){
+            //       // $('.navbar-inner.ssr').on('click', function(){
+            //       //   window.history.back();
+            //       // })
+            //       // location.reload();
+            //       console.log(self.props.location.pathname);
+            //       $('.navbar-inner.ssr').remove();
+            //       // let index           = JSON.parse(sessionStorage.getItem('historyRouteIndex'));
+            //       // let history         = JSON.parse(sessionStorage.getItem('history'));
+            //       // let pageName     = history[index].replace('#','');
+            //       // let pageName     = history[index].replace('#','');
+            //       // console.log(pageName);
+            //       // setTimeout(function(){
+            //       //   $('.navbar-inner.ssr').ready(function(){
+            //       //     if($('.navbar-inner.ssr').length){
+            //       // $('[data-page="'+pageName+'"].navbar-inner').removeClass('navbar-from-center-to-left')
+            //       // var barWidth    = $('[data-page="'+pageName+'"].navbar-inner').width();
+            //       // var titleWidth  = $('[data-page="'+pageName+'"].navbar-inner>.center').width();
+            //       // let num         = ( titleWidth - barWidth )/2;
+            //       // let center      = $('[data-page="'+pageName+'"].navbar-inner>.center');
+            //       // center.css( 'left'      , num*2                               );
+            //       // // center.css( 'transform' , 'translate3d('+-num+'px, 0px, 0px)' );
+            //       //
+            //       // center.css( 'transform' , 'translate3d(0px, 0px, 0px)' );
+            //       // center.css( 'transition', 'transform 400ms'                   );
+            //       // console.log('remove the back');
+            //     }
+            //
+            //     loadF7(self, stateF7);
+            //   })
+            // },0)
+            // let currentName = "";
+            // if(this.props.location.pathname.split('/')[1]){
+            //   currentName = this.props.location.pathname.split('/')[1];
+            // }else if(this.props.location.pathname=='/'){
+            //   currentName = 'index';
+            // }
+            // console.log(currentName);
+            // console.log(currentName==JSON.parse(sessionStorage.getItem('ready')));
+            // if(currentName==JSON.parse(sessionStorage.getItem('ready'))){
+              // console.log(JSON.parse(sessionStorage.getItem('ready')));
+              // loadF7(this, this.state.f7);
+              // console.log('index');
+              // console.log(this.props.location.pathname);
+            // }
+
+
+            loadF7(this, this.state.f7);
+        }
+      }
       // if(!!$("[data-page='index']")){
         // console.log('loadf7 in index');
-        loadF7(this, this.state.f7);
+
       // }
 
 

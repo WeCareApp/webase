@@ -16,7 +16,7 @@ export default function() {
           <div data-page="about" className="page cached">
             <div className="page-content">
               <div className="content-block">
-                <p>You may go <a href="#" className="back">back</a> or load <Link to="/about/form">Form</Link> page.
+                <p>You may go <a href="#" className="back">back</a> or load <Link to="/form">Form</Link> page.
                 </p>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vel commodo massa, eu adipiscing
                   mi. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
