@@ -8,7 +8,6 @@
   "babel-plugin-react-transform": "2.0.0-beta1",
   "babel-runtime": "^6.2.0",
   "react-mixin": "^3.0.3",
-
   "babel-loader": "^6.2.0",
   "null-loader": "^0.1.1",
   "url-loader": "^0.5.7",

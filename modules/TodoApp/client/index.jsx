@@ -140,39 +140,39 @@ export default class TodoApp extends Component {
             // console.log($('.navbar-inner.ssr'));
             // var self    = this;
             // var stateF7 = this.state.f7;
-            // setTimeout(function(){
-            //   $('.navbar-inner.ssr').ready(function(){
-            //     if($('.navbar-inner.ssr').length){
-            //       // $('.navbar-inner.ssr').on('click', function(){
-            //       //   window.history.back();
-            //       // })
-            //       // location.reload();
-            //       console.log(self.props.location.pathname);
-            //       $('.navbar-inner.ssr').remove();
-            //       // let index           = JSON.parse(sessionStorage.getItem('historyRouteIndex'));
-            //       // let history         = JSON.parse(sessionStorage.getItem('history'));
-            //       // let pageName     = history[index].replace('#','');
-            //       // let pageName     = history[index].replace('#','');
-            //       // console.log(pageName);
-            //       // setTimeout(function(){
-            //       //   $('.navbar-inner.ssr').ready(function(){
-            //       //     if($('.navbar-inner.ssr').length){
-            //       // $('[data-page="'+pageName+'"].navbar-inner').removeClass('navbar-from-center-to-left')
-            //       // var barWidth    = $('[data-page="'+pageName+'"].navbar-inner').width();
-            //       // var titleWidth  = $('[data-page="'+pageName+'"].navbar-inner>.center').width();
-            //       // let num         = ( titleWidth - barWidth )/2;
-            //       // let center      = $('[data-page="'+pageName+'"].navbar-inner>.center');
-            //       // center.css( 'left'      , num*2                               );
-            //       // // center.css( 'transform' , 'translate3d('+-num+'px, 0px, 0px)' );
-            //       //
-            //       // center.css( 'transform' , 'translate3d(0px, 0px, 0px)' );
-            //       // center.css( 'transition', 'transform 400ms'                   );
-            //       // console.log('remove the back');
-            //     }
-            //
-            //     loadF7(self, stateF7);
-            //   })
-            // },0)
+            setTimeout(function(){
+              $('.navbar>.ssr').ready(function(){
+                if($('.navbar>.ssr').length){
+                  // $('.navbar-inner.ssr').on('click', function(){
+                  //   window.history.back();
+                  // })
+                  // location.reload();
+                  // console.log(self.props.location.pathname);
+                  $('.navbar>.ssr').remove();
+                  // let index           = JSON.parse(sessionStorage.getItem('historyRouteIndex'));
+                  // let history         = JSON.parse(sessionStorage.getItem('history'));
+                  // let pageName     = history[index].replace('#','');
+                  // let pageName     = history[index].replace('#','');
+                  // console.log(pageName);
+                  // setTimeout(function(){
+                  //   $('.navbar-inner.ssr').ready(function(){
+                  //     if($('.navbar-inner.ssr').length){
+                  // $('[data-page="'+pageName+'"].navbar-inner').removeClass('navbar-from-center-to-left')
+                  // var barWidth    = $('[data-page="'+pageName+'"].navbar-inner').width();
+                  // var titleWidth  = $('[data-page="'+pageName+'"].navbar-inner>.center').width();
+                  // let num         = ( titleWidth - barWidth )/2;
+                  // let center      = $('[data-page="'+pageName+'"].navbar-inner>.center');
+                  // center.css( 'left'      , num*2                               );
+                  // // center.css( 'transform' , 'translate3d('+-num+'px, 0px, 0px)' );
+                  //
+                  // center.css( 'transform' , 'translate3d(0px, 0px, 0px)' );
+                  // center.css( 'transition', 'transform 400ms'                   );
+                  // console.log('remove the back');
+                }
+
+                // loadF7(self, stateF7);
+              })
+            },0)
             // let currentName = "";
             // if(this.props.location.pathname.split('/')[1]){
             //   currentName = this.props.location.pathname.split('/')[1];

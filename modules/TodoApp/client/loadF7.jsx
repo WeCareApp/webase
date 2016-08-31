@@ -38,8 +38,11 @@ function loadF7(component, f7){
             // get the Route Name like /about -> get "about"
             var routeName;
             // routeName= FlowRouter.current().route.path.split('/');
+            // console.log(component.props.location.pathname.split('/'));
             routeName = component.props.location.pathname.split('/');
             if(routeName[1]=="")routeName.splice(1, 1);
+            // console.log('routeName:');
+            // console.log(routeName);
             // get the Route URL like /about/12sd -> get "/about"
             var routeNew;
             // routeNew = FlowRouter.current().path;
@@ -49,11 +52,13 @@ function loadF7(component, f7){
             }
             Session.set('routeOld', routeOld);
             if(sessionStorage.getItem('history')==undefined){
+              // console.log('history');
               var array = ['#index'];
               // console.log(app.views[0].history);
               // let routeName;
               // routeName = component.props.location.pathname.split('/')[1];
               history = ['#index']
+              // console.log(routeName);
               if(!!routeName[1])history.push('#'+routeName[1]);
               // console.log(history);
               sessionStorage.setItem('history', JSON.stringify(history));
@@ -108,12 +113,15 @@ function loadF7(component, f7){
                 // console.log(historyPosition);
                 historyPosition.push(0);
                 // console.log(history)
+
+                route.push(routeNew);
                 for(let i=1; i<route.length; i++){
+                  // console.log('push');
                   let tmp = route[i];
                   tmp = tmp.replace('/','#');
                   history.push(tmp);
                 }
-                route.push(routeNew);
+                // console.log(route);
                 // console.log(history);
                 sessionStorage.setItem('history', JSON.stringify(history));
                 sessionStorage.setItem('historyRoute', JSON.stringify(route));
