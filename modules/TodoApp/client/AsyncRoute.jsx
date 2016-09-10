@@ -30,23 +30,23 @@ function requireContent(fieldIn, component, newpage) {
             });
           };
           let page = [];
-          if(!Meteor.isServer){ //client code
-            if(fieldIn=='page'){
-              page   = ['root','index'] ;
-            }else if(fieldIn=='navbar'){
-              page   = ['index']        ;
-            }
-            if(!!history){
-              for(let i=1; i<history.length; i++){
-                let tmp = history[i]
-                tmp = tmp.replace('#','');
-                page.push(tmp);
-              }
-            }
-            if(currentName!=='index' &&   page.indexOf(currentName)<0)  page.push(currentName);
-          }else{                //server code
+          // if(!Meteor.isServer){ //client code
+          //   if(fieldIn=='page'){
+          //     page   = ['root','index'] ;
+          //   }else if(fieldIn=='navbar'){
+          //     page   = ['index']        ;
+          //   }
+          //   if(!!history){
+          //     for(let i=1; i<history.length; i++){
+          //       let tmp = history[i]
+          //       tmp = tmp.replace('#','');
+          //       page.push(tmp);
+          //     }
+          //   }
+          //   if(currentName!=='index' &&   page.indexOf(currentName)<0)  page.push(currentName);
+          // }else{                //server code
             page.push(currentName);
-          }
+          // }
 
           // Push components to page
           if( fieldIn == 'page'){
