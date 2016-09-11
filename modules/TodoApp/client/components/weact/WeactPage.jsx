@@ -32,22 +32,23 @@ let WeactPage = React.createClass({
             // Page = pagePP[i];
             Page = require('./../../components/page/'+tmp).default;
           }else{
-            Page = require('./components/page/'+tmp).default;
+            Page = require('./../../components/page/'+tmp).default;
           }
 
             let props = {};
               props.class     = " page"       ;
             if(tmp=='index'){
-              if( i == index-1 ) props.class += " page-on-center";
+
               props.children  = <TodoMain/>   ;
               if(!Meteor.isServer){
                 // props.class  += " cached"     ;
               }
             }else{
               if(!Meteor.isServer
-                // && tmp!==currentName
+                && tmp!==currentName
               ){
-                props.class  += " cached"     ;
+                if( i == index+1 ) props.class += " page-on-center";
+                else props.class  += " cached"     ;
               }
             }
             loading=false;

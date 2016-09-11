@@ -108,17 +108,17 @@ function loadF7(component, f7){
                 let i     = JSON.parse( sessionStorage.getItem('historyRouteIndex') );
                 if(k[i].slice(1, k[i].length)!=='index'){
                 // $('[data-page="'+k[i].slice(1, k[i].length)+'"].page').css('opacity', 0);
-                  app.views[1].router.loadPage({
-                    pageName:   k[i].slice(1, k[i].length),
-                    animatePages: false
-                  });
+                  // app.views[1].router.loadPage({
+                  //   pageName:   k[i].slice(1, k[i].length),
+                  //   animatePages: false
+                  // });
                 }
                 i+=1;
                 if(!!k[i]){
-                  app.views[1].router.loadPage({
-                    pageName:   k[i].slice(1, k[i].length),
-                    animatePages: false
-                  });
+                  // app.views[1].router.loadPage({
+                  //   pageName:   k[i].slice(1, k[i].length),
+                  //   animatePages: false
+                  // });
                   let historyPosition = JSON.parse(sessionStorage.getItem('historyPosition'));
                   // if(historyPosition[i]>0){
                     // $('[data-page="'+k[i].slice(1, k[i].length)+'"]>.page-content').scrollTop(historyPosition[i]);
@@ -169,7 +169,7 @@ function loadF7(component, f7){
                 //   // }
                 // }
                   //if not index page load
-                  if(!!routeName[1])app.views[1].router.loadPage(options);
+                  // if(!!routeName[1])app.views[1].router.loadPage(options);
 
             }
             let index     = JSON.parse( sessionStorage.getItem('historyRouteIndex') );

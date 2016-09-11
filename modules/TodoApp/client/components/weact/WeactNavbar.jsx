@@ -10,15 +10,15 @@ var WeactNavbar = React.createClass({
     var navbarP = this.state.page;
     var history = this.props.history;
     var backLink ;
-    // = component.props.location.pathname.split('/');
-    // backLink.shift();
-    // backLink.pop();
-    // var back = '/';
-    // if(backLink.length>0){
-    //   for (var i = 0; i < backLink.length; i++) {
-    //     back += backLink[i]+"/"
-    //   }
-    // }
+    backLink= this.props.location.pathname.split('/');
+    backLink.shift();
+    backLink.pop();
+    var back = '/';
+    if(backLink.length>0){
+      for (var i = 0; i < backLink.length; i++) {
+        back += backLink[i]+"/"
+      }
+    }
     let pageP = navbarP;
     let currentName;
     // console.log(this.props.route);
@@ -43,7 +43,7 @@ var WeactNavbar = React.createClass({
             Page = require('./../../components/navbar/'+tmp).default;
           }
           else{
-            Page = require('./components/navbar/'+tmp).default;
+            Page = require('./../../components/navbar/'+tmp).default;
           }
           let props = {};
           if( Meteor.isServer){
