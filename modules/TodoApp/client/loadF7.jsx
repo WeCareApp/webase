@@ -65,8 +65,8 @@ function loadF7(component, f7){
                 let history = JSON.parse(sessionStorage.getItem('history'));
                 let historyPosition = JSON.parse(sessionStorage.getItem('historyPosition'));
                 history = history.slice(0, index+1);
-                historyPosition = historyPosition.slice(0, index+1);
-                historyPosition.push(0);
+                // historyPosition = historyPosition.slice(0, index+1);
+                // historyPosition.push(0);
 
                 route.push(routeNew);
                 for(let i=1; i<route.length; i++){
@@ -120,12 +120,13 @@ function loadF7(component, f7){
                     animatePages: false
                   });
                   let historyPosition = JSON.parse(sessionStorage.getItem('historyPosition'));
-                  if(historyPosition[i]>0){
-                    $('[data-page="'+k[i].slice(1, k[i].length)+'"]>.page-content').scrollTop(historyPosition[i]);
-                  }
+                  // if(historyPosition[i]>0){
+                    // $('[data-page="'+k[i].slice(1, k[i].length)+'"]>.page-content').scrollTop(historyPosition[i]);
+                  // }
                 }
                 app.views[1].router.back();
                 //@back instance change bar style
+
                 setTimeout(function(){
                   var barWidth    = $('[data-page="'+pageName+'"].navbar-inner').width();
                   var titleWidth  = $('[data-page="'+pageName+'"].navbar-inner>.center').width();
@@ -153,20 +154,20 @@ function loadF7(component, f7){
               }
               isBack = 0;
             }else {
-                let i     = JSON.parse( sessionStorage.getItem('historyRouteIndex') );
-                if (i>0) {
-                  let history = JSON.parse(sessionStorage.getItem('history'));
-                  let k = history;
-                  i-=1;
-                  app.views[1].router.loadPage({
-                    pageName:   k[i].slice(1, k[i].length),
-                    animatePages: false
-                  });
-                  let historyPosition = JSON.parse(sessionStorage.getItem('historyPosition'));
-                  if(historyPosition[i]>0){
-                    $('[data-page="'+k[i].slice(1, k[i].length)+'"]>.page-content').scrollTop(historyPosition[i]);
-                  }
-                }
+                // let i     = JSON.parse( sessionStorage.getItem('historyRouteIndex') );
+                // if (i>0) {
+                //   let history = JSON.parse(sessionStorage.getItem('history'));
+                //   let k = history;
+                //   i-=1;
+                //   app.views[1].router.loadPage({
+                //     pageName:   k[i].slice(1, k[i].length),
+                //     animatePages: false
+                //   });
+                //   let historyPosition = JSON.parse(sessionStorage.getItem('historyPosition'));
+                //   // if(historyPosition[i]>0){
+                //   //   $('[data-page="'+k[i].slice(1, k[i].length)+'"]>.page-content').scrollTop(historyPosition[i]);
+                //   // }
+                // }
                   //if not index page load
                   if(!!routeName[1])app.views[1].router.loadPage(options);
 
@@ -205,11 +206,11 @@ function loadF7(component, f7){
               let currentIndex    = JSON.parse(sessionStorage.getItem('historyRouteIndex'));
               if(routeNew==route[index-1]){
                 //go back
-                  $('[data-page="'+currentName+'"]>.page-content').scrollTop(historyPosition[currentIndex]);
+                  // $('[data-page="'+currentName+'"]>.page-content').scrollTop(historyPosition[currentIndex]);
               }else if((index+1)<route.length && routeNew==route[index+1]){
                 //go forward but still in history
                 // console.log('forward')
-                $('[data-page="'+currentName+'"]>.page-content').scrollTop(historyPosition[currentIndex]);
+                // $('[data-page="'+currentName+'"]>.page-content').scrollTop(historyPosition[currentIndex]);
               }else if(routeNew==route[index]){
                 //refresh paged
                 // console.log('refresh');
@@ -239,7 +240,7 @@ function loadF7(component, f7){
               let currentName     =
                 ( routeName[routeName.length-1]!==''  ) ? routeName[routeName.length-1] : 'index';
 
-              $('[data-page="'+currentName+'"]>.page-content').scrollTop(historyPosition[index]);
+              // $('[data-page="'+currentName+'"]>.page-content').scrollTop(historyPosition[index]);
             }
             app.views=[app.views[0]];
             Session.set('isBack', undefined);

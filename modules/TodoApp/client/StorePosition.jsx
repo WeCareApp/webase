@@ -9,7 +9,7 @@ let StorePosition = function(){
 
   // console.log(tmp);
   // console.log('onLeave'+);
-  historyPosition[index] = $('[data-page="'+currentName+'"]>.page-content').scrollTop()
-  sessionStorage.setItem('historyPosition', JSON.stringify(historyPosition));
+  // historyPosition[index] = $('[data-page="'+currentName+'"]>.page-content').scrollTop()
+  // sessionStorage.setItem('historyPosition', JSON.stringify(historyPosition));
 }
 export default StorePosition

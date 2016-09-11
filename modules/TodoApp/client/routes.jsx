@@ -2,13 +2,15 @@ import { Route, IndexRoute } from 'react-router';
 //import { FlowRouter } from 'meteor/meteorhacks:flow-router';
 //import { ReactLayout } from 'meteor/kadira:react-layout';
 
-import TodoApp        from './index'                ;
-import TodoMain       from './TodoMain'             ;
-import LeftPanel      from './components/LeftPanel' ;
-import RightPanel     from './components/RightPanel';
-import AsyncRoute     from './AsyncRoute.jsx'       ;
-import GetComponents  from './GetComponents'        ;
-import StorePosition  from './StorePosition'        ;
+import TodoApp        from  './index'                       ;
+import TodoMain       from  './TodoMain'                    ;
+import LeftPanel      from  './components/LeftPanel'        ;
+import RightPanel     from  './components/RightPanel'       ;
+import AsyncRoute     from  './AsyncRoute.jsx'              ;
+import GetComponents  from  './GetComponents'               ;
+import StorePosition  from  './StorePosition'               ;
+import WeactPage      from  './components/weact/WeactPage'  ;
+import WeactNavbar    from  './components/weact/WeactNavbar';
 
 
 var components = function(){
@@ -38,7 +40,33 @@ export default (
       // }
     // }
         getComponents ={( state,  cb    ) =>  {
-          GetComponents(state, cb)
+          // console.log(state);
+          let currentName = "";
+          if(state.pathname.split('/')[1]){
+            currentName = state.pathname.split('/')[1];
+          }else if(state.pathname=='/'){
+            currentName = 'index';
+          }
+          let helmetCb;
+          if(!Meteor.isServer){
+            let helmetbundle = require('bundle!./components/helmet/'+currentName);
+            helmetbundle(helmet =>{
+              helmetCb = helmet.default;
+              // component.setState({loading: false});
+              // return;
+            })
+          }else{
+            let helmet = require('./components/helmet/'+currentName);
+              helmetCb = helmet.default;
+              // component.setState({loading: false});
+              // return;
+          }
+          cb(null, {
+            navbar: WeactNavbar,
+            page  : WeactPage,
+            helmet: helmetCb
+          })
+          // GetComponents(state, cb)
         }}
         onLeave       ={( next, replace ) =>  {
           StorePosition() //Store page position when leave the page
@@ -47,7 +75,32 @@ export default (
 
      <Route path="/about"
        getComponents={(state, cb) => {
-         GetComponents(state, cb)
+        //  GetComponents(state, cb)
+        let currentName = "";
+        if(state.pathname.split('/')[1]){
+          currentName = state.pathname.split('/')[1];
+        }else if(state.pathname=='/'){
+          currentName = 'index';
+        }
+        let helmetCb;
+        if(!Meteor.isServer){
+          let helmetbundle = require('bundle!./components/helmet/'+currentName);
+          helmetbundle(helmet =>{
+            helmetCb = helmet.default;
+            // component.setState({loading: false});
+            // return;
+          })
+        }else{
+          let helmet = require('./components/helmet/'+currentName);
+            helmetCb = helmet.default;
+            // component.setState({loading: false});
+            // return;
+        }
+        cb(null, {
+          navbar: WeactNavbar,
+          page  : WeactPage,
+          helmet: helmetCb
+        })
        }}
        onLeave       ={( next, replace ) =>  {
          StorePosition() //Store page position when leave the page
@@ -132,7 +185,32 @@ export default (
              })
        }}*/
        getComponents={(state, cb) => {
-         GetComponents(state, cb)
+         let currentName = "";
+         if(state.pathname.split('/')[1]){
+           currentName = state.pathname.split('/')[1];
+         }else if(state.pathname=='/'){
+           currentName = 'index';
+         }
+         let helmetCb;
+         if(!Meteor.isServer){
+           let helmetbundle = require('bundle!./components/helmet/'+currentName);
+           helmetbundle(helmet =>{
+             helmetCb = helmet.default;
+             // component.setState({loading: false});
+             // return;
+           })
+         }else{
+           let helmet = require('./components/helmet/'+currentName);
+             helmetCb = helmet.default;
+             // component.setState({loading: false});
+             // return;
+         }
+         cb(null, {
+           navbar: WeactNavbar,
+           page  : WeactPage,
+           helmet: helmetCb
+         })
+        //  GetComponents(state, cb)
        }}
        onLeave       ={( next, replace ) =>  {
          StorePosition() //Store page position when leave the page

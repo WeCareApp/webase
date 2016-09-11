@@ -32,12 +32,12 @@ export default class TodoMain extends Component {
   }
 
   componentDidUpdate(){
-    if(!Meteor.isServer && this.state.subscription.tasks.ready()){
-      let historyPosition = JSON.parse(sessionStorage.getItem('historyPosition'));
-      if(historyPosition[0]>0){
-        $('[data-page="index"]>.page-content').scrollTop(historyPosition[0])
-      }
-    }
+    // if(!Meteor.isServer && this.state.subscription.tasks.ready()){
+    //   let historyPosition = JSON.parse(sessionStorage.getItem('historyPosition'));
+    //   if(historyPosition && historyPosition[0]>0){
+    //     $('[data-page="index"]>.page-content').scrollTop(historyPosition[0])
+    //   }
+    // }
   }
 
   tasks() {
