@@ -11,6 +11,7 @@ import GetComponents  from  './GetComponents'               ;
 import StorePosition  from  './StorePosition'               ;
 import WeactPage      from  './components/weact/WeactPage'  ;
 import WeactNavbar    from  './components/weact/WeactNavbar';
+import HistoryAction  from  './HistoryAction'               ;
 
 
 var components = function(){
@@ -41,6 +42,7 @@ export default (
     // }
         getComponents ={( state,  cb    ) =>  {
           // console.log(state);
+          HistoryAction(state)
           let currentName = "";
           if(state.pathname.split('/')[1]){
             currentName = state.pathname.split('/')[1];
@@ -76,6 +78,7 @@ export default (
      <Route path="/about"
        getComponents={(state, cb) => {
         //  GetComponents(state, cb)
+        HistoryAction(state)
         let currentName = "";
         if(state.pathname.split('/')[1]){
           currentName = state.pathname.split('/')[1];
@@ -185,12 +188,14 @@ export default (
              })
        }}*/
        getComponents={(state, cb) => {
+         HistoryAction(state)
          let currentName = "";
          if(state.pathname.split('/')[1]){
            currentName = state.pathname.split('/')[1];
          }else if(state.pathname=='/'){
            currentName = 'index';
          }
+         console.log(currentName);
          let helmetCb;
          if(!Meteor.isServer){
            let helmetbundle = require('bundle!./components/helmet/'+currentName);

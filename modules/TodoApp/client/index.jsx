@@ -20,7 +20,11 @@ export default class TodoApp extends Component {
   constructor(props, context) {
     super(props);
     this.state = {
-      f7: null
+      f7: null            ,
+      hasRoute    : null  ,
+      historyRoute: null  ,
+      historyIndex: null  ,
+      historyAction: null
     }
   }
 
@@ -64,6 +68,199 @@ export default class TodoApp extends Component {
       this.state.f7.loginScreen();
     }
   }
+  currentName(){
+    let currentName;
+    // console.log(this.props.route);
+    let pathname = this.props.location.pathname;
+    if(pathname.split('/')[1]){
+      currentName = pathname.split('/')[1];
+    }else if(pathname=='/'){
+      currentName = 'index';
+    }
+    return currentName;
+  }
+
+  // action(){
+  //   if(!Meteor.isServer){
+  // //     // console.log(JSON.parse(sessionStorage.getItem('history')));
+  // //     // console.log();
+  //     let historyRoute  = this.state.historyRoute
+  //     let historyIndex  = this.state.historyIndex
+  //     // let pathname      = this.props.location.pathname
+  //     let currentName   = this.currentName()
+  //     let action
+  // //     var historyIndex = JSON.parse(sessionStorage.getItem('historyRouteIndex'));
+  // //     let historyRoute = JSON.parse(sessionStorage.getItem('historyRoute'     ));
+  // //     // console.log(JSON.parse(sessionStorage.getItem('historyRoute')));
+  // //     // console.log(historyIndex);
+  // //     // console.log(historyRoute);
+  // //     // console.log(component.props.f7);
+  // //     // console.log(JSON.parse(sessionStorage.getItem('isRefresh'     )));
+  // //     var isBack = 0;
+  // //
+  // //     // console.log(component.props.location.pathname);
+  //     if      (historyRoute==null                                                   ){
+  //       // console.log('initial')
+  //       // if(currentName=='index'){
+  //       //   this.setState({
+  //       //     historyRoute
+  //       //   })
+  //       // }
+  //       // else{
+  //       //
+  //       // }
+  //       // historyIndex = -1
+  //       action = 'initial'
+  //     }
+  //     else  if(historyRoute.indexOf(pathname)==-1          ){
+  //       // console.log('new')
+  //       // historyIndex++;
+  //       action = 'new'
+  //     }
+  //     // else  if(JSON.parse(sessionStorage.getItem('isRefresh'     ))   == 1          ){
+  //     //   // console.log('refresh')
+  //     //   // historyIndex = -1;
+  //     //   action = 'refresh'
+  //     // }
+  //     else  if(historyRoute.indexOf(pathname)> historyIndex){
+  //       // console.log('forward')
+  //       // historyIndex++;
+  //       action = 'forward'
+  //     }
+  //     else  if(historyRoute.indexOf(pathname)< historyIndex){
+  //       // console.log('back')
+  //       // isBack = 1;
+  //       // historyIndex--;
+  //       action = 'back'
+  //     }
+  //     return action
+  //   }
+  // }
+
+  historyRoute(){
+    let historyIndex  = this.state.historyIndex
+    let historyRoute  = this.state.historyRoute
+    let historyAction
+    let currentName   = this.currentName();
+    if(historyRoute==null){
+      historyRoute = ['index']
+      historyIndex = 0
+      if(this.currentName()!=='index'){
+        historyRoute.push(this.currentName())
+        historyIndex++
+      }
+      // console.log('new');
+      historyAction = 'initial'
+      // this.setState({
+      //   historyRoute  : historyRoute ,
+      //   historyIndex  : historyIndex ,
+      //   historyAction : 'initial'
+      // })
+    }
+    else{
+      if(currentName==historyRoute[historyIndex-1]){
+        //go back
+        // console.log('back');
+        historyIndex--
+        historyAction = 'back'
+        // if(this.state.historyAction!==historyAction){
+        //   this.setState({
+        //     // historyRoute  : historyRoute ,
+        //     // historyIndex  : historyIndex ,
+        //     historyAction : historyAction
+        //   })
+        // }
+        // isBack=1;
+        // sessionStorage.setItem('historyRouteIndex',index-1);
+      }else if((historyIndex+1)<historyRoute.length && currentName==historyRoute[historyIndex+1]){
+        //go forward but still in history
+        // console.log('forward')
+        historyIndex++
+        historyAction = 'forward'
+
+        // isBack= 0;
+        // sessionStorage.setItem('historyRouteIndex',index+1);
+      }else if(currentName==historyRoute[historyIndex]){
+        //refresh paged
+        // console.log('refresh');
+        if(this.state.hasRoute == null)historyAction = 'refresh'
+        else return
+        // if(this.state.historyAction!==historyAction){
+        //   this.setState({
+        //     // historyRoute  : historyRoute ,
+        //     // historyIndex  : historyIndex ,
+        //     historyAction : historyAction
+        //   })
+        // }
+        // }
+      }else if(currentName!=='index'){
+        //discover to new page
+        // console.log('new')
+        historyRoute = historyRoute.slice(0, historyIndex+1);
+        historyRoute.push(currentName)
+        historyIndex++
+        historyAction = 'new'
+        // if(this.state.historyAction!==historyAction){
+        //   this.setState({
+        //     // historyRoute  : historyRoute ,
+        //     // historyIndex  : historyIndex ,
+        //     historyAction : historyAction
+        //   })
+        // }
+        // isBack=0;
+        // route = route.slice(0, index+1);
+        // let history = JSON.parse(sessionStorage.getItem('history'));
+        // let historyPosition = JSON.parse(sessionStorage.getItem('historyPosition'));
+        // history = history.slice(0, index+1);
+        // // historyPosition = historyPosition.slice(0, index+1);
+        // // historyPosition.push(0);
+        //
+        // route.push(routeNew);
+        // for(let i=1; i<route.length; i++){
+        //   // console.log('push');
+        //   let tmp = route[i];
+        //   tmp = tmp.replace('/','#');
+        //   history.push(tmp);
+        // }
+        // sessionStorage.setItem('history', JSON.stringify(history));
+        // sessionStorage.setItem('historyRoute', JSON.stringify(route));
+        // sessionStorage.setItem('historyRouteIndex',index+1);
+        // sessionStorage.setItem('historyPosition', JSON.stringify(historyPosition))
+      }
+
+      // if(this.state.historyRoute.indexOf(this.currentName())==-1){
+      //
+      //   this.setState({
+      //
+      //   })
+      // }
+    }
+    if(this.state.historyRoute!==historyRoute){
+      this.setState({
+        historyRoute  : historyRoute
+        // historyIndex  : historyIndex ,
+        // historyAction : historyAction
+      })
+    }
+    if(this.state.historyIndex!==historyIndex){
+      this.setState({
+        // historyRoute  : historyRoute ,
+        historyIndex  : historyIndex
+        // historyAction : historyAction
+      })
+    }
+    if(this.state.historyAction!==historyAction){
+      this.setState({
+        // historyRoute  : historyRoute ,
+        // historyIndex  : historyIndex ,
+        historyAction : historyAction
+      })
+    }
+    console.log(this.state.historyRoute);
+    console.log(this.state.historyIndex);
+    console.log(this.state.historyAction);
+  }
+
 
   // backBtn() {
   //   let index = JSON.parse(sessionStorage.getItem('historyRouteIndex'));
@@ -82,9 +279,12 @@ export default class TodoApp extends Component {
   //   }
   // }
   componentDidMount() {
-    // if(!Meteor.isServer){
+    if(!Meteor.isServer){
+      console.log('mount');
+        // this.historyRoute()
+        // console.log(this.state.historyRoute);
     //   console.log($('.f7-main'));
-    // }
+    }
       // this.setState({history: this.props.history});
       if(!Meteor.isServer && !!$("[data-page='index']")) {
 
@@ -116,7 +316,7 @@ export default class TodoApp extends Component {
           // We are anyhow able to always get the instance via new F7()
           this.setState({f7: app});
           // },0)
-
+          this.setState({hasRoute: true})
         // console.log('layout did mount');
       }
 
@@ -131,6 +331,8 @@ export default class TodoApp extends Component {
 
 
       if(!Meteor.isServer) {
+        // this.historyRoute()
+        console.log('update');
         if(JSON.parse( sessionStorage.getItem('origin') )!=='/'){
           Session.set('routeOld', undefined); // make it load without animation
           let go = JSON.parse( sessionStorage.getItem('origin') );
@@ -249,6 +451,11 @@ export default class TodoApp extends Component {
                 user: this.user(),
                 auth: this.auth(),
                 f7  : this.state.f7
+                // currentName : this.currentName()  ,
+                // // action      : this.action()       ,
+                // historyRoute: this.state.historyRoute,
+                // historyIndex: this.state.historyIndex,
+                // historyAction: this.state.historyAction
               })}
               {/* About Page*/}
 

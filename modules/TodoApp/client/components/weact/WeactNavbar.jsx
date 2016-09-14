@@ -5,9 +5,13 @@ var WeactNavbar = React.createClass({
     }
   },
   render: function() {
+    let index
+    // index = this.state.index
 
+    let action
     let pagePP = this.props.newpage;
-    var navbarP = this.state.page;
+    // var navbarP = this.state.page;
+    let navbarP
     var history = this.props.history;
     var backLink ;
     backLink= this.props.location.pathname.split('/');
@@ -19,8 +23,10 @@ var WeactNavbar = React.createClass({
         back += backLink[i]+"/"
       }
     }
-    let pageP = navbarP;
+
+
     let currentName;
+    // let currentName = this.props.currentName;
     // console.log(this.props.route);
     let pathname = this.props.location.pathname;
     if(pathname.split('/')[1]){
@@ -28,46 +34,151 @@ var WeactNavbar = React.createClass({
     }else if(pathname=='/'){
       currentName = 'index';
     }
-    // console.log(currentName);
-    if(currentName && pageP.indexOf(currentName)==-1){
-      pageP.push(currentName);
-      console.log(pageP);
-    }
-    let index = pageP.indexOf(currentName)
-    return (
-      <div className="navbar">
-        {navbarP.map(function(tmp, i){
-          let Page;
-          if(!Meteor.isServer){
-            // Page = pagePP[i];
-            Page = require('./../../components/navbar/'+tmp).default;
-          }
-          else{
-            Page = require('./../../components/navbar/'+tmp).default;
-          }
-          let props = {};
-          if( Meteor.isServer){
-            props.class= ' ssr'
 
-            props.back  = back
-          }
-          if( tmp=='index'){
+    if(!Meteor.isServer){
+      navbarP = JSON.parse( sessionStorage.getItem('history')            );
+      index = JSON.parse( sessionStorage.getItem('historyRouteIndex')   );
+      action = JSON.parse( sessionStorage.getItem('historyAction')           ) ;
+    }
+    else{
+      index = 0
+      navbarP = ['index']
+      if(currentName!=='index'){
+        index++
+        navbarP.push(currentName)
+      }
+    }
+    // let pageP = navbarP;
+
+    if(!navbarP){
+      // index = 0
+      navbarP = ['index']
+      action = 'initial'
+      // if(currentName!=='index'){
+      //   index++
+      //   navbarP.push(currentName)
+      // }
+      // console.log('navbar index:'+index+'navbarP:'+ navbarP);
+    }
+
+    console.log(currentName);
+    if(currentName && navbarP && navbarP.indexOf(currentName)==-1){
+      navbarP.push(currentName);
+      // .log(pageP);
+    }
+
+
+    // if(navbarP && navbarP.indexOf(currentName)<(index))action='back'
+
+    // let currentName;
+    // // console.log(this.props.route);
+    // let pathname = this.props.location.pathname;
+    // if(pathname.split('/')[1]){
+    //   currentName = pathname.split('/')[1];
+    // }else if(pathname=='/'){
+    //   currentName = 'index';
+    // }
+    // // console.log(currentName);
+    // if(currentName && pageP.indexOf(currentName)==-1){
+    //   pageP.push(currentName);
+    //   console.log(pageP);
+    // }
+    // let index = pageP.indexOf(currentName)
+    // if(navbarP){
+      return (
+        <div className="navbar">
+          {navbarP.map(function(tmp, i){
+            let Page;
+            if(!Meteor.isServer){
+              // Page = pagePP[i];
+              Page = require('./../../components/navbar/'+tmp).default;
+            }
+            else{
+              Page = require('./../../components/navbar/'+tmp).default;
+            }
+            let props = {};
+            if( Meteor.isServer){
+              props.class= ' ssr'
+
+              props.back  = back
+            }
             props['class']= ' navbar-inner'
-            props.dataPage = 'index';
-          }
-          if( tmp!=='index' && !Meteor.isServer){
-            props['class']= ' navbar-inner'
-            props.class+= ' cached'
-            props.dataPage = tmp;
-            // props.back  = back
-          }
-          if(history){
-            props.history=history;
-          }
-          return <Page {...props} key={i}/>
-        })}
-      </div>
-    )
+            // if( tmp=='index'){
+            //   props['class']= ' navbar-inner'
+            //   props.dataPage = 'index';
+            // }
+            // if( tmp!=='index' && !Meteor.isServer){
+            //   props['class']= ' navbar-inner'
+            //   props.class+= ' cached'
+            //   props.dataPage = tmp;
+            //   // props.back  = back
+            // }
+
+            props.dataPage = tmp
+            if(Meteor.isServer){
+              if(tmp==currentName){
+                props.class+=' ssr'
+              }else{
+                props.class+=' cached'
+              }
+            }
+            if(action=='back'){
+              // if(tmp=='index'){
+              //   props.children  = <TodoMain/>   ;
+              // }
+              if(!Meteor.isServer){
+                console.log(currentName);
+                if(tmp!==currentName){
+                  if( i == index+1 ) props.class += " navbar-on-center"
+                  else
+                   props.class  += " cached"
+                }
+                else{
+                  // console.log('onleft:'+currentName);
+                    props.class += " navbar-on-left";
+                }
+              }
+            }else{
+              if(tmp=='index'){
+
+                // props.children  = <TodoMain/>   ;
+                if(!Meteor.isServer){
+                  if(currentName!=='index'){
+                    if(index-1 == i){
+                      props.class += " navbar-on-center";
+                    }
+                    else props.class  += " cached"     ;
+                  }
+                }
+              }else{
+                if(!Meteor.isServer
+                  // && tmp!==currentName
+                ){
+                  // if( i == index+1 ) props.class += " page-on-center";
+                  // else
+                  if(index-1 == i){
+                    props.class += " navbar-on-center";
+                  }
+                  else props.class  += " cached"     ;
+                }
+              }
+            }
+            // if(action=='initial'){
+            //   alert('yo')
+            //   props.class+=' ssr'
+            // }
+
+            if(history){
+              props.history=history;
+            }
+            return <Page {...props} key={i}/>
+          })}
+        </div>
+      )
+    // }
+    // else return (
+    //   <div>Loading...</div>
+    // )
   }
 })
 
