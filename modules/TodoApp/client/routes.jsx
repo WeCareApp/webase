@@ -30,6 +30,9 @@ var components = function(){
     }
   }
 }
+const onEnter=()=>{
+  alert('fuck')
+}
 
 export default (
   <Route>
@@ -40,15 +43,23 @@ export default (
       //   navbar: wrapComponent(WeactNavbar,{navbar: navbar})
       // }
     // }
+        onChange={onEnter}
         getComponents ={( state,  cb    ) =>  {
-          // console.log(state);
-          HistoryAction(state)
+          // console.log(state.pathname);
+          // console.log(JSON.parse(sessionStorage.getItem('isRefresh')));
+
+          // HistoryAction(this)
           let currentName = "";
           if(state.pathname.split('/')[1]){
             currentName = state.pathname.split('/')[1];
           }else if(state.pathname=='/'){
             currentName = 'index';
           }
+          // if(JSON.parse(sessionStorage.getItem('isRefresh'))==0){
+          //   // sessionStorage.setItem('isRefresh', JSON.stringify(0));
+          //   // console.log(this.props.location);
+          //     HistoryAction(state, currentName)
+          // }
           let helmetCb;
           if(!Meteor.isServer){
             let helmetbundle = require('bundle!./components/helmet/'+currentName);
@@ -76,15 +87,24 @@ export default (
       />
 
      <Route path="/about"
+      onChange={onEnter}
        getComponents={(state, cb) => {
         //  GetComponents(state, cb)
-        HistoryAction(state)
+        // console.log(state.pathname);
+        // console.log(JSON.parse(sessionStorage.getItem('isRefresh')));
+
+        // HistoryAction(state)
         let currentName = "";
         if(state.pathname.split('/')[1]){
           currentName = state.pathname.split('/')[1];
         }else if(state.pathname=='/'){
           currentName = 'index';
         }
+        // if(JSON.parse(sessionStorage.getItem('isRefresh'))==0){
+        //   // sessionStorage.setItem('isRefresh', JSON.stringify(0));
+        //   // console.log(this.props.location);
+        //     HistoryAction(state, currentName)
+        // }
         let helmetCb;
         if(!Meteor.isServer){
           let helmetbundle = require('bundle!./components/helmet/'+currentName);
@@ -188,13 +208,20 @@ export default (
              })
        }}*/
        getComponents={(state, cb) => {
-         HistoryAction(state)
+        //  HistoryAction(state)
+
+        // console.log(state);
          let currentName = "";
          if(state.pathname.split('/')[1]){
            currentName = state.pathname.split('/')[1];
          }else if(state.pathname=='/'){
            currentName = 'index';
          }
+        //  if(JSON.parse(sessionStorage.getItem('isRefresh'))==0){
+        //   //  sessionStorage.setItem('isRefresh', JSON.stringify(0));
+        //    // console.log(this.props.location);
+        //      HistoryAction(state, currentName)
+        //  }
          console.log(currentName);
          let helmetCb;
          if(!Meteor.isServer){

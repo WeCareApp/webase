@@ -5,6 +5,7 @@ import Helmet from 'react-helmet';
 import loadF7   from  './loadF7'
 
 import F7 from './f7/js/f7';
+import HistoryAction  from  './HistoryAction'               ;
 
 import LoginScreen from './components/LoginScreen';
 import LeftPanel from './components/LeftPanel';
@@ -273,14 +274,18 @@ export default class TodoApp extends Component {
   //   // }else{
   //   // }
   // }
-  // componentWillMount(){
-  //   if(!Meteor.isServer){
-  //     console.log($('.f7-main'));
-  //   }
-  // }
+  componentWillMount(){
+    if(!Meteor.isServer){
+      sessionStorage.setItem('isRefresh', JSON.stringify(1));
+      console.log(this.props.location);
+
+      // console.log('gaga');
+      // console.log($('.f7-main'));
+    }
+  }
   componentDidMount() {
     if(!Meteor.isServer){
-      console.log('mount');
+      // console.log('mount');
         // this.historyRoute()
         // console.log(this.state.historyRoute);
     //   console.log($('.f7-main'));
@@ -317,9 +322,17 @@ export default class TodoApp extends Component {
           this.setState({f7: app});
           // },0)
           this.setState({hasRoute: true})
+          // sessionStorage.setItem('isRefresh', 0);
         // console.log('layout did mount');
       }
 
+  }
+  componentWillReceiveProps(){
+    // if(JSON.parse(sessionStorage.getItem('isRefresh'))==0){
+    //   sessionStorage.setItem('isRefresh', JSON.stringify(0));
+      console.log(this.props.location);
+    //     HistoryAction(this.props.location, this.currentName())
+    // }
   }
   componentDidUpdate(){
     // if(this.state.init !== true){
@@ -328,17 +341,22 @@ export default class TodoApp extends Component {
       // console.log(!!Session.get('routeOld'));
       // console.log(this.state.init);
       // if(!!Session.get('routeOld')){
-
+      // console.log(this.props.location);
 
       if(!Meteor.isServer) {
         // this.historyRoute()
-        console.log('update');
+        // console.log('update');
+
         if(JSON.parse( sessionStorage.getItem('origin') )!=='/'){
           Session.set('routeOld', undefined); // make it load without animation
           let go = JSON.parse( sessionStorage.getItem('origin') );
           sessionStorage.setItem('origin', JSON.stringify('/'));
+          // sessionStorage.setItem('isRefresh', JSON.stringify(1));
           this.props.history.push(go)
         }else{
+
+
+          // HistoryAction(this.props.location, this.currentName())
             // console.log($('.navbar-inner.ssr'));
             // var self    = this;
             // var stateF7 = this.state.f7;
@@ -392,6 +410,8 @@ export default class TodoApp extends Component {
 
 
             loadF7(this, this.state.f7);
+            if(JSON.parse(sessionStorage.getItem('isRefresh'))==1)sessionStorage.setItem('isRefresh', JSON.stringify(0));
+
         }
       }
       // if(!!$("[data-page='index']")){
@@ -403,6 +423,8 @@ export default class TodoApp extends Component {
   }
 
   render() {
+    console.log(this.props.location);
+    HistoryAction(this.props.location, this.currentName())
     return (
       <span className="f7-main">
 				{/*<Helmet

@@ -7,6 +7,9 @@ function loadF7(component, f7){
       // Enable Dom Cache so we can use all inline pages
       domCache: true
     });
+
+    let isRefresh = JSON.parse(sessionStorage.getItem('isRefresh'))
+
     let onSwipe;
     let isBack = 0;
     let routeOld;
@@ -21,14 +24,14 @@ function loadF7(component, f7){
             if(routeName[routeName.length-1]!=='')var pageName = routeName[routeName.length-1];
             else var pageName = 'index';
             options.pageName= pageName;
-            if( !routeOld){
+            if(isRefresh==1){
               options.animatePages=false;
             }
             if(isBack==1 ){
               if(Session.get('onSwipe')==0){
                 let history = JSON.parse(sessionStorage.getItem('history'));
                 let k = history;
-                let i     = JSON.parse( sessionStorage.getItem('historyRouteIndex') );
+                let i     = JSON.parse( sessionStorage.getItem('historyIndex') );
                 // if(k[i]!=='index'){
                   app.views[1].router.loadPage({
                     pageName:   k[i],
@@ -50,7 +53,7 @@ function loadF7(component, f7){
                 // console.log('back');
                 let history = JSON.parse(sessionStorage.getItem('history'));
                 let k = history;
-                let i     = JSON.parse( sessionStorage.getItem('historyRouteIndex') );
+                let i     = JSON.parse( sessionStorage.getItem('historyIndex') );
                 if(k[i]!=='index'){
                 // $('[data-page="'+k[i].slice(1, k[i].length)+'"].page').css('opacity', 0);
                   // app.views[1].router.loadPage({
@@ -71,6 +74,13 @@ function loadF7(component, f7){
                 }
 
                 app.views[1].router.back();
+                // setTimeout(()=>{
+                //   app.views[1].router.loadPage({
+                //      pageName:   k[i],
+                //      animatePages: false
+                //   });
+                // },4000)
+
                 // app.views[1].router.loadPage({
                 //   pageName: k[i]
                 // })
@@ -86,30 +96,36 @@ function loadF7(component, f7){
                 //   center.css( 'transition', 'transform 400ms'                   );
                 // }, 0);
                 // let index = i;
-                // let backPage  = history[index+1];
+                let backPage  = history[i+1];
                 // // // //make static after back change
-                // app.onPageAfterBack(backPage, function(){
+                app.onPageAfterBack(backPage, function(){
                 //   // console.log('done render');
-                //   setTimeout(function(){
-                //     if(i>0){
-                //       // $('[data-page="'+history[i-2]+'"].page').removeClass('cached');
-                //       $('[data-page="'+k[i-1]+'"].page').removeClass('cached').addClass('page-on-left')
-                //       $('[data-page="'+k[i-1]+'"].navbar-inner').removeClass('cached').addClass('navbar-on-left')
-                //     }
-                //     var barWidth    = $('[data-page="'+pageName+'"].navbar-inner').width();
-                //     var titleWidth  = $('[data-page="'+pageName+'"].navbar-inner>.center').width();
-                //     let num         = ( titleWidth - barWidth )/2;
-                //     let center      = $('[data-page="'+pageName+'"].navbar-inner>.center');
-                //     center.css( 'left'      , num                          );
-                //     center.css( 'transform' , '' );
-                //     center.css( 'transition', ''                           );
-                //       // $('[data-page="'+history[i-2]+'"].navbar-inner').removeClass('cached');
-                //   }, 0);
-                // })
+
+                  setTimeout(function(){
+                // //     if(i>0){
+                // //       // $('[data-page="'+history[i-2]+'"].page').removeClass('cached');
+                // //       $('[data-page="'+k[i-1]+'"].page').removeClass('cached').addClass('page-on-left')
+                // //       $('[data-page="'+k[i-1]+'"].navbar-inner').removeClass('cached').addClass('navbar-on-left')
+                // //     }
+                // //     var barWidth    = $('[data-page="'+pageName+'"].navbar-inner').width();
+                // //     var titleWidth  = $('[data-page="'+pageName+'"].navbar-inner>.center').width();
+                // //     let num         = ( titleWidth - barWidth )/2;
+                // //     let center      = $('[data-page="'+pageName+'"].navbar-inner>.center');
+                // //     center.css( 'left'      , num                          );
+                // //     center.css( 'transform' , '' );
+                // //     center.css( 'transition', ''                           );
+                //       $('[data-page="'+history[i-1]+'"].navbar-inner').removeClass('cached');
+                    if(i>0){
+                      $('[data-page="'+k[i-1]+'"].page').removeClass('cached').addClass('page-on-left')
+                      $('[data-page="'+k[i-1]+'"].navbar-inner').removeClass('cached').addClass('navbar-on-left')
+                    }
+                  }, 0);
+
+                })
               }
               isBack = 0;
             }else {
-                // let i     = JSON.parse( sessionStorage.getItem('historyRouteIndex') );
+                // let i     = JSON.parse( sessionStorage.getItem('historyIndex') );
                 // if (i>0) {
                 //   let history = JSON.parse(sessionStorage.getItem('history'));
                 //   let k = history;
@@ -127,7 +143,7 @@ function loadF7(component, f7){
                   if(!!routeName[1])app.views[1].router.loadPage(options);
 
             }
-            let index     = JSON.parse( sessionStorage.getItem('historyRouteIndex') );
+            let index     = JSON.parse( sessionStorage.getItem('historyIndex') );
             let history   = JSON.parse( sessionStorage.getItem('history')           ) ;
             let backPage;
             if(!!history[index-1]) backPage = history[index-1];
@@ -154,7 +170,7 @@ function loadF7(component, f7){
             Session.set('onSwipe', 1);
             onSwipe = app.onPageAfterBack(pageName, function(page){
               if(Session.get('onSwipe')==1 && page.swipeBack){
-                let index     = JSON.parse( sessionStorage.getItem('historyRouteIndex') );
+                let index     = JSON.parse( sessionStorage.getItem('historyIndex') );
                 let route = JSON.parse(sessionStorage.getItem('historyRoute'));
                 Session.set('onSwipe', 0);
                 component.props.history.goBack();
@@ -173,7 +189,7 @@ function loadF7(component, f7){
           //
           //     let currentName     =
           //       ( routeName[routeName.length-1]!==''  ) ? routeName[routeName.length-1] : 'index';
-          //     let currentIndex    = JSON.parse(sessionStorage.getItem('historyRouteIndex'));
+          //     let currentIndex    = JSON.parse(sessionStorage.getItem('historyIndex'));
           //     alert(currentIndex);
           //     alert(index)
           //     if(routeNew==route[index-1]){
@@ -195,7 +211,7 @@ function loadF7(component, f7){
 
             if(!!routeOld && routeOld!==routeNew){  //Is not initial or reload
               let history = JSON.parse(sessionStorage.getItem('history'));
-              let index = JSON.parse(sessionStorage.getItem('historyRouteIndex'));
+              let index = JSON.parse(sessionStorage.getItem('historyIndex'));
               let route = JSON.parse(sessionStorage.getItem('historyRoute'));
               history = history.slice(0, index+1);
               for(let i=1; i<route.length; i++){
@@ -205,7 +221,7 @@ function loadF7(component, f7){
               }
               sessionStorage.setItem('history', JSON.stringify($.unique(history)));
             }else{// Initial or reload
-              let index           = JSON.parse(sessionStorage.getItem('historyRouteIndex'));
+              let index           = JSON.parse(sessionStorage.getItem('historyIndex'));
               let historyPosition = JSON.parse(sessionStorage.getItem('historyPosition'));
 
 

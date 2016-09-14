@@ -8,9 +8,18 @@ let WeactPage = React.createClass({
     }
   },
   render: function() {
-    console.log(this.props.historyAction);
-    console.log(this.props.historyRoute)
+    // console.log(this.props.historyAction);
+    // console.log(this.props.historyRoute)
     // let action = this.props.historyAction;
+    console.log(JSON.parse(sessionStorage.getItem('isRefresh')));
+    console.log(JSON.parse(sessionStorage.getItem('historyIndex')));
+    console.log(JSON.parse(sessionStorage.getItem('history')));
+    console.log(JSON.parse(sessionStorage.getItem('historyAction')));
+    console.log(JSON.parse(sessionStorage.getItem('historyRoute')));
+    // let     historyIndex  =
+    // let     history       =
+    // let     historyAction =
+    // let     route         =
     let index
     // index = this.state.index
 
@@ -30,7 +39,7 @@ let WeactPage = React.createClass({
     }
 
     if(!Meteor.isServer){
-      index = JSON.parse( sessionStorage.getItem('historyRouteIndex') )+1;
+      index = JSON.parse( sessionStorage.getItem('historyIndex') );
       pageP = JSON.parse( sessionStorage.getItem('history')           ) ;
       action = JSON.parse( sessionStorage.getItem('historyAction')           ) ;
     }
@@ -52,14 +61,15 @@ let WeactPage = React.createClass({
     // }
     if(!!pageP && pageP.indexOf('root')==-1) pageP.unshift("root")
     if(!pageP)pageP = ['root', 'index']
-    console.log(pageP);
+    // console.log(pageP);
     // console.log(this.props.currentName);
-
-    console.log(currentName);
+    console.log(index);
+    // console.log(currentName);
     if(currentName && pageP.indexOf(currentName)==-1){
       pageP.push(currentName);
-      console.log(pageP);
+      // console.log(pageP);
     }
+    console.log(pageP);
 
     // if(pageP.indexOf(currentName)<(index))action='back'
     // let index = this.props.historyIndex
@@ -83,9 +93,9 @@ let WeactPage = React.createClass({
                 props.children  = <TodoMain/>   ;
               }
               if(!Meteor.isServer){
-                console.log(currentName);
+                // console.log(currentName);
                 if(tmp!==currentName){
-                  if( i == index+1 ) props.class += " page-on-center"
+                  if( i == index+2 ) props.class += " page-on-center"
                   else
                    props.class  += " cached"
                 }
@@ -96,12 +106,14 @@ let WeactPage = React.createClass({
               }
             }else{
               // index--;
+              // console.log('index:'+index);
+              // console.log('i:'+ i);
               if(tmp=='index'){
 
                 props.children  = <TodoMain/>   ;
                 if(!Meteor.isServer){
                   if(currentName!=='index'){
-                    if(index-1 == i){
+                    if(index == i){
                       props.class += " page-on-center";
                     }
                     else props.class  += " cached"     ;
@@ -113,7 +125,7 @@ let WeactPage = React.createClass({
                 ){
                   // if( i == index+1 ) props.class += " page-on-center";
                   // else
-                  if(index-1 == i){
+                  if(index == i){
                     props.class += " page-on-center";
                   }
                   else props.class  += " cached"     ;

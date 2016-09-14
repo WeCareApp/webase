@@ -4,7 +4,11 @@ var WeactNavbar = React.createClass({
       page: ['index']
     }
   },
+  componentWillUpdate(){
+    console.log(this.props.location);
+  },
   render: function() {
+    console.log(this.props.location);
     let index
     // index = this.state.index
 
@@ -24,6 +28,8 @@ var WeactNavbar = React.createClass({
       }
     }
 
+    console.log('yah');
+
 
     let currentName;
     // let currentName = this.props.currentName;
@@ -37,7 +43,7 @@ var WeactNavbar = React.createClass({
 
     if(!Meteor.isServer){
       navbarP = JSON.parse( sessionStorage.getItem('history')            );
-      index = JSON.parse( sessionStorage.getItem('historyRouteIndex')   );
+      index = JSON.parse( sessionStorage.getItem('historyIndex')   );
       action = JSON.parse( sessionStorage.getItem('historyAction')           ) ;
     }
     else{
@@ -61,7 +67,7 @@ var WeactNavbar = React.createClass({
       // console.log('navbar index:'+index+'navbarP:'+ navbarP);
     }
 
-    console.log(currentName);
+    // console.log(currentName);
     if(currentName && navbarP && navbarP.indexOf(currentName)==-1){
       navbarP.push(currentName);
       // .log(pageP);
@@ -127,7 +133,7 @@ var WeactNavbar = React.createClass({
               //   props.children  = <TodoMain/>   ;
               // }
               if(!Meteor.isServer){
-                console.log(currentName);
+                // console.log(currentName);
                 if(tmp!==currentName){
                   if( i == index+1 ) props.class += " navbar-on-center"
                   else
