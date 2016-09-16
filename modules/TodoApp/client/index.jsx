@@ -138,129 +138,129 @@ export default class TodoApp extends Component {
   //   }
   // }
 
-  historyRoute(){
-    let historyIndex  = this.state.historyIndex
-    let historyRoute  = this.state.historyRoute
-    let historyAction
-    let currentName   = this.currentName();
-    if(historyRoute==null){
-      historyRoute = ['index']
-      historyIndex = 0
-      if(this.currentName()!=='index'){
-        historyRoute.push(this.currentName())
-        historyIndex++
-      }
-      // console.log('new');
-      historyAction = 'initial'
-      // this.setState({
-      //   historyRoute  : historyRoute ,
-      //   historyIndex  : historyIndex ,
-      //   historyAction : 'initial'
-      // })
-    }
-    else{
-      if(currentName==historyRoute[historyIndex-1]){
-        //go back
-        // console.log('back');
-        historyIndex--
-        historyAction = 'back'
-        // if(this.state.historyAction!==historyAction){
-        //   this.setState({
-        //     // historyRoute  : historyRoute ,
-        //     // historyIndex  : historyIndex ,
-        //     historyAction : historyAction
-        //   })
-        // }
-        // isBack=1;
-        // sessionStorage.setItem('historyRouteIndex',index-1);
-      }else if((historyIndex+1)<historyRoute.length && currentName==historyRoute[historyIndex+1]){
-        //go forward but still in history
-        // console.log('forward')
-        historyIndex++
-        historyAction = 'forward'
-
-        // isBack= 0;
-        // sessionStorage.setItem('historyRouteIndex',index+1);
-      }else if(currentName==historyRoute[historyIndex]){
-        //refresh paged
-        // console.log('refresh');
-        if(this.state.hasRoute == null)historyAction = 'refresh'
-        else return
-        // if(this.state.historyAction!==historyAction){
-        //   this.setState({
-        //     // historyRoute  : historyRoute ,
-        //     // historyIndex  : historyIndex ,
-        //     historyAction : historyAction
-        //   })
-        // }
-        // }
-      }else if(currentName!=='index'){
-        //discover to new page
-        // console.log('new')
-        historyRoute = historyRoute.slice(0, historyIndex+1);
-        historyRoute.push(currentName)
-        historyIndex++
-        historyAction = 'new'
-        // if(this.state.historyAction!==historyAction){
-        //   this.setState({
-        //     // historyRoute  : historyRoute ,
-        //     // historyIndex  : historyIndex ,
-        //     historyAction : historyAction
-        //   })
-        // }
-        // isBack=0;
-        // route = route.slice(0, index+1);
-        // let history = JSON.parse(sessionStorage.getItem('history'));
-        // let historyPosition = JSON.parse(sessionStorage.getItem('historyPosition'));
-        // history = history.slice(0, index+1);
-        // // historyPosition = historyPosition.slice(0, index+1);
-        // // historyPosition.push(0);
-        //
-        // route.push(routeNew);
-        // for(let i=1; i<route.length; i++){
-        //   // console.log('push');
-        //   let tmp = route[i];
-        //   tmp = tmp.replace('/','#');
-        //   history.push(tmp);
-        // }
-        // sessionStorage.setItem('history', JSON.stringify(history));
-        // sessionStorage.setItem('historyRoute', JSON.stringify(route));
-        // sessionStorage.setItem('historyRouteIndex',index+1);
-        // sessionStorage.setItem('historyPosition', JSON.stringify(historyPosition))
-      }
-
-      // if(this.state.historyRoute.indexOf(this.currentName())==-1){
-      //
-      //   this.setState({
-      //
-      //   })
-      // }
-    }
-    if(this.state.historyRoute!==historyRoute){
-      this.setState({
-        historyRoute  : historyRoute
-        // historyIndex  : historyIndex ,
-        // historyAction : historyAction
-      })
-    }
-    if(this.state.historyIndex!==historyIndex){
-      this.setState({
-        // historyRoute  : historyRoute ,
-        historyIndex  : historyIndex
-        // historyAction : historyAction
-      })
-    }
-    if(this.state.historyAction!==historyAction){
-      this.setState({
-        // historyRoute  : historyRoute ,
-        // historyIndex  : historyIndex ,
-        historyAction : historyAction
-      })
-    }
-    console.log(this.state.historyRoute);
-    console.log(this.state.historyIndex);
-    console.log(this.state.historyAction);
-  }
+  // historyRoute(){
+  //   let historyIndex  = this.state.historyIndex
+  //   let historyRoute  = this.state.historyRoute
+  //   let historyAction
+  //   let currentName   = this.currentName();
+  //   if(historyRoute==null){
+  //     historyRoute = ['index']
+  //     historyIndex = 0
+  //     if(this.currentName()!=='index'){
+  //       historyRoute.push(this.currentName())
+  //       historyIndex++
+  //     }
+  //     // console.log('new');
+  //     historyAction = 'initial'
+  //     // this.setState({
+  //     //   historyRoute  : historyRoute ,
+  //     //   historyIndex  : historyIndex ,
+  //     //   historyAction : 'initial'
+  //     // })
+  //   }
+  //   else{
+  //     if(currentName==historyRoute[historyIndex-1]){
+  //       //go back
+  //       // console.log('back');
+  //       historyIndex--
+  //       historyAction = 'back'
+  //       // if(this.state.historyAction!==historyAction){
+  //       //   this.setState({
+  //       //     // historyRoute  : historyRoute ,
+  //       //     // historyIndex  : historyIndex ,
+  //       //     historyAction : historyAction
+  //       //   })
+  //       // }
+  //       // isBack=1;
+  //       // sessionStorage.setItem('historyRouteIndex',index-1);
+  //     }else if((historyIndex+1)<historyRoute.length && currentName==historyRoute[historyIndex+1]){
+  //       //go forward but still in history
+  //       // console.log('forward')
+  //       historyIndex++
+  //       historyAction = 'forward'
+  //
+  //       // isBack= 0;
+  //       // sessionStorage.setItem('historyRouteIndex',index+1);
+  //     }else if(currentName==historyRoute[historyIndex]){
+  //       //refresh paged
+  //       // console.log('refresh');
+  //       if(this.state.hasRoute == null)historyAction = 'refresh'
+  //       else return
+  //       // if(this.state.historyAction!==historyAction){
+  //       //   this.setState({
+  //       //     // historyRoute  : historyRoute ,
+  //       //     // historyIndex  : historyIndex ,
+  //       //     historyAction : historyAction
+  //       //   })
+  //       // }
+  //       // }
+  //     }else if(currentName!=='index'){
+  //       //discover to new page
+  //       // console.log('new')
+  //       historyRoute = historyRoute.slice(0, historyIndex+1);
+  //       historyRoute.push(currentName)
+  //       historyIndex++
+  //       historyAction = 'new'
+  //       // if(this.state.historyAction!==historyAction){
+  //       //   this.setState({
+  //       //     // historyRoute  : historyRoute ,
+  //       //     // historyIndex  : historyIndex ,
+  //       //     historyAction : historyAction
+  //       //   })
+  //       // }
+  //       // isBack=0;
+  //       // route = route.slice(0, index+1);
+  //       // let history = JSON.parse(sessionStorage.getItem('history'));
+  //       // let historyPosition = JSON.parse(sessionStorage.getItem('historyPosition'));
+  //       // history = history.slice(0, index+1);
+  //       // // historyPosition = historyPosition.slice(0, index+1);
+  //       // // historyPosition.push(0);
+  //       //
+  //       // route.push(routeNew);
+  //       // for(let i=1; i<route.length; i++){
+  //       //   // console.log('push');
+  //       //   let tmp = route[i];
+  //       //   tmp = tmp.replace('/','#');
+  //       //   history.push(tmp);
+  //       // }
+  //       // sessionStorage.setItem('history', JSON.stringify(history));
+  //       // sessionStorage.setItem('historyRoute', JSON.stringify(route));
+  //       // sessionStorage.setItem('historyRouteIndex',index+1);
+  //       // sessionStorage.setItem('historyPosition', JSON.stringify(historyPosition))
+  //     }
+  //
+  //     // if(this.state.historyRoute.indexOf(this.currentName())==-1){
+  //     //
+  //     //   this.setState({
+  //     //
+  //     //   })
+  //     // }
+  //   }
+  //   if(this.state.historyRoute!==historyRoute){
+  //     this.setState({
+  //       historyRoute  : historyRoute
+  //       // historyIndex  : historyIndex ,
+  //       // historyAction : historyAction
+  //     })
+  //   }
+  //   if(this.state.historyIndex!==historyIndex){
+  //     this.setState({
+  //       // historyRoute  : historyRoute ,
+  //       historyIndex  : historyIndex
+  //       // historyAction : historyAction
+  //     })
+  //   }
+  //   if(this.state.historyAction!==historyAction){
+  //     this.setState({
+  //       // historyRoute  : historyRoute ,
+  //       // historyIndex  : historyIndex ,
+  //       historyAction : historyAction
+  //     })
+  //   }
+  //   console.log(this.state.historyRoute);
+  //   console.log(this.state.historyIndex);
+  //   console.log(this.state.historyAction);
+  // }
 
 
   // backBtn() {
@@ -423,8 +423,11 @@ export default class TodoApp extends Component {
   }
 
   render() {
-    console.log(this.props.location);
-    HistoryAction(this.props.location, this.currentName())
+    // console.log(this.props.location);
+    if(!Meteor.isServer){
+        HistoryAction(this.props.location, this.currentName())
+    }
+
     return (
       <span className="f7-main">
 				{/*<Helmet

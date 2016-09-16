@@ -11,11 +11,11 @@ let WeactPage = React.createClass({
     // console.log(this.props.historyAction);
     // console.log(this.props.historyRoute)
     // let action = this.props.historyAction;
-    console.log(JSON.parse(sessionStorage.getItem('isRefresh')));
-    console.log(JSON.parse(sessionStorage.getItem('historyIndex')));
-    console.log(JSON.parse(sessionStorage.getItem('history')));
-    console.log(JSON.parse(sessionStorage.getItem('historyAction')));
-    console.log(JSON.parse(sessionStorage.getItem('historyRoute')));
+    // console.log(JSON.parse(sessionStorage.getItem('isRefresh')));
+    // console.log(JSON.parse(sessionStorage.getItem('historyIndex')));
+    // console.log(JSON.parse(sessionStorage.getItem('history')));
+    // console.log(JSON.parse(sessionStorage.getItem('historyAction')));
+    // console.log(JSON.parse(sessionStorage.getItem('historyRoute')));
     // let     historyIndex  =
     // let     history       =
     // let     historyAction =
