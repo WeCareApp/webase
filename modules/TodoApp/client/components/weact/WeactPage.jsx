@@ -11,11 +11,11 @@ let WeactPage = React.createClass({
     // console.log(this.props.historyAction);
     // console.log(this.props.historyRoute)
     // let action = this.props.historyAction;
-    // console.log(JSON.parse(sessionStorage.getItem('isRefresh')));
-    // console.log(JSON.parse(sessionStorage.getItem('historyIndex')));
-    // console.log(JSON.parse(sessionStorage.getItem('history')));
-    // console.log(JSON.parse(sessionStorage.getItem('historyAction')));
-    // console.log(JSON.parse(sessionStorage.getItem('historyRoute')));
+    console.log(JSON.parse(sessionStorage.getItem('isRefresh')));
+    console.log(JSON.parse(sessionStorage.getItem('historyIndex')));
+    console.log(JSON.parse(sessionStorage.getItem('history')));
+    console.log(JSON.parse(sessionStorage.getItem('historyAction')));
+    console.log(JSON.parse(sessionStorage.getItem('historyRoute')));
     // let     historyIndex  =
     // let     history       =
     // let     historyAction =
@@ -39,9 +39,9 @@ let WeactPage = React.createClass({
     }
 
     if(!Meteor.isServer){
-      index = JSON.parse( sessionStorage.getItem('historyIndex') );
-      pageP = JSON.parse( sessionStorage.getItem('history')           ) ;
-      action = JSON.parse( sessionStorage.getItem('historyAction')           ) ;
+      index = JSON.parse( sessionStorage.getItem('historyIndex')) || 0;
+      pageP = JSON.parse( sessionStorage.getItem('history')           ) || [ 'root', 'index'];
+      action = JSON.parse( sessionStorage.getItem('historyAction')           ) || 'initial' ;
     }
     else{
       // if(currentName=='index'){

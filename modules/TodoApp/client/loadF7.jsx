@@ -37,8 +37,18 @@ function loadF7(component, f7){
                     pageName:   k[i],
                     animatePages: false
                   });
-                  $('[data-page="'+k[i+1]+'"].page').addClass('cached').removeClass('page-on-left')
-                  $('[data-page="'+k[i+1]+'"].navbar-inner').addClass('cached').removeClass('navbar-on-left')
+                  if($('[data-page="'+k[i+1]+'"].page').hasClass("page-transitioning")){
+                    $('[data-page="'+k[i+1]+'"].page').remove()
+                  }else{
+                    $('[data-page="'+k[i+1]+'"].page').addClass('cached').removeClass('page-on-left')
+                  }
+                  if($('[data-page="'+k[i+1]+'"].navbar-inner').hasClass("navbar-on-right")){
+                    $('[data-page="'+k[i+1]+'"].navbar-inner').remove()
+                  }else{
+                    $('[data-page="'+k[i+1]+'"].navbar-inner').addClass('cached').removeClass('navbar-on-left')
+                  }
+                    // $('[data-page="'+pageName+'"].navbar-inner').remove()
+                  // $('[data-page="'+k[i+1]+'"].navbar-inner').addClass('cached').removeClass('navbar-on-left')
                   if(i>0){
                     $('[data-page="'+k[i-1]+'"].page').removeClass('cached').addClass('page-on-left')
                     $('[data-page="'+k[i-1]+'"].navbar-inner').removeClass('cached').addClass('navbar-on-left')
@@ -140,7 +150,8 @@ function loadF7(component, f7){
                 //   // }
                 // }
                   //if not index page load
-                  if(!!routeName[1])app.views[1].router.loadPage(options);
+                  // if(!!routeName[1])
+                  app.views[1].router.loadPage(options);
 
             }
             let index     = JSON.parse( sessionStorage.getItem('historyIndex') );
@@ -168,12 +179,90 @@ function loadF7(component, f7){
             }, 0);
 
             Session.set('onSwipe', 1);
+
+            let keepPage, keepNav;
+
+            // app.onPageBeforeaAnimation(pageName, function(page){
+            //   if(Session.get('onSwipe')==1 && page.swipeBack){
+            //     keepPage = $('[data-page="'+pageName+'"].page')
+            //     keepNav  = $('[data-page="'+pageName+'"].navbar-inner')
+            //   }
+            // })
+
+            // let time = 0
+            //
+
+            let timeBeforeRemove = 1;
+            app.onPageBack(pageName, function(page){
+              if(Session.get('onSwipe')==1 && page.swipeBack
+                // && time==0
+              ){
+                // timeBeforeRemove=1
+            //     // alert(page.swipeBack)
+            //     keepPage = $('[data-page="'+pageName+'"].page')
+            //     keepNav  = $('[data-page="'+pageName+'"].navbar-inner')
+            //     // if(!$('[data-page="'+pageName+'"].page')[0]){
+            //       // $('.pages').append(keepPage)
+            //     // }
+            //     // if(!$('[data-page="'+pageName+'"].navbar-inner')[0]){
+            //       // $('.navbar').append(keepNav)
+            //       time++
+            //     // }
+            //     // $('.navbar').append(keepNav)
+            //     // $('.pages').append(keepPage)
+            //     // $('[data-page="'+pageName+'"].navbar-inner').addClass('cached')
+            //     // $('[data-page="'+pageName+'"].page').addClass('cached')
+              }
+            })
+            // var BR = app.onPageBeforeRemove(pageName, function(page){
+            //   if(timeBeforeRemove==1){
+            //
+            //     // console.log(page);
+            //     // alert('BR')
+            //     // component.props.history.goBack();
+            //     timeBeforeRemove=0
+            //     BR.remove()
+            //   }
+
+            //   if(timeBeforeRemove==0){
+            //
+            //     alert('no')
+            //     $('.pages').append(keepPage)
+            //   // }
+            //   // if(!$('[data-page="'+pageName+'"].navbar-inner')[0]){
+            //     $('.navbar').append(keepNav)
+            //     // console.log(page);
+            //     timeBeforeRemove++
+            //   }
+            // })
+
             onSwipe = app.onPageAfterBack(pageName, function(page){
               if(Session.get('onSwipe')==1 && page.swipeBack){
+                // alert(page.swipeBack);
+                // if(!$('[data-page="'+pageName+'"].page')[0]){
+                  // $('.pages').append(keepPage)
+                // }
+                // if(!$('[data-page="'+pageName+'"].navbar-inner')[0]){
+                  // $('.navbar').append(keepNav)
+                // }
                 let index     = JSON.parse( sessionStorage.getItem('historyIndex') );
                 let route = JSON.parse(sessionStorage.getItem('historyRoute'));
                 Session.set('onSwipe', 0);
+                // alert('back')
                 component.props.history.goBack();
+                // console.log(!$('[data-page="'+pageName+'"].page')[0]);
+                // setTimeout(function(){
+                  // component.props.history.goBack();
+                // },0)
+
+                // keepNav.remove()
+                // keepPage.remove()
+                // setTimeout(function(){
+                //   $('[data-page="'+pageName+'"].page').remove()
+                //   $('[data-page="'+pageName+'"].navbar-inner').remove()
+                //
+                // },0)
+
               }
               Session.set('onSwipe', 0);
             });

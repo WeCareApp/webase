@@ -8,6 +8,7 @@ var WeactNavbar = React.createClass({
     console.log(this.props.location);
   },
   render: function() {
+    console.log(sessionStorage);
     console.log(this.props.location);
     let index
     // index = this.state.index
@@ -42,9 +43,9 @@ var WeactNavbar = React.createClass({
     }
 
     if(!Meteor.isServer){
-      navbarP = JSON.parse( sessionStorage.getItem('history')            );
-      index = JSON.parse( sessionStorage.getItem('historyIndex')   );
-      action = JSON.parse( sessionStorage.getItem('historyAction')           ) ;
+      navbarP = JSON.parse( sessionStorage.getItem('history')            ) || ['index'];
+      index = JSON.parse( sessionStorage.getItem('historyIndex')   ) || 0;
+      action = JSON.parse( sessionStorage.getItem('historyAction')           ) || 'initial';
     }
     else{
       index = 0

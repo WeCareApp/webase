@@ -41,8 +41,8 @@ let HistoryAction=function(state, currentName){
     if(historyIndex==-1){
       history = ['index']
       historyIndex = 0
-      if(this.currentName()!=='index'){
-        history.push(this.currentName())
+      if(currentName!=='index'){
+        history.push(currentName)
         historyIndex++
       }
     }
