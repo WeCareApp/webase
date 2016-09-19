@@ -69,10 +69,10 @@ var WeactNavbar = React.createClass({
     }
 
     // console.log(currentName);
-    if(currentName && navbarP && navbarP.indexOf(currentName)==-1){
-      navbarP.push(currentName);
-      // .log(pageP);
-    }
+    // if(currentName && navbarP && navbarP.indexOf(currentName)==-1){
+    //   navbarP.push(currentName);
+    //   // .log(pageP);
+    // }
 
 
     // if(navbarP && navbarP.indexOf(currentName)<(index))action='back'

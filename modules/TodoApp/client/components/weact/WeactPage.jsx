@@ -65,9 +65,9 @@ let WeactPage = React.createClass({
     // console.log(this.props.currentName);
     console.log(index);
     // console.log(currentName);
-    if(currentName && pageP.indexOf(currentName)==-1){
-      pageP.push(currentName);
-      // console.log(pageP);
+    // if(currentName && pageP.indexOf(currentName)==-1){
+    //   pageP.push(currentName);
+    //   // console.log(pageP);
     }
     console.log(pageP);
 
