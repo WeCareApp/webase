@@ -39,9 +39,11 @@ let WeactPage = React.createClass({
     }
 
     if(!Meteor.isServer){
+      // this.setState({page })
       index = JSON.parse( sessionStorage.getItem('historyIndex')) || 0;
       pageP = JSON.parse( sessionStorage.getItem('history')           ) || [ 'root', 'index'];
       action = JSON.parse( sessionStorage.getItem('historyAction')           ) || 'initial' ;
+
     }
     else{
       // if(currentName=='index'){
@@ -64,12 +66,25 @@ let WeactPage = React.createClass({
     // console.log(pageP);
     // console.log(this.props.currentName);
     console.log(index);
-    // console.log(currentName);
+
+    // if(!Meteor.isServer){
+    //   if(this.state.page!==pageP){
+    //     pageP = JSON.parse( sessionStorage.getItem('history')           )
+    //     // || [ 'root', 'index'];
+    //      this.setState({page : pageP})
+    //   }
+    //   console.log(this.state.page!==pageP);
+    //   console.log(JSON.parse( sessionStorage.getItem('history')           ));
+    //   console.log(pageP);
+    //   //
+    //   console.log(this.state.page);
+    // }
+    // // console.log(currentName);
     // if(currentName && pageP.indexOf(currentName)==-1){
     //   pageP.push(currentName);
     //   // console.log(pageP);
-    }
-    console.log(pageP);
+    // }
+    // console.log(pageP);
 
     // if(pageP.indexOf(currentName)<(index))action='back'
     // let index = this.props.historyIndex

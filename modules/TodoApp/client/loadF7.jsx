@@ -199,8 +199,8 @@ function loadF7(component, f7){
               ){
                 // timeBeforeRemove=1
             //     // alert(page.swipeBack)
-            //     keepPage = $('[data-page="'+pageName+'"].page')
-            //     keepNav  = $('[data-page="'+pageName+'"].navbar-inner')
+                keepPage = $('[data-page="'+pageName+'"].page')
+                keepNav  = $('[data-page="'+pageName+'"].navbar-inner')
             //     // if(!$('[data-page="'+pageName+'"].page')[0]){
             //       // $('.pages').append(keepPage)
             //     // }
@@ -214,14 +214,15 @@ function loadF7(component, f7){
             //     // $('[data-page="'+pageName+'"].page').addClass('cached')
               }
             })
-            // var BR = app.onPageBeforeRemove(pageName, function(page){
+            var BR = app.onPageBeforeRemove(pageName, function(page){
             //   if(timeBeforeRemove==1){
-            //
+             $('.pages').append(keepPage)
+             $('.navbar').append(keepNav)
             //     // console.log(page);
-            //     // alert('BR')
+                // alert('BR')
             //     // component.props.history.goBack();
             //     timeBeforeRemove=0
-            //     BR.remove()
+                BR.remove()
             //   }
 
             //   if(timeBeforeRemove==0){
@@ -234,7 +235,7 @@ function loadF7(component, f7){
             //     // console.log(page);
             //     timeBeforeRemove++
             //   }
-            // })
+            })
 
             onSwipe = app.onPageAfterBack(pageName, function(page){
               if(Session.get('onSwipe')==1 && page.swipeBack){
