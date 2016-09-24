@@ -11,11 +11,13 @@ let WeactPage = React.createClass({
     // console.log(this.props.historyAction);
     // console.log(this.props.historyRoute)
     // let action = this.props.historyAction;
-    console.log(JSON.parse(sessionStorage.getItem('isRefresh')));
-    console.log(JSON.parse(sessionStorage.getItem('historyIndex')));
-    console.log(JSON.parse(sessionStorage.getItem('history')));
-    console.log(JSON.parse(sessionStorage.getItem('historyAction')));
-    console.log(JSON.parse(sessionStorage.getItem('historyRoute')));
+
+    // console.log(JSON.parse(sessionStorage.getItem('isRefresh')));
+    // console.log(JSON.parse(sessionStorage.getItem('historyIndex')));
+    // console.log(JSON.parse(sessionStorage.getItem('history')));
+    // console.log(JSON.parse(sessionStorage.getItem('historyAction')));
+    // console.log(JSON.parse(sessionStorage.getItem('historyRoute')));
+
     // let     historyIndex  =
     // let     history       =
     // let     historyAction =
@@ -40,9 +42,12 @@ let WeactPage = React.createClass({
 
     if(!Meteor.isServer){
       // this.setState({page })
-      index = JSON.parse( sessionStorage.getItem('historyIndex')) || 0;
-      pageP = JSON.parse( sessionStorage.getItem('history')           ) || [ 'root', 'index'];
+      // index = JSON.parse( sessionStorage.getItem('historyIndex')) || 0;
+      pageP = JSON.parse( sessionStorage.getItem('historyUni')           ) || [ 'root', 'index'];
+      index = pageP.indexOf(currentName)
       action = JSON.parse( sessionStorage.getItem('historyAction')           ) || 'initial' ;
+      // console.log(pageP);
+      // console.log(index);
 
     }
     else{
@@ -65,7 +70,7 @@ let WeactPage = React.createClass({
     if(!pageP)pageP = ['root', 'index']
     // console.log(pageP);
     // console.log(this.props.currentName);
-    console.log(index);
+    // console.log(index);
 
     // if(!Meteor.isServer){
     //   if(this.state.page!==pageP){
@@ -102,7 +107,7 @@ let WeactPage = React.createClass({
 
             let props = {};
               props.class     = " page"       ;
-            if(action=='back'){
+            if(action=='back' && Session.equals('onSwipe', 1)){
               // index+=1;
               if(tmp=='index'){
                 props.children  = <TodoMain/>   ;

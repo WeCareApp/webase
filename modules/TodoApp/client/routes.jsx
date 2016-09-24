@@ -222,7 +222,55 @@ export default (
         //    // console.log(this.props.location);
         //      HistoryAction(state, currentName)
         //  }
-         console.log(currentName);
+        //  console.log(currentName);
+         let helmetCb;
+         if(!Meteor.isServer){
+           let helmetbundle = require('bundle!./components/helmet/'+currentName);
+           helmetbundle(helmet =>{
+             helmetCb = helmet.default;
+             // component.setState({loading: false});
+             // return;
+           })
+         }else{
+           let helmet = require('./components/helmet/'+currentName);
+             helmetCb = helmet.default;
+             // component.setState({loading: false});
+             // return;
+         }
+         cb(null, {
+           navbar: WeactNavbar,
+           page  : WeactPage,
+           helmet: helmetCb
+         })
+        //  GetComponents(state, cb)
+       }}
+       onLeave       ={( next, replace ) =>  {
+         StorePosition() //Store page position when leave the page
+       }}
+     />
+     <Route path="/form1"
+     //components={components()}
+       /*getComponents={(state, cb) => {
+             require.ensure([], (require) => {
+               cb(null, components())
+             })
+       }}*/
+       getComponents={(state, cb) => {
+        //  HistoryAction(state)
+
+        // console.log(state);
+         let currentName = "";
+         if(state.pathname.split('/')[1]){
+           currentName = state.pathname.split('/')[1];
+         }else if(state.pathname=='/'){
+           currentName = 'index';
+         }
+        //  if(JSON.parse(sessionStorage.getItem('isRefresh'))==0){
+        //   //  sessionStorage.setItem('isRefresh', JSON.stringify(0));
+        //    // console.log(this.props.location);
+        //      HistoryAction(state, currentName)
+        //  }
+        //  console.log(currentName);
          let helmetCb;
          if(!Meteor.isServer){
            let helmetbundle = require('bundle!./components/helmet/'+currentName);
@@ -252,5 +300,6 @@ export default (
      {/*</Route>*/}
 
    </Route>
+
  </Route>
 );

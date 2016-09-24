@@ -274,34 +274,25 @@ export default class TodoApp extends Component {
   //   // }else{
   //   // }
   // }
-  // componentWillMount(){
-  //   if(!Meteor.isServer){
-  //     sessionStorage.setItem('isRefresh', JSON.stringify(1));
+  componentWillMount(){
+    if(!Meteor.isServer){
+      sessionStorage.setItem('isRefresh', JSON.stringify(1));
   //     HistoryAction(this.props.location, this.currentName())
   //
   //     console.log(this.props.location);
   //
   //     // console.log('gaga');
   //     // console.log($('.f7-main'));
-  //   }
-  // }
-  componentDidMount() {
-    if(!Meteor.isServer){
-      sessionStorage.setItem('isRefresh', JSON.stringify(1));
-      HistoryAction(this.props.location, this.currentName())
-
-      console.log(this.props.location);
-      // console.log('mount');
-        // this.historyRoute()
-        // console.log(this.state.historyRoute);
-    //   console.log($('.f7-main'));
     }
+  }
+  componentDidMount() {
+
 
     // if(!Meteor.isServer){
     //     HistoryAction(this.props.location, this.currentName())
     // }
-    if(!Meteor.isServer){
-    }
+    // if(!Meteor.isServer){
+    // }
 
       // this.setState({history: this.props.history});
       if(!Meteor.isServer && !!$("[data-page='index']")) {
@@ -335,7 +326,7 @@ export default class TodoApp extends Component {
           this.setState({f7: app});
           // },0)
           this.setState({hasRoute: true})
-          loadF7(this, app);
+          // loadF7(this, app);
           // alert('yo')
           // loadF7(this, this.state.f7);
           // sessionStorage.setItem('isRefresh', 0);
@@ -343,13 +334,13 @@ export default class TodoApp extends Component {
       }
 
   }
-  componentWillReceiveProps(){
-    // if(JSON.parse(sessionStorage.getItem('isRefresh'))==0){
-    //   sessionStorage.setItem('isRefresh', JSON.stringify(0));
-      console.log(this.props.location);
-    //     HistoryAction(this.props.location, this.currentName())
-    // }
-  }
+  // componentWillReceiveProps(){
+  //   // if(JSON.parse(sessionStorage.getItem('isRefresh'))==0){
+  //   //   sessionStorage.setItem('isRefresh', JSON.stringify(0));
+  //     console.log(this.props.location);
+  //   //     HistoryAction(this.props.location, this.currentName())
+  //   // }
+  // }
   componentDidUpdate(){
     // if(this.state.init !== true){
     // if(!Meteor.isServer) {

@@ -32,26 +32,53 @@ function loadF7(component, f7){
                 let history = JSON.parse(sessionStorage.getItem('history'));
                 let k = history;
                 let i     = JSON.parse( sessionStorage.getItem('historyIndex') );
-                // if(k[i]!=='index'){
-                  app.views[1].router.loadPage({
-                    pageName:   k[i],
-                    animatePages: false
-                  });
-                  if($('[data-page="'+k[i+1]+'"].page').hasClass("page-transitioning")){
-                    $('[data-page="'+k[i+1]+'"].page').remove()
+                // if(k[i]=='index'){
+                //   $('[data-page="'+k[i]+'"].page').addClass('cached')
+                //   $('[data-page="'+k[i]+'"].navbar-inner').addClass('cached')
+                // }
+                $('[data-page="'+k[i+1]+'"].page').addClass('cached').removeClass('page-on-right')
+
+              // }
+              // if($('[data-page="'+k[i+1]+'"].navbar-inner').hasClass("navbar-on-right")){
+              //   $('[data-page="'+k[i+1]+'"].navbar-inner').remove()
+              // }else{
+
+                $('[data-page="'+k[i+1]+'"].navbar-inner').addClass('cached').removeClass('navbar-on-right')
+                  if(k[i]!=='index'){
+                    let keepPage, keepNav;
+                    keepPage = $('[data-page="'+k[i+1]+'"].page')
+                    keepNav  = $('[data-page="'+k[i+1]+'"].navbar-inner')
+                    keepPage.remove()
+                    keepNav.remove()
+                    app.views[1].router.loadPage({
+                      pageName:   k[i],
+                      animatePages: false
+                    });
+                    $('.pages').append(keepPage)
+                    $('.navbar').append(keepNav)
+
                   }else{
-                    $('[data-page="'+k[i+1]+'"].page').addClass('cached').removeClass('page-on-left')
+                    // $('[data-page="'+k[i]+'"].page').removeClass('cached').addClass('page-on-center')
+                    // $('[data-page="'+k[i]+'"].navbar-inner').removeClass('cached').addClass('navbar-on-center')
                   }
-                  if($('[data-page="'+k[i+1]+'"].navbar-inner').hasClass("navbar-on-right")){
-                    $('[data-page="'+k[i+1]+'"].navbar-inner').remove()
-                  }else{
-                    $('[data-page="'+k[i+1]+'"].navbar-inner').addClass('cached').removeClass('navbar-on-left')
-                  }
+
+                // }
+                // if(!$('[data-page="'+pageName+'"].navbar-inner')[0]){
+
+                  // if($('[data-page="'+k[i+1]+'"].page').hasClass("page-transitioning")){
+                  //   $('[data-page="'+k[i+1]+'"].page').remove()
+                  // }else{
+
+
+
+                  // }
                     // $('[data-page="'+pageName+'"].navbar-inner').remove()
                   // $('[data-page="'+k[i+1]+'"].navbar-inner').addClass('cached').removeClass('navbar-on-left')
                   if(i>0){
-                    $('[data-page="'+k[i-1]+'"].page').removeClass('cached').addClass('page-on-left')
-                    $('[data-page="'+k[i-1]+'"].navbar-inner').removeClass('cached').addClass('navbar-on-left')
+                    // $('[data-page="'+k[i-1]+'"].page').removeClass('cached').addClass('page-on-left')
+                    // $('[data-page="'+k[i-1]+'"].navbar-inner').removeClass('cached').addClass('navbar-on-left')
+                    $('[data-page="'+k[i-1]+'"].page').removeClass('cached').removeClass('page-on-center')
+                    $('[data-page="'+k[i-1]+'"].navbar-inner').removeClass('cached').removeClass('navbar-on-center')
                   }
                   // app.views[1].router.back({
                   //   animatePages: false
@@ -108,10 +135,13 @@ function loadF7(component, f7){
                 // let index = i;
                 let backPage  = history[i+1];
                 // // // //make static after back change
-                app.onPageAfterBack(backPage, function(){
+                if(i>0 ){
+                  let singleVar = 0
+                  app.onPageAfterBack(backPage, function(){
                 //   // console.log('done render');
+                    if(singleVar)return
+                    setTimeout(function(){
 
-                  setTimeout(function(){
                 // //     if(i>0){
                 // //       // $('[data-page="'+history[i-2]+'"].page').removeClass('cached');
                 // //       $('[data-page="'+k[i-1]+'"].page').removeClass('cached').addClass('page-on-left')
@@ -125,13 +155,14 @@ function loadF7(component, f7){
                 // //     center.css( 'transform' , '' );
                 // //     center.css( 'transition', ''                           );
                 //       $('[data-page="'+history[i-1]+'"].navbar-inner').removeClass('cached');
-                    if(i>0){
+
+                      // alert(i)
                       $('[data-page="'+k[i-1]+'"].page').removeClass('cached').addClass('page-on-left')
                       $('[data-page="'+k[i-1]+'"].navbar-inner').removeClass('cached').addClass('navbar-on-left')
-                    }
-                  }, 0);
-
-                })
+                      singleVar++
+                    }, 0);
+                  })
+                }
               }
               isBack = 0;
             }else {
@@ -151,7 +182,7 @@ function loadF7(component, f7){
                 // }
                   //if not index page load
                   // if(!!routeName[1])
-                  app.views[1].router.loadPage(options);
+                    app.views[1].router.loadPage(options);
 
             }
             let index     = JSON.parse( sessionStorage.getItem('historyIndex') );
@@ -190,55 +221,70 @@ function loadF7(component, f7){
             // })
 
             // let time = 0
+            // //
             //
-
             let timeBeforeRemove = 1;
+            // let end
             app.onPageBack(pageName, function(page){
-              if(Session.get('onSwipe')==1 && page.swipeBack
-                // && time==0
-              ){
-                // timeBeforeRemove=1
-            //     // alert(page.swipeBack)
-                keepPage = $('[data-page="'+pageName+'"].page')
-                keepNav  = $('[data-page="'+pageName+'"].navbar-inner')
-            //     // if(!$('[data-page="'+pageName+'"].page')[0]){
-            //       // $('.pages').append(keepPage)
-            //     // }
-            //     // if(!$('[data-page="'+pageName+'"].navbar-inner')[0]){
-            //       // $('.navbar').append(keepNav)
-            //       time++
-            //     // }
-            //     // $('.navbar').append(keepNav)
-            //     // $('.pages').append(keepPage)
-            //     // $('[data-page="'+pageName+'"].navbar-inner').addClass('cached')
-            //     // $('[data-page="'+pageName+'"].page').addClass('cached')
-              }
-            })
-            var BR = app.onPageBeforeRemove(pageName, function(page){
-            //   if(timeBeforeRemove==1){
-             $('.pages').append(keepPage)
-             $('.navbar').append(keepNav)
-            //     // console.log(page);
-                // alert('BR')
-            //     // component.props.history.goBack();
-            //     timeBeforeRemove=0
-                BR.remove()
-            //   }
-
-            //   if(timeBeforeRemove==0){
+            //   console.log(page);
+            //   if(Session.get('onSwipe')==1 && page.swipeBack
+            //     && time==0
+            //   ){
+            //     // timeBeforeRemove=1
+                // alert(page.swipeBack)
+            // // sessionStorage.setItem('historyAction', JSON.stringify('forward'));
+            //     keepPage = $('[data-page="'+pageName+'"].page')
+            //     keepNav  = $('[data-page="'+pageName+'"].navbar-inner')
             //
-            //     alert('no')
-            //     $('.pages').append(keepPage)
-            //   // }
-            //   // if(!$('[data-page="'+pageName+'"].navbar-inner')[0]){
-            //     $('.navbar').append(keepNav)
-            //     // console.log(page);
-            //     timeBeforeRemove++
+            // //     // if(!$('[data-page="'+pageName+'"].page')[0]){
+            // //       // $('.pages').append(keepPage)
+            // //     // }
+            // //     // if(!$('[data-page="'+pageName+'"].navbar-inner')[0]){
+            // //       // $('.navbar').append(keepNav)
+            //       time++
+            // //     // }
+            // //     // $('.navbar').append(keepNav)
+            // //     // $('.pages').append(keepPage)
+            // //     // $('[data-page="'+pageName+'"].navbar-inner').addClass('cached')
+            // //     // $('[data-page="'+pageName+'"].page').addClass('cached')
             //   }
+            })
+            // Session.set('BR', true)
+            var BR = app.onPageBeforeRemove(pageName, function(page){
+            //  component.props.history.goBack();
+            //   // Session.set('BR', false)
+            //   // if(Session.equals('BR', true)){
+                //
+            //   //   // component.props.history.goBack();
+            //   //   Session.set('BR', false)
+            //   // }
+              if(timeBeforeRemove==1){
+              //  $('.pages').append(keepPage)
+              //  $('.navbar').append(keepNav)
+            // //     // console.log(page);
+              // alert('BR')
+                timeBeforeRemove=0
+                // component.props.history.goBack();
+
+            //     BR.remove()
+              }
+            //
+            // //   if(timeBeforeRemove==0){
+            // //
+            // //     alert('no')
+            // //     $('.pages').append(keepPage)
+            // //   // }
+            // //   // if(!$('[data-page="'+pageName+'"].navbar-inner')[0]){
+            // //     $('.navbar').append(keepNav)
+            // //     // console.log(page);
+            // //     timeBeforeRemove++
+            // //   }
             })
 
             onSwipe = app.onPageAfterBack(pageName, function(page){
               if(Session.get('onSwipe')==1 && page.swipeBack){
+                // keepPage = $('[data-page="'+pageName+'"].page')
+                // keepNav  = $('[data-page="'+pageName+'"].navbar-inner')
                 // alert(page.swipeBack);
                 // if(!$('[data-page="'+pageName+'"].page')[0]){
                   // $('.pages').append(keepPage)
@@ -246,11 +292,18 @@ function loadF7(component, f7){
                 // if(!$('[data-page="'+pageName+'"].navbar-inner')[0]){
                   // $('.navbar').append(keepNav)
                 // }
-                let index     = JSON.parse( sessionStorage.getItem('historyIndex') );
-                let route = JSON.parse(sessionStorage.getItem('historyRoute'));
+                // alert('AA')
+                // console.log(page);
+                // let index     = JSON.parse( sessionStorage.getItem('historyIndex') );
+                // let route = JSON.parse(sessionStorage.getItem('historyRoute'));
                 Session.set('onSwipe', 0);
+                // setTimeout(function(){
+                  component.props.history.goBack();
+                  // component.forceUpdate();
+                // },0)
+
                 // alert('back')
-                component.props.history.goBack();
+                // component.props.history.goBack();
                 // console.log(!$('[data-page="'+pageName+'"].page')[0]);
                 // setTimeout(function(){
                   // component.props.history.goBack();
@@ -265,7 +318,7 @@ function loadF7(component, f7){
                 // },0)
 
               }
-              Session.set('onSwipe', 0);
+              // Session.set('onSwipe', 0);
             });
 
 
@@ -309,7 +362,7 @@ function loadF7(component, f7){
                 tmp = tmp.replace('/','');
                 history.push(tmp);
               }
-              sessionStorage.setItem('history', JSON.stringify($.unique(history)));
+              // sessionStorage.setItem('history', JSON.stringify($.unique(history)));
             }else{// Initial or reload
               let index           = JSON.parse(sessionStorage.getItem('historyIndex'));
               let historyPosition = JSON.parse(sessionStorage.getItem('historyPosition'));

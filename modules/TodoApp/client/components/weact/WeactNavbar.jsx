@@ -4,12 +4,12 @@ var WeactNavbar = React.createClass({
       page: ['index']
     }
   },
-  componentWillUpdate(){
-    console.log(this.props.location);
-  },
+  // componentWillUpdate(){
+  //   console.log(this.props.location);
+  // },
   render: function() {
-    console.log(sessionStorage);
-    console.log(this.props.location);
+    // console.log(sessionStorage);
+    // console.log(this.props.location);
     let index
     // index = this.state.index
 
@@ -29,7 +29,7 @@ var WeactNavbar = React.createClass({
       }
     }
 
-    console.log('yah');
+    // console.log('yah');
 
 
     let currentName;
@@ -43,8 +43,9 @@ var WeactNavbar = React.createClass({
     }
 
     if(!Meteor.isServer){
-      navbarP = JSON.parse( sessionStorage.getItem('history')            ) || ['index'];
-      index = JSON.parse( sessionStorage.getItem('historyIndex')   ) || 0;
+      navbarP = JSON.parse( sessionStorage.getItem('historyUni')            ) || ['index'];
+      // index = JSON.parse( sessionStorage.getItem('historyIndex')   ) || 0;
+      index = navbarP.indexOf(currentName)
       action = JSON.parse( sessionStorage.getItem('historyAction')           ) || 'initial';
     }
     else{
@@ -129,7 +130,7 @@ var WeactNavbar = React.createClass({
                 props.class+=' cached'
               }
             }
-            if(action=='back'){
+            if(action=='back' && Session.equals('onSwipe', 1)){
               // if(tmp=='index'){
               //   props.children  = <TodoMain/>   ;
               // }

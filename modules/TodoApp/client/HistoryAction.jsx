@@ -13,6 +13,7 @@ let HistoryAction=function(state, currentName){
   // console.log(routeNew);
   // console.log(isRefresh);
   // let currentName   = this.currentName();
+  // if(route && route[historyIndex+1])console.log(routeNew==route[historyIndex+1]);
   if(history==null){
     route = ['/']
     history = ['index']
@@ -35,9 +36,9 @@ let HistoryAction=function(state, currentName){
     // if(this.state.hasRoute == null)
     historyAction = 'refresh'
     historyIndex  = history.indexOf(currentName);
-    console.log(history);
-    console.log(history.indexOf(currentName));
-    console.log(historyIndex);
+    // console.log(history);
+    // console.log(history.indexOf(currentName));
+    // console.log(historyIndex);
     if(historyIndex==-1){
       history = ['index']
       historyIndex = 0
@@ -57,10 +58,12 @@ let HistoryAction=function(state, currentName){
     // }
   }
   else{
-    if(currentName==history[historyIndex-1]){
+    if(routeNew==route[historyIndex-1]){
       //go back
       // console.log('back');
+      // history = history.slice(0, historyIndex+1);
       historyIndex--
+
       historyAction = 'back'
       // if(this.state.historyAction!==historyAction){
       //   this.setState({
@@ -71,7 +74,7 @@ let HistoryAction=function(state, currentName){
       // }
       // isBack=1;
       // sessionStorage.setItem('historyRouteIndex',index-1);
-    }else if((historyIndex+1)<history.length && currentName==history[historyIndex+1]){
+    }else if((historyIndex+1)<route.length && routeNew==route[historyIndex+1]){
       //go forward but still in history
       // console.log('forward')
       historyIndex++
@@ -123,6 +126,20 @@ let HistoryAction=function(state, currentName){
     //   })
     // }
   }
+
+  // console.log(historyAction);
+  let historyUni
+  historyUni = history
+  // console.log(history);
+  // console.log( );
+  historyUni = historyUni.slice(0, historyIndex+2)
+  historyUni.reverse()
+  historyUni = Array.from(new Set(historyUni))
+  historyUni.reverse()
+
+
+  sessionStorage.setItem('historyUni'      , JSON.stringify(historyUni));
+
   if(OldhistoryIndex  !== historyIndex){
     sessionStorage.setItem('historyIndex' , JSON.stringify(historyIndex));
   }
