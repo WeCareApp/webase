@@ -353,13 +353,22 @@ export default class TodoApp extends Component {
       if(!Meteor.isServer) {
         // this.historyRoute()
         // console.log('update');
-
+        console.log(JSON.parse( sessionStorage.getItem('origin') ));
         if(JSON.parse( sessionStorage.getItem('origin') )!=='/'){
+          // alert('yo')
           Session.set('routeOld', undefined); // make it load without animation
           let go = JSON.parse( sessionStorage.getItem('origin') );
           sessionStorage.setItem('origin', JSON.stringify('/'));
           // sessionStorage.setItem('isRefresh', JSON.stringify(1));
-          this.props.history.push(go)
+          // window.location.href = go
+          // let self = this
+          // setTimeout(function(){
+            this.props.history.push(go)
+            // self.props.history.replace(go)
+          // },0)
+
+          // HistoryAction(this.props.location, this.currentName())
+          // console.log(sessionStorage);
         }else{
 
 
@@ -415,7 +424,7 @@ export default class TodoApp extends Component {
               // console.log(this.props.location.pathname);
             // }
 
-
+            console.log('update page');
             loadF7(this, this.state.f7);
             if(JSON.parse(sessionStorage.getItem('isRefresh'))==1)sessionStorage.setItem('isRefresh', JSON.stringify(0));
 
@@ -433,6 +442,7 @@ export default class TodoApp extends Component {
     // console.log(this.props.location);
     if(!Meteor.isServer){
         HistoryAction(this.props.location, this.currentName())
+        // console.log(sessionStorage);
     }
 
     return (

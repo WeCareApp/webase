@@ -75,6 +75,14 @@ var WeactNavbar = React.createClass({
     //   // .log(pageP);
     // }
 
+    if(!Meteor.isServer){
+      if(action!=='back'){
+        // console.log(navbarP);
+        navbarP = navbarP.slice(0, index+1);
+        // console.log(index);
+        // console.log(navbarP);
+      }
+    }
 
     // if(navbarP && navbarP.indexOf(currentName)<(index))action='back'
 

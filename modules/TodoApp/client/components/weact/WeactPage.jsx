@@ -4,10 +4,13 @@ let WeactPage = React.createClass({
     return {
       loading: true             ,
       page: ['root', 'index']   ,
-      index: 1
+      index: 1                  ,
+      bundle:  {}
+
     }
   },
   render: function() {
+
     // console.log(this.props.historyAction);
     // console.log(this.props.historyRoute)
     // let action = this.props.historyAction;
@@ -40,26 +43,60 @@ let WeactPage = React.createClass({
       currentName = 'index';
     }
 
+    // if(this.state.page.indexOf(currentName)==-1){
+    //   console.log(this.state.page)
+    //   let page
+    //   page  = this.state.page
+    //   page.push(currentName)
+    //   console.log(page)
+    //   this.setState({page: page})
+    //   console.log(this.state.page)
+    //   console.log(page)
+    // }
+    // console.log(this.state.page);
+
+
     if(!Meteor.isServer){
       // this.setState({page })
       // index = JSON.parse( sessionStorage.getItem('historyIndex')) || 0;
       pageP = JSON.parse( sessionStorage.getItem('historyUni')           ) || [ 'root', 'index'];
-      index = pageP.indexOf(currentName)
+      // index = pageP.indexOf(currentName)
       action = JSON.parse( sessionStorage.getItem('historyAction')           ) || 'initial' ;
       // console.log(pageP);
       // console.log(index);
 
     }
-    else{
+
+    if( Meteor.isServer
+      // || JSON.parse(sessionStorage.getItem('isRefresh'))==1
+    ){
       // if(currentName=='index'){
-        index = 1
+        index = 0
         pageP = ['index']
       // }
       if(currentName!=='index'){
         index++
         pageP.push(currentName)
       }
+      // action = 'refresh'
     }
+
+    if(this.state.page.indexOf(currentName)==-1){
+      this.state.page.push(currentName)
+    }
+    let k = 0;
+    console.log(pageP);
+    while(k<pageP.length){
+      if(this.state.page.indexOf(pageP[k])==-1){
+        pageP.splice(k,1)
+      }
+      else k++
+    }
+    console.log(this.state.page);
+    // console.log(action);
+    // else
+
+
 
     // for(let i=1; i<route.length; i++){
     //   let tmp = route[i];
@@ -68,6 +105,54 @@ let WeactPage = React.createClass({
     // }
     if(!!pageP && pageP.indexOf('root')==-1) pageP.unshift("root")
     if(!pageP)pageP = ['root', 'index']
+
+    index = pageP.indexOf(currentName)
+    console.log(index);
+    // alert(JSON.parse(sessionStorage.getItem('isRefresh')));
+
+    // if(JSON.parse(sessionStorage.getItem('isRefresh'))==1){
+    //   if(currentName=='index')
+    // }
+
+    let loading = this.state.loading;
+
+    if(!Meteor.isServer){
+      let self  = this
+      let pl    = pageP.length
+      let j     = 0
+      pageP.map(function(tmp, i){
+        if(!self.state.bundle[tmp]){
+          if(tmp=='root'){
+            self.state.bundle['root']   = require('./../../components/page/root').default
+          }
+          else if(tmp=='index'){
+            self.state.bundle['index']  = require('./../../components/page/index').default
+          }
+          else {
+            let fetch = require('bundle!./../../components/page/'+tmp);
+
+            fetch(bundle =>{
+              self.state.bundle[tmp] = bundle.default;
+              j++
+              // alert()
+              // alert(pl)
+              if(Object.keys(self.state.bundle).length==pl){
+                console.log('ready')
+
+              }
+            })
+          }
+        }
+      })
+      if(action!=='back'){
+        // console.log(pageP);
+        pageP = pageP.slice(0, index+1);
+        // console.log(index);
+        // console.log(pageP);
+      }
+      // console.log(this.state.bundle);
+    }
+
     // console.log(pageP);
     // console.log(this.props.currentName);
     // console.log(index);
@@ -93,14 +178,24 @@ let WeactPage = React.createClass({
 
     // if(pageP.indexOf(currentName)<(index))action='back'
     // let index = this.props.historyIndex
-    let loading = this.state.loading;
+    let pageBundle = this.state.bundle
+    // console.log('render page');
+    console.log(pageP);
+    console.log(pageBundle);
+    console.log(sessionStorage);
+    // alert(JSON.parse(sessionStorage.getItem('isRefresh')));
     return (
       <div className="pages navbar-through toolbar-through">
         {pageP.map(function(tmp, i){
           let Page;
           if(!Meteor.isServer){
             // Page = pagePP[i];
-            Page = require('./../../components/page/'+tmp).default;
+            // console.log(pageBundle[tmp]);
+            // Page  = require('./../../components/page/'+tmp).default;
+            Page  = pageBundle[tmp]
+            // fetch(bundle =>{
+            //   Page = bundle.default
+            // })
           }else{
             Page = require('./../../components/page/'+tmp).default;
           }
@@ -115,7 +210,7 @@ let WeactPage = React.createClass({
               if(!Meteor.isServer){
                 // console.log(currentName);
                 if(tmp!==currentName){
-                  if( i == index+2 ) props.class += " page-on-center"
+                  if( i == index+1 ) props.class += " page-on-center"
                   else
                    props.class  += " cached"
                 }
@@ -133,7 +228,7 @@ let WeactPage = React.createClass({
                 props.children  = <TodoMain/>   ;
                 if(!Meteor.isServer){
                   if(currentName!=='index'){
-                    if(index == i){
+                    if(index-1 == i){
                       props.class += " page-on-center";
                     }
                     else props.class  += " cached"     ;
@@ -145,7 +240,7 @@ let WeactPage = React.createClass({
                 ){
                   // if( i == index+1 ) props.class += " page-on-center";
                   // else
-                  if(index == i){
+                  if(index-1 == i){
                     props.class += " page-on-center";
                   }
                   else props.class  += " cached"     ;
@@ -158,6 +253,7 @@ let WeactPage = React.createClass({
         })}
       </div>
     )
+
   }
 });
 
