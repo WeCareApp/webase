@@ -2,15 +2,18 @@ import TodoMain from  './../../TodoMain';
 let WeactPage = React.createClass({
   getInitialState: function() {
     return {
-      loading: true             ,
-      page: ['root', 'index']   ,
-      index: 1                  ,
-      bundle:  {}
+      loading : true             ,
+      page    : ['root', 'index']   ,
+      index   : 1                  ,
+      bundle  : {
+        root  : require('./../../components/page/root'  ).default ,
+        index : require('./../../components/page/index' ).default
+      }
 
     }
   },
   render: function() {
-
+    // console.log(this.state.bundle);
     // console.log(this.props.historyAction);
     // console.log(this.props.historyRoute)
     // let action = this.props.historyAction;
@@ -123,10 +126,10 @@ let WeactPage = React.createClass({
       pageP.map(function(tmp, i){
         if(!self.state.bundle[tmp]){
           if(tmp=='root'){
-            self.state.bundle['root']   = require('./../../components/page/root').default
+            // self.state.bundle['root']   = require('./../../components/page/root').default
           }
           else if(tmp=='index'){
-            self.state.bundle['index']  = require('./../../components/page/index').default
+            // self.state.bundle['index']  = require('./../../components/page/index').default
           }
           else {
             let fetch = require('bundle!./../../components/page/'+tmp);
