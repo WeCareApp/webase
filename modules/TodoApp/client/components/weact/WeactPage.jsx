@@ -85,14 +85,14 @@ let WeactPage = React.createClass({
       this.state.page.push(currentName)
     }
     let k = 0;
-    console.log(pageP);
+    // console.log(pageP);
     while(k<pageP.length){
       if(this.state.page.indexOf(pageP[k])==-1){
         pageP.splice(k,1)
       }
       else k++
     }
-    console.log(this.state.page);
+    // console.log(this.state.page);
     // console.log(action);
     // else
 
@@ -107,7 +107,7 @@ let WeactPage = React.createClass({
     if(!pageP)pageP = ['root', 'index']
 
     index = pageP.indexOf(currentName)
-    console.log(index);
+    // console.log(index);
     // alert(JSON.parse(sessionStorage.getItem('isRefresh')));
 
     // if(JSON.parse(sessionStorage.getItem('isRefresh'))==1){
@@ -137,7 +137,7 @@ let WeactPage = React.createClass({
               // alert()
               // alert(pl)
               if(Object.keys(self.state.bundle).length==pl){
-                console.log('ready')
+                // console.log('ready')
 
               }
             })
@@ -180,9 +180,9 @@ let WeactPage = React.createClass({
     // let index = this.props.historyIndex
     let pageBundle = this.state.bundle
     // console.log('render page');
-    console.log(pageP);
-    console.log(pageBundle);
-    console.log(sessionStorage);
+    // console.log(pageP);
+    // console.log(pageBundle);
+    // console.log(sessionStorage);
     // alert(JSON.parse(sessionStorage.getItem('isRefresh')));
     return (
       <div className="pages navbar-through toolbar-through">

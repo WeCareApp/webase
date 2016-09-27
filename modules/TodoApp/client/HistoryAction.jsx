@@ -10,7 +10,7 @@ let HistoryAction=function(state, currentName){
   let  Oldroute         = route
   let routeNew
   routeNew = state.pathname
-  console.log(routeNew);
+  // console.log(routeNew);
   // console.log(isRefresh);
   // let currentName   = this.currentName();
   // if(route && route[historyIndex+1])console.log(routeNew==route[historyIndex+1]);
@@ -62,7 +62,7 @@ let HistoryAction=function(state, currentName){
       //go back
       // console.log('back');
       // history = history.slice(0, historyIndex+1);
-      console.log(historyIndex);
+      // console.log(historyIndex);
       historyIndex--
 
       historyAction = 'back'

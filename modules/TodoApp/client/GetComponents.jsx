@@ -3,12 +3,38 @@ import WeactNavbar    from  './components/weact/WeactNavbar';
 
 var GetComponents = function(state, cb) {
 
+
+  //get currentName
   let currentName = "";
   if(state.pathname.split('/')[1]){
     currentName = state.pathname.split('/')[1];
   }else if(state.pathname=='/'){
     currentName = 'index';
   }
+
+  if(!Meteor.isServer){
+    // every history is the last page data
+    let     historyIndex  = JSON.parse(sessionStorage.getItem('historyIndex'))
+    let     history       = JSON.parse(sessionStorage.getItem('history'))
+
+    // if(history && historyIndex!==null)console.log(history[historyIndex])
+    // if initial - all is null
+    if(!history) console.log('initial')
+    // if refresh
+    else if(  history[historyIndex]   ==  currentName) console.log('refresh');
+    // if back
+    else if(  historyIndex-1  >=  0
+          &&  history[historyIndex-1] == currentName
+      ) console.log('back');
+    // if forward
+    else if(  historyIndex+1  <   history.length
+          &&  history[historyIndex+1] == currentName
+      ) console.log('forward');
+    // if new
+    else console.log('new');
+
+  }
+
   // if(JSON.parse(sessionStorage.getItem('isRefresh'))==0){
   //   // sessionStorage.setItem('isRefresh', JSON.stringify(0));
   //   // console.log(this.props.location);

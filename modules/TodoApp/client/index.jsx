@@ -353,7 +353,7 @@ export default class TodoApp extends Component {
       if(!Meteor.isServer) {
         // this.historyRoute()
         // console.log('update');
-        console.log(JSON.parse( sessionStorage.getItem('origin') ));
+        // console.log(JSON.parse( sessionStorage.getItem('origin') ));
         if(JSON.parse( sessionStorage.getItem('origin') )!=='/'){
           // alert('yo')
           Session.set('routeOld', undefined); // make it load without animation
@@ -424,7 +424,7 @@ export default class TodoApp extends Component {
               // console.log(this.props.location.pathname);
             // }
 
-            console.log('update page');
+            // console.log('update page');
             loadF7(this, this.state.f7);
             if(JSON.parse(sessionStorage.getItem('isRefresh'))==1)sessionStorage.setItem('isRefresh', JSON.stringify(0));
 
