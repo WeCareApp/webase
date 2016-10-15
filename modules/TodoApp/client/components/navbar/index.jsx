@@ -1,14 +1,16 @@
 import { Component, PropTypes } from 'react';
-
+//
+// export default function() {
+//   return React.createClass({
 export default class navbarIndex extends Component {
   static propTypes = {}
-  componentWillMount() {
-  }
+    componentWillMount() {
+    }
 
-  render() {
+    render() {
       return (
         // <script type="text/template" id="about">
-        <div data-page="index" className={this.props.class}>
+        <div data-page={this.props.dataPage} className={this.props.class}>
           {/* We have home navbar without left link*/}
           <div className="left sliding">Touch2S</div>
           <div className="right">
@@ -19,5 +21,6 @@ export default class navbarIndex extends Component {
         </div>
         // </script>
       );
-  }
+    }
+  // }
 }

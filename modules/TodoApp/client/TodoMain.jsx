@@ -1,6 +1,7 @@
 import { Component, PropTypes } from 'react';
 import ReactMixin from 'react-mixin';
 
+import { Link } from 'react-router';
 import TodoHeader from './components/TodoHeader';
 import TodoList from './components/TodoList';
 
@@ -28,6 +29,15 @@ export default class TodoMain extends Component {
 
   componentWillUnmount() {
     this.state.subscription.tasks.stop();
+  }
+
+  componentDidUpdate(){
+    // if(!Meteor.isServer && this.state.subscription.tasks.ready()){
+    //   let historyPosition = JSON.parse(sessionStorage.getItem('historyPosition'));
+    //   if(historyPosition && historyPosition[0]>0){
+    //     $('[data-page="index"]>.page-content').scrollTop(historyPosition[0])
+    //   }
+    // }
   }
 
   tasks() {
@@ -84,20 +94,20 @@ export default class TodoMain extends Component {
         <div className="content-block-title">Example Pages</div>
         <div className="list-block">
           <ul>
-            <li><a href="/about" className="item-link ajax">
+            <li><Link to="/about" className="item-link ajax">
               <div className="item-content">
                 <div className="item-inner">
                   <div className="item-title">Example About Page</div>
                 </div>
               </div>
-            </a></li>
-            <li><a href="/form" className="item-link ajax">
+            </Link></li>
+            <li><Link to="/form" className="item-link ajax">
               <div className="item-content">
                 <div className="item-inner">
                   <div className="item-title">Form Elements</div>
                 </div>
               </div>
-            </a></li>
+            </Link></li>
           </ul>
         </div>
       </div>

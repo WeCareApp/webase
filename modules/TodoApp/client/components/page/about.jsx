@@ -1,16 +1,21 @@
 import { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
 
 export default class pageAbout extends Component {
   static propTypes = {}
   componentWillMount() {
   }
 
+  componentDidMount(){
+    // console.log("about mount");
+  }
+
   render() {
       return (
-        <div data-page="about" className="page cached">
+        <div data-page="about" className={this.props.class}>
           <div className="page-content">
             <div className="content-block">
-              <p>You may go <a href="#" className="back">back</a> or load <a href="/form">Form</a> page.
+              <p>You may go <a href="#" className="back">back</a> or load <Link to="/form">Form</Link> page<Link to="/form1">Form1</Link>.
               </p>
               <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vel commodo massa, eu adipiscing
                 mi. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.

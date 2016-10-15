@@ -1,3 +1,7 @@
 {
-  "dependencies": {}
+  "dependencies": {
+  },
+  "engines": {
+    "npm": "2.14.15"
+  }
 }
