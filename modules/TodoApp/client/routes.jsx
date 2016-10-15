@@ -10,7 +10,7 @@ import AsyncRoute     from  './AsyncRoute.jsx'              ;
 import GetComponents  from  './GetComponents'               ;
 import StorePosition  from  './StorePosition'               ;
 
-import HistoryAction  from  './HistoryAction'               ;
+// import HistoryAction  from  './HistoryAction'               ;
 
 
 var components = function(){

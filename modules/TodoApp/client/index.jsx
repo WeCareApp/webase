@@ -275,8 +275,15 @@ export default class TodoApp extends Component {
   //   // }
   // }
   componentWillMount(){
+    // console.log('willMount');
     if(!Meteor.isServer){
       sessionStorage.setItem('isRefresh', JSON.stringify(1));
+      // let next time refresh get data
+      $(window).on('beforeunload', function(){
+          // your logic here
+          sessionStorage.setItem('isRefresh1', JSON.stringify(1));
+          // alert('leave')
+      });
   //     HistoryAction(this.props.location, this.currentName())
   //
   //     console.log(this.props.location);
@@ -292,6 +299,8 @@ export default class TodoApp extends Component {
     //     HistoryAction(this.props.location, this.currentName())
     // }
     // if(!Meteor.isServer){
+    //   sessionStorage.setItem('isRefresh1', JSON.stringify(1));
+    //   alert(1)
     // }
 
       // this.setState({history: this.props.history});

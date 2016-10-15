@@ -35,18 +35,30 @@ let HistoryAction=function(state, currentName){
     // console.log('refresh');
     // if(this.state.hasRoute == null)
     historyAction = 'refresh'
-    historyIndex  = history.indexOf(currentName);
-    // console.log(history);
-    // console.log(history.indexOf(currentName));
-    // console.log(historyIndex);
-    if(historyIndex==-1){
-      history = ['index']
+    if(history[historyIndex]   ==  currentName){
+    }else{
       historyIndex = 0
       if(currentName!=='index'){
+        history = history.slice(0, historyIndex+1);
+        route   =   route.slice(0, historyIndex+1);
         history.push(currentName)
+          route.push(  routeNew )
         historyIndex++
       }
     }
+    // historyIndex  = history.indexOf(currentName);
+    // // console.log(history);
+    // // console.log(history.indexOf(currentName));
+    // // console.log(historyIndex);
+    // // sessionStorage.setItem('loaded', JSON.stringify([]));
+    // if(historyIndex==-1){
+    //   history = ['index']
+    //   historyIndex = 0
+    //   if(currentName!=='index'){
+    //     history.push(currentName)
+    //     historyIndex++
+    //   }
+    // }
     // else return
     // if(this.state.historyAction!==historyAction){
     //   this.setState({

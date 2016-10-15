@@ -25,7 +25,10 @@ let WeactPage = React.createClass({
     // console.log(JSON.parse(sessionStorage.getItem('historyRoute')));
 
     // let     historyIndex  =
-    // let     history       =
+    let history
+    if(!Meteor.isServer){
+      history= JSON.parse(sessionStorage.getItem('history'))
+    }
     // let     historyAction =
     // let     route         =
     let index
@@ -61,12 +64,13 @@ let WeactPage = React.createClass({
 
     if(!Meteor.isServer){
       // this.setState({page })
-      // index = JSON.parse( sessionStorage.getItem('historyIndex')) || 0;
+      index = JSON.parse( sessionStorage.getItem('historyIndex')) || 0;
       pageP = JSON.parse( sessionStorage.getItem('historyUni')           ) || [ 'root', 'index'];
       // index = pageP.indexOf(currentName)
       action = JSON.parse( sessionStorage.getItem('historyAction')           ) || 'initial' ;
       // console.log(pageP);
       // console.log(index);
+
 
     }
 
@@ -82,19 +86,45 @@ let WeactPage = React.createClass({
         pageP.push(currentName)
       }
       // action = 'refresh'
+
     }
 
-    if(this.state.page.indexOf(currentName)==-1){
-      this.state.page.push(currentName)
-    }
-    let k = 0;
-    // console.log(pageP);
-    while(k<pageP.length){
-      if(this.state.page.indexOf(pageP[k])==-1){
-        pageP.splice(k,1)
+    if(!Meteor.isServer){
+
+
+      if(this.state.page.indexOf(currentName)==-1){
+        this.state.page.push(currentName)
       }
-      else k++
+      if(this.state.page.indexOf(history[index-1])==-1 && index>0){
+        this.state.page.push(history[index-1])
+      }
+
+      // console.log(pageP);
+      // if(index>0)console.log();
+      let k = 0;
+      // console.log(pageP);
+      while(k<pageP.length){
+        if(this.state.page.indexOf(pageP[k])==-1){
+          pageP.splice(k,1)
+        }
+        else{
+          if(pageP[k]!=='index'){
+            if(!this.state.bundle[pageP[k]]){
+              let fetch = require('bundle!./../../components/page/'+pageP[k])
+              // console.log(!this.state.bundle['cool']);
+              // console.log(this.state.bundle);
+              fetch(bundle =>{
+                // console.log(this.state.bundle);
+                this.state.bundle[pageP[k]] = bundle.default;
+              })
+
+            }
+          }
+          k++
+        }
+      }
     }
+    // console.log(pageP);
     // console.log(this.state.page);
     // console.log(action);
     // else
@@ -108,8 +138,9 @@ let WeactPage = React.createClass({
     // }
     if(!!pageP && pageP.indexOf('root')==-1) pageP.unshift("root")
     if(!pageP)pageP = ['root', 'index']
-
-    index = pageP.indexOf(currentName)
+    if(!Meteor.isServer){
+      index = pageP.indexOf(currentName)
+    }
     // console.log(index);
     // alert(JSON.parse(sessionStorage.getItem('isRefresh')));
 
@@ -118,35 +149,38 @@ let WeactPage = React.createClass({
     // }
 
     let loading = this.state.loading;
-
+    // console.log(this.state.bundle['about']);
+    // Object.assign(this.state.bundle, this.props.bundle);
+    // console.log(this.state.bundle);
     if(!Meteor.isServer){
-      let self  = this
-      let pl    = pageP.length
-      let j     = 0
-      pageP.map(function(tmp, i){
-        if(!self.state.bundle[tmp]){
-          if(tmp=='root'){
-            // self.state.bundle['root']   = require('./../../components/page/root').default
-          }
-          else if(tmp=='index'){
-            // self.state.bundle['index']  = require('./../../components/page/index').default
-          }
-          else {
-            let fetch = require('bundle!./../../components/page/'+tmp);
-
-            fetch(bundle =>{
-              self.state.bundle[tmp] = bundle.default;
-              j++
-              // alert()
-              // alert(pl)
-              if(Object.keys(self.state.bundle).length==pl){
-                // console.log('ready')
-
-              }
-            })
-          }
-        }
-      })
+      // let self  = this
+      // let pl    = pageP.length
+      // let j     = 0
+      // console.log(pageP);
+      // pageP.map(function(tmp, i){
+      //   if(!self.state.bundle[tmp]){
+      //     if(tmp=='root'){
+      //       // self.state.bundle['root']   = require('./../../components/page/root').default
+      //     }
+      //     else if(tmp=='index'){
+      //       // self.state.bundle['index']  = require('./../../components/page/index').default
+      //     }
+      //     else {
+      //       let fetch = require('bundle!./../../components/page/'+tmp);
+      //
+      //       fetch(bundle =>{
+      //         self.state.bundle[tmp] = bundle.default;
+      //         j++
+      //         // alert()
+      //         // alert(pl)
+      //         if(Object.keys(self.state.bundle).length==pl){
+      //           // console.log('ready')
+      //           console.log(self.state.bundle);
+      //         }
+      //       })
+      //     }
+      //   }
+      // })
       if(action!=='back'){
         // console.log(pageP);
         pageP = pageP.slice(0, index+1);
