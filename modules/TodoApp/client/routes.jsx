@@ -13,6 +13,7 @@ import StorePosition  from  './StorePosition'               ;
 // import HistoryAction  from  './HistoryAction'               ;
 
 
+
 var components = function(){
   if(Meteor.isServer){
     return{
